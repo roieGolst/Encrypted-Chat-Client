@@ -1,15 +1,8 @@
-import view from "./utils/viewEngine";
-import { PromptAnswer, PromptType } from "./utils/viewEngine/types";
+import uiTread from "./utils/UITread";
+import HomeView from "./app/home/HomeView"
+import HomePresenter from "./app/home/HomePresenter";
 
+const homeView = new HomeView();
+homeView.setPresenter(new HomePresenter(homeView));
 
-view.prompt([
-    {
-        type: PromptType.List,
-        message: "Select option",
-        name: "Roie",
-        chooices: ["Yoni", "Roie"]
-        
-    }
-], true).then((item: PromptAnswer) => {
-    console.log(item);
-});
+uiTread.startView(homeView);

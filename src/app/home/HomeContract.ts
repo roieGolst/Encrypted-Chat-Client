@@ -1,5 +1,5 @@
-import BasePresnter from "../../utils/BasePresnter";
-import BaseView from "../../utils/BaseView";
+import BasePresnter from "../BasePresnter";
+import BaseView from "../../utils/View";
 
 export interface HomeViewContract {
     showMenu(): void;

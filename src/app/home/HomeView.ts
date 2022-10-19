@@ -1,13 +1,13 @@
-import BasePresnter from "../../utils/BasePresnter";
-import BaseView from "../../utils/BaseView";
+import BasePresnter from "../BasePresnter";
 import { PromptType } from "../../utils/viewEngine/types";
 import { HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
+import BaseView from "../BaseView";
 
 export default class extends BaseView implements HomeViewContract {
-    private presenter: HomePresenter
+    private presenter: HomePresenter;
 
-    override setPresenter(prester: BasePresnter): void {
+    override setPresenter(prester: HomePresenter): void {
         this.presenter = prester;
     }
 
@@ -16,7 +16,7 @@ export default class extends BaseView implements HomeViewContract {
     }
 
     showMenu(): void {
-        this.view.prompt([
+        this.prompt([
             {
                 type: PromptType.List,
                 message: "Hello welcome to Encrypt-chat choose opstion",
