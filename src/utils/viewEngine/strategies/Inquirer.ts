@@ -3,11 +3,7 @@ import { Prompt, PromptStrategy, PromptAnswer } from "../types";
 
 export default class implements PromptStrategy {
 
-    async prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {
-
-        if(clear) {
-            this.clear();
-        }
+    async prompt(prompts: Prompt[]): Promise<PromptAnswer> {
 
         const answers = await inquirer.prompt(prompts.map((item: Prompt) => {
             return {
@@ -32,7 +28,7 @@ export default class implements PromptStrategy {
         return promptAnswer;
     }
 
-    private clear() {
+    clearScreen() {
         console.clear();
     }
 };

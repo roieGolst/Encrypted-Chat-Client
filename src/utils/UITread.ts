@@ -1,28 +1,35 @@
-import BaseView from "./BaseView";
+import View from "./View";
 
-export default class {
-    private currentView: BaseView;
+export interface ViewValidator {
+    isCurrentView(view: View): boolean;
+}
+class UITread implements ViewValidator {
+    private currentView: View;
 
-    startView(view: BaseView): void {
+    startView(view: View): void {
         if(this.currentView) {
             this.currentView.onDestroy();
             this.destroyView();
         }
         else {
-            this.clearView();
+            this.clearScreen();
         }
 
         this.currentView = view;
         this.currentView.onStart(); 
-
     }
 
-    private clearView(): void {
+    isCurrentView(view: View): boolean {
+        return view == this.currentView;
+    }
+
+    private clearScreen(): void {
         console.clear();
     }
 
     private destroyView(): void {
-        console.clear();
+        this.clearScreen();
     }
-
 }
+
+export default new UITread();

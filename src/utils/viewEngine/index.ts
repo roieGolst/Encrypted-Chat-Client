@@ -14,8 +14,12 @@ class ViewEngine extends ViewEngineAbstract{
         this.strategy = engine;
     }
     
-    override prompt(prompts: Prompt[], clear: boolean = false): Promise<PromptAnswer> {
-        return this.strategy.prompt(prompts, clear);
+    override prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {
+        if(clear) {
+            this.strategy.clearScreen();
+        }
+        
+        return this.strategy.prompt(prompts);
     }
 };
 

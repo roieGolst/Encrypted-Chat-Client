@@ -20,5 +20,6 @@ export type Prompt = {
 export type PromptAnswer = Map<string, string>;
 
 export interface PromptStrategy {
-    prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer>;
+    prompt(prompts: Prompt[]): Promise<PromptAnswer>;
+    clearScreen(): void;
 };
