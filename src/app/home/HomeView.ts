@@ -4,7 +4,10 @@ import { HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
 import BaseView from "../BaseView";
 
-export default class extends BaseView implements HomeViewContract {
+const LOGIN = "login";
+const REGISTER = "register";
+
+export default class HomeView extends BaseView implements HomeViewContract {
     private presenter: HomePresenter;
 
     override setPresenter(prester: HomePresenter): void {
@@ -15,19 +18,42 @@ export default class extends BaseView implements HomeViewContract {
         this.presenter.subscribe();
     }
 
-    showMenu(): void {
-        this.prompt([
+    async showMenu(): Promise<void> {
+        const answer = await this.prompt([
             {
                 type: PromptType.List,
                 message: "Hello welcome to Encrypt-chat choose opstion",
                 name: "homeQuestion",
-                choices: ["login", "register"]
+                choices: [LOGIN, REGISTER]
             }
         ], false);
+
+        switch(answer.get("homeQuestion")) {
+            case LOGIN : {
+                this.presenter.onUserSelectedLoginOption();
+                break;
+            }
+
+            case REGISTER: {
+                this.presenter.onUserSelectedRegisterOption();
+                break;
+            }
+        }
     }
 
+    showLoginScreen(): void {
+        
+    }
+
+    
     override onDestroy(): void {
-       this.presenter.unSubscribe();
+        this.presenter.unSubscribe();
     }
     
+    static factory(): HomeView {
+        const homeView = new HomeView();
+        homeView.setPresenter(new HomePresenter(homeView));
+
+        return homeView;
+    }
 };

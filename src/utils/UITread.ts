@@ -2,8 +2,9 @@ import View from "./View";
 
 export interface ViewValidator {
     isCurrentView(view: View): boolean;
+    startView(view: View): void;
 }
-class UITread implements ViewValidator {
+export class UIThread implements ViewValidator {
     private currentView: View;
 
     startView(view: View): void {
@@ -32,4 +33,4 @@ class UITread implements ViewValidator {
     }
 }
 
-export default new UITread();
+export default new UIThread();

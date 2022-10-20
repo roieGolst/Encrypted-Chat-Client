@@ -2,7 +2,7 @@ import uiTread, { ViewValidator } from "./UITread";
 import viewEngine, { ViewEngineAbstract } from "./viewEngine";
 import { Prompt, PromptAnswer } from "./viewEngine/types";
 
-export default abstract class extends ViewEngineAbstract {
+export default abstract class View extends ViewEngineAbstract {
     private readonly viewEngine: ViewEngineAbstract = viewEngine;
     private readonly viewValidator: ViewValidator = uiTread;
 
@@ -10,11 +10,21 @@ export default abstract class extends ViewEngineAbstract {
     abstract onDestroy(): void;
     
     override async prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {
+        this.requireCurrentView();
+
+        return this.viewEngine.prompt(prompts, clear);
+    }
+
+    startScreen(view: View): void {
+        this.requireCurrentView();
+
+        this.viewValidator.startView(view);
+    }
+
+    private requireCurrentView(): void {
         if(!this.viewValidator.isCurrentView(this)) {
             throw new Error("Only dispalyed view can perform ui actions");
         }
-
-        return this.viewEngine.prompt(prompts, clear);
     }
 }
 

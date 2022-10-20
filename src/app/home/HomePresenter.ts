@@ -1,18 +1,28 @@
+import BasePresnter from "../BasePresnter";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 
-export default class implements HomePresenterContract {
+export default class HomePresenter extends BasePresnter implements HomePresenterContract {
 
     private readonly view: HomeViewContract;
 
     constructor(view: HomeViewContract) {
+        super();
         this.view = view;
     }
 
-    subscribe(): void {
+    override subscribe(): void {
         this.view.showMenu();
     }
 
-    unSubscribe(): void {
+    onUserSelectedLoginOption(): void {
+        
+    }
+
+    onUserSelectedRegisterOption(): void {
+        
+    }
+
+    override unSubscribe(): void {
         // throw new Error("Method not implemented.");
     }
     
