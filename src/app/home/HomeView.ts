@@ -1,11 +1,12 @@
-import BasePresnter from "../BasePresnter";
-import { PromptType } from "../../utils/viewEngine/types";
+import { PromptAnswer, PromptType } from "../../utils/viewEngine/types";
 import { HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
 import BaseView from "../BaseView";
+import LoginView from "../login/LoginView";
 
 const LOGIN = "login";
 const REGISTER = "register";
+const HOME_QUESTION = "homeQuestion";
 
 export default class HomeView extends BaseView implements HomeViewContract {
     private presenter: HomePresenter;
@@ -18,31 +19,33 @@ export default class HomeView extends BaseView implements HomeViewContract {
         this.presenter.subscribe();
     }
 
-    async showMenu(): Promise<void> {
-        const answer = await this.prompt([
+    showMenu(): void {
+        const answerPromise = this.prompt([
             {
                 type: PromptType.List,
                 message: "Hello welcome to Encrypt-chat choose opstion",
-                name: "homeQuestion",
+                name: HOME_QUESTION,
                 choices: [LOGIN, REGISTER]
             }
         ], false);
 
-        switch(answer.get("homeQuestion")) {
-            case LOGIN : {
-                this.presenter.onUserSelectedLoginOption();
-                break;
+        answerPromise.then((choice: PromptAnswer) => {
+            switch(choice.get(HOME_QUESTION)) {
+                case LOGIN : {
+                    this.presenter.onUserSelectedLoginOption();
+                    break;
+                }
+    
+                case REGISTER: {
+                    this.presenter.onUserSelectedRegisterOption();
+                    break;
+                }
             }
-
-            case REGISTER: {
-                this.presenter.onUserSelectedRegisterOption();
-                break;
-            }
-        }
+        });
     }
 
     showLoginScreen(): void {
-        
+        this.startScreen(LoginView.factory());
     }
 
     
@@ -50,7 +53,7 @@ export default class HomeView extends BaseView implements HomeViewContract {
         this.presenter.unSubscribe();
     }
     
-    static factory(): HomeView {
+    static factory() {
         const homeView = new HomeView();
         homeView.setPresenter(new HomePresenter(homeView));
 

@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@types/figlet@^1.5.5":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@types/figlet/-/figlet-1.5.5.tgz#da93169178f0187da288c313ab98ab02fb1e8b8c"
+  integrity sha512-0sMBeFoqdGgdXoR/hgKYSWMpFufSpToosNsI2VgmkPqZJgeEXsXNu2hGr0FN401dBro2tNO5y2D6uw3UxVaxbg==
+
 "@types/inquirer@^9.0.2":
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-9.0.2.tgz#846b141c17608aad9fc62572280753bb6ec09184"
@@ -114,6 +119,11 @@ external-editor@^3.0.3:
     chardet "^0.7.0"
     iconv-lite "^0.4.24"
     tmp "^0.0.33"
+
+figlet@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/figlet/-/figlet-1.5.2.tgz#dda34ff233c9a48e36fcff6741aeb5bafe49b634"
+  integrity sha512-WOn21V8AhyE1QqVfPIVxe3tupJacq1xGkPTB4iagT6o+P2cAgEOOwIxMftr4+ZCTI6d551ij9j61DFr0nsP2uQ==
 
 figures@^3.0.0:
   version "3.2.0"
