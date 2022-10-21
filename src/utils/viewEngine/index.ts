@@ -1,17 +1,26 @@
-import { Prompt, PromptAnswer, PromptStrategy } from "./types";
+import { Prompt, PromptAnswer, ConsoleStrategy } from "./types";
 import Inquirer from "./strategies/Inquirer";
 
 export abstract class ViewEngineAbstract {
     abstract prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer>;
+    abstract log(content: string): void;
+    abstract error(message: string): void;
 };
 
 class ViewEngine extends ViewEngineAbstract{
+    private readonly strategy: ConsoleStrategy;
 
-    private readonly strategy: PromptStrategy;
-
-    constructor(engine: PromptStrategy) {
+    constructor(engine: ConsoleStrategy) {
         super();
         this.strategy = engine;
+    }
+
+    override log(content: string): void {
+        this.strategy.log(content);
+    }
+
+    override error(message: string): void {
+        this.strategy.error(message);
     }
     
     override prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {

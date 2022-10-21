@@ -3,7 +3,7 @@ export enum PromptType {
     Number ="number",
     Confirm = "confirm", 
     List = "list", 
-    // Rawlist, 
+    Rawlist = "rawlist", 
     // Expand, 
     // Checkbox, 
     // Password, 
@@ -19,7 +19,9 @@ export type Prompt = {
 
 export type PromptAnswer = Map<string, string>;
 
-export interface PromptStrategy {
+export interface ConsoleStrategy {
     prompt(prompts: Prompt[]): Promise<PromptAnswer>;
+    log(content: string): void;
+    error(message: string): void;
     clearScreen(): void;
 };

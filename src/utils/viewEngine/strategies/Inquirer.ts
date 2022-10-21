@@ -1,7 +1,15 @@
 import inquirer, { Answers } from "inquirer";
-import { Prompt, PromptStrategy, PromptAnswer } from "../types";
+import { Prompt, ConsoleStrategy, PromptAnswer } from "../types";
 
-export default class implements PromptStrategy {
+export default class InquirerStrategy implements ConsoleStrategy {
+
+    log(content: string): void {
+        console.log(content);
+    }
+
+    error(message: string): void {
+        console.error(message);
+    }
 
     async prompt(prompts: Prompt[]): Promise<PromptAnswer> {
 

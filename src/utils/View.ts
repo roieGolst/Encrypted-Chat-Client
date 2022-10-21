@@ -8,6 +8,16 @@ export default abstract class View extends ViewEngineAbstract {
 
     abstract onStart(): void;
     abstract onDestroy(): void;
+
+    override log(content: string): void {
+        this.requireCurrentView();
+        this.viewEngine.log(content);
+    }
+
+    override error(message: string): void {
+        this.requireCurrentView();
+        this.viewEngine.error(message);
+    }
     
     override async prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {
         this.requireCurrentView();
