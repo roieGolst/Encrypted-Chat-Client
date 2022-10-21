@@ -16,6 +16,7 @@ export default class HomeView extends BaseView implements HomeViewContract {
     }
 
     override onStart(): void {
+        super.onStart();
         this.presenter.subscribe();
     }
 
