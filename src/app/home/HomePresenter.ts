@@ -11,19 +11,19 @@ export default class HomePresenter extends BasePresnter implements HomePresenter
     }
 
     override subscribe(): void {
-        this.view.showMenu();
+        this.view.showMenu()
     }
 
     onUserSelectedLoginOption(): void {
-        
+        this.view.showLoginScreen();
     }
 
     onUserSelectedRegisterOption(): void {
-        
+        console.log("Now inmplemts yet");
     }
 
     override unSubscribe(): void {
-        // throw new Error("Method not implemented.");
+        return;
     }
     
 }; 
