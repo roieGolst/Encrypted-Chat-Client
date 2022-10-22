@@ -1,4 +1,4 @@
-import { PromptAnswer, PromptType } from "../../utils/viewEngine/types";
+import { PromptAnswer, PromptType } from "../../utils/view/viewEngine/types";
 import { HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
 import BaseView from "../BaseView";
