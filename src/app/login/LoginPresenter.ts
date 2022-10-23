@@ -17,15 +17,7 @@ export default class LoginPresenter extends BasePresnter implements LoginPresent
     }
 
     handelLoginInput(userAttributs: LoginViewInput): void {
-        const packet = {
-            type: "login",
-            userAttributs: {
-                userName: userAttributs.username,
-                password: userAttributs.password
-            }
-        };
-
-        this.model.sendLoginPacket(JSON.stringify(packet));
+        this.model.sendLoginPacket(userAttributs);
         //Build packet and send
 
         //by answer show chat page / Error;

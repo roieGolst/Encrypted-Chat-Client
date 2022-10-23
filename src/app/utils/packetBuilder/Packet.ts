@@ -1,6 +1,6 @@
 export enum PackTypes {
     Register = "register",
-    Login = "lgoin",
+    Login = "login",
     CreateChat = "createChat",
     JoinChat = "joinChat",
     ChatMessage = "chatMessage",

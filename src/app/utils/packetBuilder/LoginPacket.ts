@@ -21,14 +21,10 @@ export default class LoginPacket extends Packet {
         this.type = type
         this.userAttributs = userAttributs;
     }
-
-    override toString(): string {
-        return super.toString();
-    }
-
     static Builder: LoginPacketBuilder = new class {
         private packetId: string
-        private userAttributs: UserAttributs;
+        private username: string;
+        private password: string
 
         setPacketId(packetId: string): LoginPacketBuilder {
             this.packetId = packetId;
@@ -36,17 +32,17 @@ export default class LoginPacket extends Packet {
         }
 
         setUsername(username: string): LoginPacketBuilder {
-            this.userAttributs.username = username;
+            this.username = username;
             return this;
         }
 
         setPassword(password: string): LoginPacketBuilder {
-            this.userAttributs.password = password;
+            this.password = password;
             return this;
         }
 
         build(): LoginPacket {
-            return new LoginPacket(this.packetId, PackTypes.Login, this.userAttributs);
+            return new LoginPacket(this.packetId, PackTypes.Login, {username: this.username, password: this.password});
         }
     }
 }
