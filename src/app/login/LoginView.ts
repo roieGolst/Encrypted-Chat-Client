@@ -19,6 +19,7 @@ export default class LoginView extends BaseView implements LoginViewContract {
     }
 
     override onStart(): void {
+        super.onStart();
         this.presenter.subscribe();
     }
 
