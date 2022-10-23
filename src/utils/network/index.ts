@@ -16,10 +16,15 @@ export type NetWorkArgs = {
 
 export default class NetworkLayer implements INetworkLayer {
     private readonly tcpSocket: TcpSocket = new TcpSocket(socketInitializer());
+    private readonly args: NetWorkArgs;
 
-    async start(args: NetWorkArgs): Promise<boolean> {
-        this.tcpSocket.init(args.dataHandler);
-        return await this.tcpSocket.connect(args.host, args.port);
+    constructor(args: NetWorkArgs) {
+        this.args = args;
+    }
+
+    async start(): Promise<boolean> {
+        this.tcpSocket.init(this.args.dataHandler);
+        return await this.tcpSocket.connect(this.args.host, this.args.port);
     }
 
     sendMessage(content: string): void {

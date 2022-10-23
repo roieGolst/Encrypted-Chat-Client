@@ -3,6 +3,7 @@ import { HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
 import BaseView from "../BaseView";
 import LoginView from "../login/LoginView";
+import AuthView from "../auth/AuthView";
 
 const LOGIN = "login";
 const REGISTER = "register";
@@ -20,35 +21,17 @@ export default class HomeView extends BaseView implements HomeViewContract {
         this.presenter.subscribe();
     }
 
-    showMenu(): void {
-        const answerPromise = this.prompt([
-            {
-                type: PromptType.List,
-                message: "Hello welcome to Encrypt-chat choose opstion",
-                name: HOME_QUESTION,
-                choices: [LOGIN, REGISTER]
-            }
-        ], false);
-
-        answerPromise.then((choice: PromptAnswer) => {
-            switch(choice.get(HOME_QUESTION)) {
-                case LOGIN : {
-                    this.presenter.onUserSelectedLoginOption();
-                    break;
-                }
-    
-                case REGISTER: {
-                    this.presenter.onUserSelectedRegisterOption();
-                    break;
-                }
-            }
-        });
+    showConnectingMessage(): void {
+        this.log("Connecting to the server...");
     }
 
-    showLoginScreen(): void {
-        this.startScreen(LoginView.factory());
+    showAuthScreen(): void {
+        this.startScreen(AuthView.factory());
     }
 
+    showErrorMessage(content: string): void {
+        this.error(content);
+    }
     
     override onDestroy(): void {
         this.presenter.unSubscribe();
