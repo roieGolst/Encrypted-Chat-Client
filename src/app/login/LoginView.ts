@@ -1,4 +1,4 @@
-import { PromptAnswer, PromptType } from "../../utils/viewEngine/types";
+import { PromptAnswer, PromptType } from "../../utils/view/viewEngine/types";
 import BaseView from "../BaseView";
 import { LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";

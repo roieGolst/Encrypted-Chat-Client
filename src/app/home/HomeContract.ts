@@ -1,9 +1,6 @@
 export interface HomeViewContract {
-    showMenu(): void;
-    showLoginScreen(): void;
+    showConnectingMessage(): void;
 };
 
 export interface HomePresenterContract {
-    onUserSelectedLoginOption(): void;
-    onUserSelectedRegisterOption(): void
 };

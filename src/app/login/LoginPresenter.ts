@@ -1,10 +1,10 @@
-import { PromptAnswer } from "../../utils/viewEngine/types";
 import BasePresnter from "../BasePresnter";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
+import LoginModel from "./LoginModel";
 import { LoginViewInput } from "./LoginView";
 
 export default class LoginPresenter extends BasePresnter implements LoginPresenterContract {
-
+    private readonly model: LoginModel = new LoginModel();
     private readonly view: LoginViewContract;
 
     constructor(loginView: LoginViewContract) {
@@ -17,7 +17,7 @@ export default class LoginPresenter extends BasePresnter implements LoginPresent
     }
 
     handelLoginInput(userAttributs: LoginViewInput): void {
-        console.log("Wellcome Gever");
+        this.model.sendLoginPacket(userAttributs);
         //Build packet and send
 
         //by answer show chat page / Error;

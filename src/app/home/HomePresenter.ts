@@ -2,7 +2,6 @@ import BasePresnter from "../BasePresnter";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 
 export default class HomePresenter extends BasePresnter implements HomePresenterContract {
-
     private readonly view: HomeViewContract;
 
     constructor(view: HomeViewContract) {
@@ -11,19 +10,10 @@ export default class HomePresenter extends BasePresnter implements HomePresenter
     }
 
     override subscribe(): void {
-        this.view.showMenu()
-    }
-
-    onUserSelectedLoginOption(): void {
-        this.view.showLoginScreen();
-    }
-
-    onUserSelectedRegisterOption(): void {
-        console.log("Now inmplemts yet");
+        this.view.showConnectingMessage();
     }
 
     override unSubscribe(): void {
         return;
     }
-    
 }; 
