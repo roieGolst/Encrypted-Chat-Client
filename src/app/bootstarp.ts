@@ -1,5 +1,5 @@
-import uiTread from "../utils/view/UITread"
-import View from "../utils/view/View"
+import uiTread from "../modules/view/UITread"
+import View from "../modules/view/View"
 
 type BootstarpArgs = {
     spalshScreen: View,

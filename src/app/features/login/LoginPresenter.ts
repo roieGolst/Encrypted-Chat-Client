@@ -1,4 +1,4 @@
-import BasePresnter from "../BasePresnter";
+import BasePresnter from "../../common/mvp/BasePresnter";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginModel from "./LoginModel";
 import { LoginViewInput } from "./LoginView";

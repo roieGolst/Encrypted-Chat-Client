@@ -1,10 +1,11 @@
 import BasePresnter from "./BasePresnter";
-import View from "../utils/view/View";
-import logoView from "./common/LogoView";
+import View from "../../../modules/view/View";
+import HeaderView from "../../features/header/HeaderView";
+
 export default abstract class BaseView extends View {
     abstract setPresenter(prester: BasePresnter): void;
 
     override onStart(): void {
-        this.log(logoView);
+        this.incudeView(HeaderView.factory())
     }
 };

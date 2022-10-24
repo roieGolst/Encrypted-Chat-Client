@@ -1,6 +1,6 @@
 import { HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
-import BaseView from "../BaseView";
+import BaseView from "../../common/mvp/BaseView";
 
 export default class HomeView extends BaseView implements HomeViewContract {
     private presenter: HomePresenter;

@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "npx rimraf ./dist",
     "build": "npx tsc",
-    "start": "node ./dist",
+    "start": "node ./dist/app/index",
     "buildAndStart": "yarn run build && yarn run start"
   },
   "devDependencies": {

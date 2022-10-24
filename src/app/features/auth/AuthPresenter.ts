@@ -1,6 +1,5 @@
-import BasePresnter from "../BasePresnter";
+import BasePresnter from "../../common/mvp/BasePresnter";
 import { AuthPresenterContract, AuthViewContract } from "./AuthContract";
-import AuthView from "./AuthView";
 
 export default class AuthPresenter extends BasePresnter implements AuthPresenterContract {
 

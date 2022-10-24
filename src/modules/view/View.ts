@@ -31,8 +31,18 @@ export default abstract class View extends ViewEngineAbstract {
         this.viewValidator.startView(view);
     }
 
+    incudeView(view: View): void {
+        this.requireCurrentView();
+
+        this.viewValidator.include(view);
+    }
+
     private requireCurrentView(): void {
-        if(!this.viewValidator.isCurrentView(this)) {
+        if(this.viewValidator.isCurrentView(this)) {
+            return;
+        }
+
+        else if(!this.viewValidator.isIncludedView(this)) {
             throw new Error("Only dispalyed view can perform ui actions");
         }
     }

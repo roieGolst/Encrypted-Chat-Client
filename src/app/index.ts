@@ -1,7 +1,7 @@
-import HomeView from "./app/home/HomeView";
-import NetworkLayer from "./app/common/NetworkLayer";
-import AuthView from "./app/auth/AuthView";
-import bootstarp from "./app/bootstarp";
+import HomeView from "./features/home/HomeView";
+import NetworkLayer from "./common/network";
+import AuthView from "./features/auth/AuthView";
+import bootstarp from "./bootstarp";
 
 const initialFunction = async () => {
     await NetworkLayer.start();

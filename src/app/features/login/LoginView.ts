@@ -1,5 +1,5 @@
-import { PromptAnswer, PromptType } from "../../utils/view/viewEngine/types";
-import BaseView from "../BaseView";
+import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
+import BaseView from "../../common/mvp/BaseView";
 import { LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";
 

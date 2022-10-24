@@ -1,4 +1,4 @@
-import BasePresnter from "../BasePresnter";
+import BasePresnter from "../../common/mvp/BasePresnter";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 
 export default class HomePresenter extends BasePresnter implements HomePresenterContract {

@@ -1,4 +1,4 @@
-import { IDateHandler } from "../../../utils/network/IDataHandlet";
+import { IDateHandler } from "../../../modules/network/IDataHandlet";
 
 export class DataHandler implements IDateHandler {
 
