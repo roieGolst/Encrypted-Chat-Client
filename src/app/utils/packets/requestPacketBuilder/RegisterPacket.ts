@@ -1,4 +1,5 @@
-import Packet, { PackTypes } from "./Packet";
+import { AuthAttributs, PackTypes } from "../commonTypes";
+import Packet from "../Packet";
 
 interface RegisterPacketBuilder {
     setPacketId(packetId: string): RegisterPacketBuilder;
@@ -7,15 +8,10 @@ interface RegisterPacketBuilder {
     build(): RegisterPacket;
 }
 
-type UserAttributs = {
-    username: string,
-    password: string
-}
-
 export default class RegisterPacket extends Packet {
-    private readonly userAttributs: UserAttributs;
+    private readonly userAttributs: AuthAttributs;
 
-    constructor(packetId: string, type: PackTypes, userAttributs: UserAttributs) {
+    constructor(packetId: string, type: PackTypes, userAttributs: AuthAttributs) {
         super()
         super.packetId = packetId;
         super.type = type
@@ -28,7 +24,7 @@ export default class RegisterPacket extends Packet {
 
     static Builder: RegisterPacketBuilder = new class {
         private packetId: string
-        private userAttributs: UserAttributs;
+        private userAttributs: AuthAttributs;
 
         setPacketId(packetId: string): RegisterPacketBuilder {
             this.packetId = packetId;
@@ -36,7 +32,7 @@ export default class RegisterPacket extends Packet {
         }
 
         setUsername(username: string): RegisterPacketBuilder {
-            this.userAttributs.username = username;
+            this.userAttributs.userName = username;
             return this;
         }
 

@@ -1,11 +1,16 @@
 import { IDateHandler } from "../../../modules/network/IDataHandlet";
+import packetParser from "../packets/packetParser";
 
 export class DataHandler implements IDateHandler {
 
     handleOnData(data: Buffer): void {
-            const str = data.toString("utf-8");
+            const { result, isError } = packetParser.parse(data);
 
-            console.log(str)
+            if(!result) {
+                console.log(isError);
+            } else {
+                console.log(result);
+            }
         }
 
         handleOnClose(hadError: boolean): void {
