@@ -8,15 +8,13 @@ interface LoginPacketBuilder {
     build(): LoginPacket;
 }
 
-
-
 export default class LoginPacket extends Packet {
     private readonly userAttributs: AuthAttributs;
 
     constructor(packetId: string, type: PackTypes, userAttributs: AuthAttributs) {
         super();
-        // this.packetId = packetId
-        this.type = type
+        this.packetId = packetId;
+        this.type = type;
         this.userAttributs = userAttributs;
     }
     static Builder: LoginPacketBuilder = new class {

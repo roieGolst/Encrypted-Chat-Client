@@ -1,5 +1,5 @@
 import NetworkLayer from "../../common/network";
-import LoginPacket from "../../utils/packets/requestPacketBuilder/LoginPacket";
+import LoginPacket from "../../utils/packets/requestPacketBuilder/LoginRequest";
 import { LoginViewInput } from "./LoginView";
 
 export default class LoginModel {

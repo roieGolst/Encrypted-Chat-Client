@@ -1,24 +1,16 @@
-import { PackTypes, Statuses } from "../../commonTypes";
-import { IBuilder } from "../../IBuilder";
-import ResponsePacket from "../../ResponsePacket";
-
-interface IRegisterResponsePacketBuilder extends IBuilder<RegisterResponsePacket> {
-    setPacketid(packetid: string): IRegisterResponsePacketBuilder;
-    setStatus(status: Statuses): IRegisterResponsePacketBuilder;
-    setType(type: PackTypes): IRegisterResponsePacketBuilder;
-}
-
+import { PackTypes, Statuses } from "../commonTypes";
+import { IBuilder } from "../../../common/IBuilder";
+import ResponsePacket from "./ResponsePacket";
 export default class RegisterResponsePacket extends ResponsePacket {
 
-    constructor(packetid: string, status: Statuses, type: PackTypes, error?:string) {
+    constructor(packetid: string, status: Statuses, type: PackTypes) {
         super();
         this.packetId = packetid;
         this.status = status;
         this.type = type;
-        this.error = error
     }
 
-    static Builder: IRegisterResponsePacketBuilder = new class {
+    static Builder = class implements IBuilder<RegisterResponsePacket> {
         packetid: string;
         status: Statuses;
         type: PackTypes;
@@ -39,8 +31,16 @@ export default class RegisterResponsePacket extends ResponsePacket {
         }
 
         build(): RegisterResponsePacket {
-            if(!this.packetid || !this.status || !this.type) {
-                throw new Error("missing part");
+            if(!this.packetid) {
+                throw new Error("'Packet id is required'");
+            }
+
+            else if(!this.status) {
+                throw new Error("'Status id is required'");
+            }
+
+            else if(!this.type) {
+                throw new Error("'Type id is required'");
             }
 
             return new RegisterResponsePacket(this.packetid, this.status, this.type);
