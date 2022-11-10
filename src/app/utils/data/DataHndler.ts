@@ -1,5 +1,5 @@
 import { IDateHandler } from "../../../modules/network/IDataHandlet";
-import packetParser from "../packets/responsePackets/parser";
+import packetParser from "../packets/parser";
 
 export class DataHandler implements IDateHandler {
 
