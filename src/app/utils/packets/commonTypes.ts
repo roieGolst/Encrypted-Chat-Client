@@ -1,11 +1,11 @@
-export enum PackTypes {
+export enum PacketType {
     Register = "register",
     Login = "login",
     CreateChat = "createChat",
     JoinChat = "joinChat",
+    NewRoomMember = "newRoomMember",
     ChatMessage = "chatMessage",
     NewToken = "newToken",
-    Error = "error", 
 };
 
 export enum Statuses {
