@@ -3,9 +3,9 @@ export enum PacketType {
     Login = "login",
     CreateChat = "createChat",
     JoinChat = "joinChat",
+    NewToken = "newToken",
     NewRoomMember = "newRoomMember",
     ChatMessage = "chatMessage",
-    NewToken = "newToken",
 };
 
 export enum Statuses {

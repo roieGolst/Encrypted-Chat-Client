@@ -1,11 +1,8 @@
 import { IResult } from "../../../common/IResult";
 import { PacketType, Statuses } from "../commonTypes";
-import ResponsePacket from "../responsePackets/ResponsePacket";
 import * as ResponsePacketBuilder from "../responsePackets";
-import LoginResponsePacket from "../responsePackets/Login";
-import RegisterResponsePacket from "../responsePackets/Register";
-import CreateChatResponsePacket from "../responsePackets/CreateChat";
 import Packet from "../Packet";
+import { SingleMember } from "../responsePackets/NewRoomMember";
 
 export interface IParser<T> {
     parse(data: any): IResult<T>;
@@ -132,6 +129,26 @@ class Parser implements IParser<Packet>{
                 return this.parseLoginResponse(type, packetId, status, payload);
             }
 
+            case PacketType.CreateChat : {
+                return this.parseCreateChatResponse(type, packetId, status, payload)
+            }
+
+            case PacketType.JoinChat : {
+                return this.parseJoinChatResponse(type, packetId, status, payload);
+            }
+
+            case PacketType.NewRoomMember : {
+                return this.parseNewRoomMemberResponse(type, packetId, status, payload);
+            }
+
+            case PacketType.NewToken : {
+                return this.parseNewTokenResponse(type, packetId, status, payload);
+            }
+
+            case PacketType.ChatMessage : {
+                return this.parseChatMessageResponse(type, packetId, status);
+            }
+
             default : {
                 return {
                     isError: "Invalid packet type."
@@ -142,7 +159,7 @@ class Parser implements IParser<Packet>{
 
     private parseRegisterResponse(type: PacketType, packetId: string, status: Statuses): IResult<Packet> {
         return {
-            result: new RegisterResponsePacket.Builder()
+            result: new ResponsePacketBuilder.RegisterResponse.Builder()
                 .setPacketid(packetId)
                 .setType(type)
                 .setStatus(status)
@@ -158,12 +175,101 @@ class Parser implements IParser<Packet>{
         }
 
         return {
-            result: new LoginResponsePacket.Builder()
+            result: new ResponsePacketBuilder.LoginResponse.Builder()
                 .setPacketid(packetId)
                 .setType(type)
                 .setStatus(status)
                 .setUserAttributs(payload.userAttributs)
                 .setTokens(payload.tokens)
+                .build()
+        };
+    }
+
+    private parseCreateChatResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
+        if(!payload["roomId"]) {
+            return {
+                isError: "Invalid packet"
+            };
+        }
+
+        return {
+            result: new ResponsePacketBuilder.CreateChatResponse.Builder()
+                .setType(type)
+                .setPacketid(packetId)
+                .setStatus(status)
+                .setRoomId(payload["roomId"])
+                .build()
+        };
+    }
+
+    private parseJoinChatResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
+        if(!payload["members"]) {
+            return {
+                isError: "Invalid packet"
+            };
+        }
+
+        const membersMap = new Map<string, string>;
+
+        for(let memberId in payload["members"]) {
+            membersMap.set(memberId, payload["members"][memberId]);
+        }
+
+        return {
+            result: new ResponsePacketBuilder.JoinChatResponse.Builder()
+                .setType(type)
+                .setPacketid(packetId)
+                .setStatus(status)
+                .setMembers(membersMap)
+                .build()
+        };
+    }
+
+    private parseNewRoomMemberResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
+        if(!payload["member"]) {
+            return {
+                isError: "Invalid packet"
+            };
+        }
+
+        const member: SingleMember = {
+            socketId: payload["member"]["socketId"],
+            nickName: payload["member"]["nickName"]
+        };
+
+        return { 
+            result: new ResponsePacketBuilder.NewRoomMember.Builder()
+                .setType(type)
+                .setPacketid(packetId)
+                .setStatus(status)
+                .setMembers(member)
+                .build()
+        };
+    }
+
+    private parseNewTokenResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
+        if(!payload["token"]) {
+            return {
+                isError: "Invalid packet"
+            };
+        }
+
+        return {
+            result: new ResponsePacketBuilder.NewToken.Builder()
+                .setType(type)
+                .setPacketid(packetId)
+                .setStatus(status)
+                .setToken({token: payload["token"]})
+                .build()
+        };
+    }
+
+    private parseChatMessageResponse(type: PacketType, packetId: string, status: Statuses): IResult<Packet> {
+        return {
+            result: new ResponsePacketBuilder.ChatMessage.Builder()
+                .setType(type)
+                .setPacketid(packetId)
+                .setStatus(status)
                 .build()
         };
     }

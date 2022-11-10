@@ -1,25 +1,20 @@
-import { PacketType, Statuses } from "../commonTypes";
+import { PacketType, Statuses, Tokens } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
-export type SingleMember = {
-    socketId: string,
-    nickName: string
-};
+export default class NewToken extends ResponsePacket {
+    readonly token: Tokens;
 
-export default class NewRoomMember extends ResponsePacket {
-    readonly members: SingleMember;
-
-    constructor(packetid: string, status: Statuses, type: PacketType, members: SingleMember) {
+    constructor(packetid: string, status: Statuses, type: PacketType, token: Tokens) {
         super(type, status, packetid);
-        this.members = members;
+        this.token = token;
     }
 
-    static Builder = class implements IBuilder<NewRoomMember> {
+    static Builder = class implements IBuilder<NewToken> {
         packetid: string;
         type: PacketType;
         status: Statuses;
-        member: SingleMember;
+        token: Tokens;
 
         setPacketid(packetid: string): this {
             this.packetid = packetid;
@@ -36,12 +31,12 @@ export default class NewRoomMember extends ResponsePacket {
             return this;
         }
 
-        setMembers(member: SingleMember): this {
-            this.member = member;
+        setToken(token: Tokens): this {
+            this.token = token;
             return this;
         }
 
-        build(): NewRoomMember {
+        build(): NewToken {
             if(!this.packetid) {
                 throw new Error("'Packet' id is required");
             }
@@ -54,11 +49,11 @@ export default class NewRoomMember extends ResponsePacket {
                 throw new Error("'Type' id is required");
             }
 
-            else if(!this.member) {
-                throw new Error("'Member' is is required");
+            else if(!this.token) {
+                throw new Error("'Token' is is required");
             }
 
-            return new NewRoomMember(this.packetid, this.status, this.type, this.member);
+            return new NewToken(this.packetid, this.status, this.type, this.token);
         }
     }
 }

@@ -2,13 +2,13 @@ import { PacketType, Statuses } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
-export default class RegisterResponsePacket extends ResponsePacket {
+export default class ChatMessagePacket extends ResponsePacket {
 
     constructor(packetid: string, status: Statuses, type: PacketType) {
         super(type, status, packetid);
     }
 
-    static Builder = class implements IBuilder<RegisterResponsePacket> {
+    static Builder = class implements IBuilder<ChatMessagePacket> {
         packetid: string;
         status: Statuses;
         type: PacketType;
@@ -28,7 +28,7 @@ export default class RegisterResponsePacket extends ResponsePacket {
             return this;
         }
 
-        build(): RegisterResponsePacket {
+        build(): ChatMessagePacket {
             if(!this.packetid) {
                 throw new Error("'Packet id is required");
             }
@@ -41,7 +41,7 @@ export default class RegisterResponsePacket extends ResponsePacket {
                 throw new Error("'Type' is required");
             }
 
-            return new RegisterResponsePacket(this.packetid, this.status, this.type);
+            return new ChatMessagePacket(this.packetid, this.status, this.type);
         }
     }
 }
