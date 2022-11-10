@@ -17,13 +17,15 @@ class Parser implements IParser<Packet>{
             let packet = JSON.parse(data);
 
             return {
-                result: packet
+                isSuccess: true,
+                value: packet
             };
 
         }
         catch(err) {
             return {
-                isError: `Parser error: Invalid JSON format`
+                isSuccess: false,
+                error: `Parser error: Invalid JSON format`
             };
         }
     }
@@ -33,17 +35,19 @@ class Parser implements IParser<Packet>{
 
         const parsedData = this.jsonParse(stringData);
 
-        if(!parsedData.result) {
+        if(!parsedData.isSuccess) {
             return {
-                isError: parsedData.isError
-            };
+                isSuccess: parsedData.isSuccess,
+                error: parsedData.error
+            }
         }
 
-        const packet = parsedData.result;
+        const packet = parsedData.value;
 
         if(!packet["type"] || !packet["packetId"]) {
             return {
-                isError: "Invalid packet"
+                isSuccess: false,
+                error: "Invalid packet"
             }
         }
 
@@ -51,19 +55,21 @@ class Parser implements IParser<Packet>{
 
         const typeCastingResult = this.typeCasting(packet.type)
 
-        if(!typeCastingResult.result) {
+        if(!typeCastingResult.isSuccess) {
             return {
-                isError: typeCastingResult.isError
+                isSuccess: typeCastingResult.isSuccess,
+                error: typeCastingResult.error
             };
         }
 
-        this.type = typeCastingResult.result;
+        this.type = typeCastingResult.value;
 
         if(packet["status"]) {
             return this.responseParser(this.type, this.packetId, packet["status"], packet);
         } else {
             return {
-                isError: "Request packet not allowed yet :("
+                isSuccess: false,
+                error: "Request packet not allowed yet :("
             };
         }
     }
@@ -109,13 +115,15 @@ class Parser implements IParser<Packet>{
 
             default : {
                 return {
-                    isError: "Invalid packet 'type'"
+                    isSuccess: false,
+                    error: "Invalid packet 'type'"
                 };
             }
         }
 
         return {
-            result: currentType
+            isSuccess: true,
+            value: currentType
         };
     }
 
@@ -151,7 +159,8 @@ class Parser implements IParser<Packet>{
 
             default : {
                 return {
-                    isError: "Invalid packet type."
+                    isSuccess: false,
+                    error: "Invalid packet type."
                 };
             }
         }
@@ -159,7 +168,8 @@ class Parser implements IParser<Packet>{
 
     private parseRegisterResponse(type: PacketType, packetId: string, status: Statuses): IResult<Packet> {
         return {
-            result: new ResponsePacketBuilder.RegisterResponse.Builder()
+            isSuccess: true,
+            value: new ResponsePacketBuilder.RegisterResponse.Builder()
                 .setPacketid(packetId)
                 .setType(type)
                 .setStatus(status)
@@ -170,12 +180,14 @@ class Parser implements IParser<Packet>{
     private parseLoginResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
         if(!payload["userAttributs"] || !payload["tokens"]) {
             return {
-                isError: "Invalid packet"
+                isSuccess: false,
+                error: "Invalid packet"
             };
         }
 
         return {
-            result: new ResponsePacketBuilder.LoginResponse.Builder()
+            isSuccess: true,
+            value: new ResponsePacketBuilder.LoginResponse.Builder()
                 .setPacketid(packetId)
                 .setType(type)
                 .setStatus(status)
@@ -188,12 +200,14 @@ class Parser implements IParser<Packet>{
     private parseCreateChatResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
         if(!payload["roomId"]) {
             return {
-                isError: "Invalid packet"
+                isSuccess: false,
+                error: "Invalid packet"
             };
         }
 
         return {
-            result: new ResponsePacketBuilder.CreateChatResponse.Builder()
+            isSuccess: true,
+            value: new ResponsePacketBuilder.CreateChatResponse.Builder()
                 .setType(type)
                 .setPacketid(packetId)
                 .setStatus(status)
@@ -205,7 +219,8 @@ class Parser implements IParser<Packet>{
     private parseJoinChatResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
         if(!payload["members"]) {
             return {
-                isError: "Invalid packet"
+                isSuccess: false,
+                error: "Invalid packet"
             };
         }
 
@@ -216,7 +231,8 @@ class Parser implements IParser<Packet>{
         }
 
         return {
-            result: new ResponsePacketBuilder.JoinChatResponse.Builder()
+            isSuccess: true,
+            value: new ResponsePacketBuilder.JoinChatResponse.Builder()
                 .setType(type)
                 .setPacketid(packetId)
                 .setStatus(status)
@@ -228,7 +244,8 @@ class Parser implements IParser<Packet>{
     private parseNewRoomMemberResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
         if(!payload["member"]) {
             return {
-                isError: "Invalid packet"
+                isSuccess: false,
+                error: "Invalid packet"
             };
         }
 
@@ -238,7 +255,8 @@ class Parser implements IParser<Packet>{
         };
 
         return { 
-            result: new ResponsePacketBuilder.NewRoomMember.Builder()
+            isSuccess: true,
+            value: new ResponsePacketBuilder.NewRoomMember.Builder()
                 .setType(type)
                 .setPacketid(packetId)
                 .setStatus(status)
@@ -250,12 +268,14 @@ class Parser implements IParser<Packet>{
     private parseNewTokenResponse(type: PacketType, packetId: string, status: Statuses, payload: any): IResult<Packet> {
         if(!payload["token"]) {
             return {
-                isError: "Invalid packet"
+                isSuccess: false,
+                error: "Invalid packet"
             };
         }
 
         return {
-            result: new ResponsePacketBuilder.NewToken.Builder()
+            isSuccess: true,
+            value: new ResponsePacketBuilder.NewToken.Builder()
                 .setType(type)
                 .setPacketid(packetId)
                 .setStatus(status)
@@ -266,7 +286,8 @@ class Parser implements IParser<Packet>{
 
     private parseChatMessageResponse(type: PacketType, packetId: string, status: Statuses): IResult<Packet> {
         return {
-            result: new ResponsePacketBuilder.ChatMessage.Builder()
+            isSuccess: true,
+            value: new ResponsePacketBuilder.ChatMessage.Builder()
                 .setType(type)
                 .setPacketid(packetId)
                 .setStatus(status)
