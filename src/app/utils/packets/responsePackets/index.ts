@@ -1,3 +1,4 @@
-export { default as LoginResponse } from "./LoginResponse";
-export { default as RegisterResponse } from "./RegisterResponse";
-export { default as CreateChatResponse } from "./CreateChatResponse";
+export { default as LoginResponse } from "./Login";
+export { default as RegisterResponse } from "./Register";
+export { default as CreateChatResponse } from "./CreateChat";
+export { default as JoinChatResponse } from "./JoinChat";

@@ -1,4 +1,4 @@
-import { PackTypes, Statuses, Tokens } from "../commonTypes";
+import { PacketType, Statuses, Tokens } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
@@ -7,27 +7,22 @@ type UserAttributs = {
     userId: string
 }
 
-
-
 export default class LoginResponsePacket extends ResponsePacket {
     readonly userAttributs: UserAttributs;
     readonly tokens: Tokens;
 
-    constructor(packetid: string, status: Statuses, type: PackTypes, userAttributs: UserAttributs, tokens: Tokens) {
-        super();
-        this.packetId = packetid;
-        this.status = status;
-        this.type = type;
+    constructor(packetid: string, status: Statuses, type: PacketType, userAttributs: UserAttributs, tokens: Tokens) {
+        super(type, status, packetid)
         this.userAttributs = userAttributs;
         this.tokens = tokens;
     }
 
     static Builder = class implements IBuilder<LoginResponsePacket> {
-        packetid: string;
-        status: Statuses;
-        type: PackTypes;
-        userAttributs: UserAttributs;
-        tokens: Tokens;
+        private packetid: string;
+        private status: Statuses;
+        private type: PacketType;
+        private userAttributs: UserAttributs;
+        private tokens: Tokens;
 
         setPacketid(packetid: string): this {
             this.packetid = packetid;
@@ -39,7 +34,7 @@ export default class LoginResponsePacket extends ResponsePacket {
             return this;
         }
 
-        setType(type: PackTypes): this {
+        setType(type: PacketType): this {
             this.type = type;
             return this;
         }
@@ -57,40 +52,48 @@ export default class LoginResponsePacket extends ResponsePacket {
         build(): LoginResponsePacket {
             if(this.status == Statuses.Failed) {
                 if(!this.packetid) {
-                    throw new Error("'Packet id is required'");
+                    throw new Error("'PacketId' is required");
                 }
     
                 else if(!this.status) {
-                    throw new Error("'Status id is required'");
+                    throw new Error("'Status' is required");
                 }
     
                 else if(!this.type) {
-                    throw new Error("'Type id is required'");
+                    throw new Error("'Type' is required");
                 }
                 
             } else {
                 if(!this.packetid) {
-                    throw new Error("'Packet id is required'");
+                    throw new Error("'Packet' id is required");
                 }
     
                 else if(!this.status) {
-                    throw new Error("'Status id is required'");
+                    throw new Error("'Status' is required");
                 }
     
                 else if(!this.type) {
-                    throw new Error("'Type id is required'");
+                    throw new Error("'Type' is required");
                 }
     
                 else if(!this.userAttributs) {
-                    throw new Error("'UserAttributs id is required'");
+                    throw new Error("'UserAttributs' is required");
                 }
     
                 else if(!this.tokens) {
-                    throw new Error("'Tokens id is required'");
+                    throw new Error("'Tokens' is required");
                 }
             }
 
-            return new LoginResponsePacket(this.packetid, this.status, this.type, this.userAttributs, this.tokens);
+            return new LoginResponsePacket(requireNotNull(this.packetid), this.status, this.type, this.userAttributs, this.tokens);
         }
     }
+}
+
+function requireNotNull<T>(arg?: T): T {
+    if(!arg) {
+        throw new Error("null is not allowed");
+    }
+
+    return arg;
 }

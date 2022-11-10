@@ -42,31 +42,31 @@ export default class CreateChatResponsePacket extends ResponsePacket {
         build(): CreateChatResponsePacket {
             if(this.status == Statuses.Failed) {
                 if(!this.packetid) {
-                    throw new Error("'Packet id is required'");
+                    throw new Error("'Packet' id is required");
                 }
     
                 else if(!this.status) {
-                    throw new Error("'Status id is required'");
+                    throw new Error("'Status' is required");
                 }
     
                 else if(!this.type) {
-                    throw new Error("'Type id is required'");
+                    throw new Error("'Type' is required");
                 }
             } else {
                 if(!this.packetid) {
-                    throw new Error("'Packet id is required'");
+                    throw new Error("'Packet' id is required");
                 }
     
                 else if(!this.status) {
-                    throw new Error("'Status id is required'");
+                    throw new Error("'Status' is required");
                 }
     
                 else if(!this.type) {
-                    throw new Error("'Type id is required'");
+                    throw new Error("'Type' is required");
                 }
     
                 else if(!this.roomId) {
-                    throw new Error("'Room id id is required'");
+                    throw new Error("'Room' id id is required");
                 }
             }
 

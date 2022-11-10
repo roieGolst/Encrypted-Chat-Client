@@ -1,4 +1,4 @@
-import { AuthAttributs, PackTypes } from "../commonTypes";
+import { AuthAttributs, PacketType } from "../commonTypes";
 import Packet from "../Packet";
 
 interface LoginPacketBuilder {
@@ -11,10 +11,8 @@ interface LoginPacketBuilder {
 export default class LoginPacket extends Packet {
     private readonly userAttributs: AuthAttributs;
 
-    constructor(packetId: string, type: PackTypes, userAttributs: AuthAttributs) {
-        super();
-        this.packetId = packetId;
-        this.type = type;
+    constructor(packetId: string, type: PacketType, userAttributs: AuthAttributs) {
+        super(type, packetId);
         this.userAttributs = userAttributs;
     }
     static Builder: LoginPacketBuilder = new class {
@@ -38,7 +36,7 @@ export default class LoginPacket extends Packet {
         }
 
         build(): LoginPacket {
-            return new LoginPacket(this.packetId, PackTypes.Login, {userName: this.username, password: this.password});
+            return new LoginPacket(this.packetId, PacketType.Login, {userName: this.username, password: this.password});
         }
     }
 }
