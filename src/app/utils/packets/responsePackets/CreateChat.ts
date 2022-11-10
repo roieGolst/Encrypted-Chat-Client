@@ -1,21 +1,18 @@
-import { PackTypes, Statuses } from "../commonTypes";
+import { PacketType, Statuses } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
 export default class CreateChatResponsePacket extends ResponsePacket {
     readonly roomId: string
 
-    constructor(packetid: string, status: Statuses, type: PackTypes, roomId: string) {
-        super();
-        this.packetId = packetid;
-        this.type = type;
-        this.status = status;
+    constructor(packetid: string, status: Statuses, type: PacketType, roomId: string) {
+        super(type, status, packetid);
         this.roomId = roomId;
     }
 
     static Builder = class implements IBuilder<CreateChatResponsePacket> {
         packetid: string;
-        type: PackTypes;
+        type: PacketType;
         status: Statuses;
         roomId: string;
 
@@ -24,7 +21,7 @@ export default class CreateChatResponsePacket extends ResponsePacket {
             return this;
         }
         
-        setType(type: PackTypes): this {
+        setType(type: PacketType): this {
             this.type = type;
             return this;
         }

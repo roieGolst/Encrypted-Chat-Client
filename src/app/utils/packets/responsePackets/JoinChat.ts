@@ -1,21 +1,18 @@
-import { PackTypes, Statuses } from "../commonTypes";
+import { PacketType, Statuses } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
 export default class JoinChatPacket extends ResponsePacket {
     readonly members?: Map<string, string> | undefined;
 
-    constructor(packetid: string, status: Statuses, type: PackTypes, members: Map<string, string> | undefined = undefined) {
-        super();
-        this.packetId = packetid;
-        this.type = type;
-        this.status = status;
+    constructor(packetid: string, status: Statuses, type: PacketType, members: Map<string, string> | undefined = undefined) {
+        super(type, status, packetid);
         this.members = members;
     }
 
     static Builder = class implements IBuilder<JoinChatPacket> {
         packetid: string;
-        type: PackTypes;
+        type: PacketType;
         status: Statuses;
         members?: Map<string, string>;
 
@@ -24,7 +21,7 @@ export default class JoinChatPacket extends ResponsePacket {
             return this;
         }
         
-        setType(type: PackTypes): this {
+        setType(type: PacketType): this {
             this.type = type;
             return this;
         }
