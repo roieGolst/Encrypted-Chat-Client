@@ -1,5 +1,4 @@
 import View from "./View";
-
 export interface ViewValidator {
     isCurrentView(view: View): boolean;
     isIncludedView(view: View): boolean
@@ -8,7 +7,7 @@ export interface ViewValidator {
 }
 export class UIThread implements ViewValidator {
     private currentView: View;
-    private includedViews: View[] = new Array();
+    private includedViews: Map<number, View> = new Map();
 
     startView(view: View): void {
         if(this.currentView) {
@@ -24,7 +23,8 @@ export class UIThread implements ViewValidator {
     }
 
     include(view: View): void {
-        this.includedViews.push(view);
+        
+        this.includedViews.set(this.toHash(view), view);
 
         view.onStart();
     }
@@ -34,7 +34,23 @@ export class UIThread implements ViewValidator {
     }
 
     isIncludedView(view: View): boolean {
-        return this.includedViews.includes(view);
+        return this.includedViews.has(this.toHash(view));
+    }
+
+    private toHash(object: Object): number {
+        const str = object.toString();
+        let hash = 0;
+    
+        if (str.length === 0) {
+            return hash;  
+        } 
+    
+        for (let i = 0; i < str.length; i++) {
+          let chr = str.charCodeAt(i);
+          hash  = ((hash << 5) - hash) + chr;
+          hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
     }
 
     private clearScreen(): void {
@@ -46,7 +62,7 @@ export class UIThread implements ViewValidator {
             view.onDestroy();
         });
 
-        this.includedViews = new Array();
+        this.includedViews = new Map();
         this.clearScreen();
     }
 }
