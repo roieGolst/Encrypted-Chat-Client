@@ -1,5 +1,5 @@
 import { IDateHandler } from "../../../modules/network/IDataHandlet";
-import packetParser from "../packets/parser";
+import packetParser from "../encryptedChatProtocol/parser";
 
 export class DataHandler implements IDateHandler {
 
