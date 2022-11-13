@@ -5,19 +5,19 @@ import ResponsePacket from "./ResponsePacket";
 export default class NewToken extends ResponsePacket {
     readonly token: Tokens;
 
-    constructor(packetid: string, status: Statuses, type: PacketType, token: Tokens) {
-        super(type, status, packetid);
+    constructor(packetId: string, status: Statuses, type: PacketType, token: Tokens) {
+        super(type, status, packetId);
         this.token = token;
     }
 
     static Builder = class implements IBuilder<NewToken> {
-        packetid: string;
+        packetId: string;
         type: PacketType;
         status: Statuses;
         token: Tokens;
 
-        setPacketid(packetid: string): this {
-            this.packetid = packetid;
+        setPacketId(packetId: string): this {
+            this.packetId = packetId;
             return this;
         }
         
@@ -37,7 +37,7 @@ export default class NewToken extends ResponsePacket {
         }
 
         build(): NewToken {
-            if(!this.packetid) {
+            if(!this.packetId) {
                 throw new Error("'Packet' id is required");
             }
 
@@ -53,7 +53,7 @@ export default class NewToken extends ResponsePacket {
                 throw new Error("'Token' is is required");
             }
 
-            return new NewToken(this.packetid, this.status, this.type, this.token);
+            return new NewToken(this.packetId, this.status, this.type, this.token);
         }
     }
 }

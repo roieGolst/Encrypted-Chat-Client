@@ -1,5 +1,5 @@
 import NetworkLayer from "../../common/network";
-import LoginPacket from "../../utils/packets/requestPackets/LoginRequest";
+import LoginPacket from "../../utils/packets/requestPackets/Login";
 import { LoginViewInput } from "./LoginView";
 
 export default class LoginModel {
@@ -14,10 +14,9 @@ export default class LoginModel {
 
         const packetId = "1as5664zx74A56a1sd2"
 
-        const packet = LoginPacket.Builder
+        const packet = new LoginPacket.Builder()
             .setPacketId(packetId)
-            .setUsername(userAttributs.username)
-            .setPassword(userAttributs.password)
+            .setAuthAttributs(userAttributs.username, userAttributs.password)
             .build();
             
         NetworkLayer.sendMessage(packet.toString());

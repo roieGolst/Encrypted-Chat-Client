@@ -5,19 +5,19 @@ import ResponsePacket from "./ResponsePacket";
 export default class JoinChatPacket extends ResponsePacket {
     readonly members?: Map<string, string> | undefined;
 
-    constructor(packetid: string, status: Statuses, type: PacketType, members: Map<string, string> | undefined = undefined) {
-        super(type, status, packetid);
+    constructor(packetId: string, status: Statuses, type: PacketType, members: Map<string, string> | undefined = undefined) {
+        super(type, status, packetId);
         this.members = members;
     }
 
     static Builder = class implements IBuilder<JoinChatPacket> {
-        packetid: string;
+        packetId: string;
         type: PacketType;
         status: Statuses;
         members?: Map<string, string>;
 
-        setPacketid(packetid: string): this {
-            this.packetid = packetid;
+        setPacketId(packetId: string): this {
+            this.packetId = packetId;
             return this;
         }
         
@@ -37,7 +37,7 @@ export default class JoinChatPacket extends ResponsePacket {
         }
 
         build(): JoinChatPacket {
-            if(!this.packetid) {
+            if(!this.packetId) {
                 throw new Error("'PacketId' is required");
             }
 
@@ -49,7 +49,7 @@ export default class JoinChatPacket extends ResponsePacket {
                 throw new Error("'Type' is required");
             }
 
-            return new JoinChatPacket(this.packetid, this.status, this.type, this.members);
+            return new JoinChatPacket(this.packetId, this.status, this.type, this.members);
         }
     }
 }

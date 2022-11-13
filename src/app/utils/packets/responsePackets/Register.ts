@@ -4,17 +4,17 @@ import ResponsePacket from "./ResponsePacket";
 
 export default class RegisterResponsePacket extends ResponsePacket {
 
-    constructor(packetid: string, status: Statuses, type: PacketType) {
-        super(type, status, packetid);
+    constructor(packetId: string, status: Statuses, type: PacketType) {
+        super(type, status, packetId);
     }
 
     static Builder = class implements IBuilder<RegisterResponsePacket> {
-        packetid: string;
+        packetId: string;
         status: Statuses;
         type: PacketType;
 
-        setPacketid(packetid: string): this {
-            this.packetid = packetid;
+        setPacketId(packetId: string): this {
+            this.packetId = packetId;
             return this;
         }
 
@@ -29,7 +29,7 @@ export default class RegisterResponsePacket extends ResponsePacket {
         }
 
         build(): RegisterResponsePacket {
-            if(!this.packetid) {
+            if(!this.packetId) {
                 throw new Error("'Packet id is required");
             }
 
@@ -41,7 +41,7 @@ export default class RegisterResponsePacket extends ResponsePacket {
                 throw new Error("'Type' is required");
             }
 
-            return new RegisterResponsePacket(this.packetid, this.status, this.type);
+            return new RegisterResponsePacket(this.packetId, this.status, this.type);
         }
     }
 }

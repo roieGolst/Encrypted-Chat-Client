@@ -1,1 +1,1 @@
-export type IResult<T, E = string> =  | { isSuccess: true; value: T }  | { isSuccess: false; error: E };
+export type IResult<T, E = string> = { isSuccess: true; value: T }  | { isSuccess: false; error: E };

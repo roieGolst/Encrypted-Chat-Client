@@ -10,19 +10,19 @@ export type SingleMember = {
 export default class NewRoomMember extends ResponsePacket {
     readonly members: SingleMember;
 
-    constructor(packetid: string, status: Statuses, type: PacketType, members: SingleMember) {
-        super(type, status, packetid);
+    constructor(packetId: string, status: Statuses, type: PacketType, members: SingleMember) {
+        super(type, status, packetId);
         this.members = members;
     }
 
     static Builder = class implements IBuilder<NewRoomMember> {
-        packetid: string;
+        packetId: string;
         type: PacketType;
         status: Statuses;
         member: SingleMember;
 
-        setPacketid(packetid: string): this {
-            this.packetid = packetid;
+        setPacketId(packetId: string): this {
+            this.packetId = packetId;
             return this;
         }
         
@@ -42,7 +42,7 @@ export default class NewRoomMember extends ResponsePacket {
         }
 
         build(): NewRoomMember {
-            if(!this.packetid) {
+            if(!this.packetId) {
                 throw new Error("'Packet' id is required");
             }
 
@@ -58,7 +58,7 @@ export default class NewRoomMember extends ResponsePacket {
                 throw new Error("'Member' is is required");
             }
 
-            return new NewRoomMember(this.packetid, this.status, this.type, this.member);
+            return new NewRoomMember(this.packetId, this.status, this.type, this.member);
         }
     }
 }

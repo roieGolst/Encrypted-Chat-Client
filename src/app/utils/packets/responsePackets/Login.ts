@@ -11,21 +11,21 @@ export default class LoginResponsePacket extends ResponsePacket {
     readonly userAttributs: UserAttributs;
     readonly tokens: Tokens;
 
-    constructor(packetid: string, status: Statuses, type: PacketType, userAttributs: UserAttributs, tokens: Tokens) {
-        super(type, status, packetid)
+    constructor(packetId: string, status: Statuses, type: PacketType, userAttributs: UserAttributs, tokens: Tokens) {
+        super(type, status, packetId)
         this.userAttributs = userAttributs;
         this.tokens = tokens;
     }
 
     static Builder = class implements IBuilder<LoginResponsePacket> {
-        private packetid: string;
+        private packetId: string;
         private status: Statuses;
         private type: PacketType;
         private userAttributs: UserAttributs;
         private tokens: Tokens;
 
-        setPacketid(packetid: string): this {
-            this.packetid = packetid;
+        setPacketId(packetId: string): this {
+            this.packetId = packetId;
             return this;
         }
 
@@ -51,7 +51,7 @@ export default class LoginResponsePacket extends ResponsePacket {
 
         build(): LoginResponsePacket {
             if(this.status == Statuses.Failed) {
-                if(!this.packetid) {
+                if(!this.packetId) {
                     throw new Error("'PacketId' is required");
                 }
     
@@ -64,7 +64,7 @@ export default class LoginResponsePacket extends ResponsePacket {
                 }
                 
             } else {
-                if(!this.packetid) {
+                if(!this.packetId) {
                     throw new Error("'Packet' id is required");
                 }
     
@@ -85,7 +85,7 @@ export default class LoginResponsePacket extends ResponsePacket {
                 }
             }
 
-            return new LoginResponsePacket(requireNotNull(this.packetid), this.status, this.type, this.userAttributs, this.tokens);
+            return new LoginResponsePacket(requireNotNull(this.packetId), this.status, this.type, this.userAttributs, this.tokens);
         }
     }
 }
