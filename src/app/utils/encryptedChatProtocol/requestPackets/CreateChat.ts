@@ -3,7 +3,7 @@ import { PacketType, Tokens } from "../commonTypes";
 import Packet from "../Packet";
 
 export default class CreateChatRequestPacket extends Packet {
-    private readonly token: Tokens;
+    readonly token: Tokens;
 
     constructor(packetId: string, type: PacketType, token: Tokens) {
         super(type, packetId);

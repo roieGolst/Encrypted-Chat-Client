@@ -25,6 +25,10 @@ export default class RequestParser {
                 return this.parseNewTokenRequest(packetId, payload);
             }
 
+            case PacketType.ChatMessage : {
+                return this.parseChatMessageRequest(packetId, payload);
+            }
+
             default : {
                 return undefined;
             }
@@ -98,6 +102,19 @@ export default class RequestParser {
         return new RequestPackets.NewTokenRequest.Builder()
             .setPacketId(packetId)
             .setRefreshToken(payload["refreshToken"])
+            .build()
+    }
+
+    private static parseChatMessageRequest(packetId: string, payload: any): RequestPackets.ChatMessageRequest | undefined {
+        if(!payload["token"] || !payload["roomId"] || !payload["message"]) {
+            return undefined;
+        }
+
+        return new RequestPackets.ChatMessageRequest.Builder()
+            .setPacketId(packetId)
+            .setRoomId(payload["roomId"])
+            .setToken(payload["token"])
+            .setMessage(payload["message"])
             .build()
     }
 }

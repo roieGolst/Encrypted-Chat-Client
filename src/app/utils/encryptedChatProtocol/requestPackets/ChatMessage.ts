@@ -3,9 +3,9 @@ import { PacketType, Tokens } from "../commonTypes";
 import Packet from "../Packet";
 
 export default class ChatMessaheRequestPacket extends Packet {
-    private readonly token: Tokens;
-    private roomId: string;
-    private message: string;
+    readonly token: Tokens;
+    readonly roomId: string;
+    readonly message: string;
 
     constructor(packetId: string, type: PacketType, token: Tokens, roomId: string, message: string) {
         super(type, packetId);

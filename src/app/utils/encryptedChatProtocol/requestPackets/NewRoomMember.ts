@@ -4,7 +4,7 @@ import Packet from "../Packet";
 import { SingleMember } from "../responsePackets/NewRoomMember";
 
 export default class NewRoonMemberRequestPacket extends Packet {
-    private readonly member: SingleMember;
+    readonly member: SingleMember;
 
     constructor(packetId: string, type: PacketType, member: SingleMember) {
         super(type, packetId);

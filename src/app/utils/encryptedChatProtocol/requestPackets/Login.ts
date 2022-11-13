@@ -3,12 +3,13 @@ import { AuthAttributs, PacketType } from "../commonTypes";
 import Packet from "../Packet";
 
 export default class LoginRequestPacket extends Packet {
-    private readonly userAttributs: AuthAttributs;
+    readonly userAttributs: AuthAttributs;
 
     constructor(packetId: string, type: PacketType, userAttributs: AuthAttributs) {
         super(type, packetId);
         this.userAttributs = userAttributs;
     }
+
 
     static Builder = class implements IBuilder<LoginRequestPacket> {
         private type: PacketType = PacketType.Login;

@@ -3,7 +3,7 @@ import { AuthAttributs, PacketType } from "../commonTypes";
 import Packet from "../Packet";
 
 export default class RegisterRequstPacket extends Packet {
-    private readonly userAttributs: AuthAttributs;
+    readonly userAttributs: AuthAttributs;
 
     constructor(packetId: string, type: PacketType, userAttributs: AuthAttributs) {
         super(type, packetId);

@@ -3,7 +3,7 @@ import { PacketType } from "../commonTypes";
 import Packet from "../Packet";
 
 export default class NewTokenRequestPacket extends Packet {
-    private readonly refreshToken: string;
+    readonly refreshToken: string;
 
     constructor(packetId: string, type: PacketType, refreshToken: string) {
         super(type, packetId);

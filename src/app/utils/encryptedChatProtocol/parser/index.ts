@@ -4,13 +4,9 @@ import Packet from "../Packet";
 import ResponseParser from "./Response";
 import RequestParser from "./Request";
 
-export interface IParser<T> {
-    parse(data: any): IResult<T>;
-}
+export  default class Parser {
 
-class Parser implements IParser<Packet> {
-
-    private jsonParse(data: string): IResult<any> {
+    private static jsonParse(data: string): IResult<any> {
         try {
             let packet = JSON.parse(data);
 
@@ -28,7 +24,7 @@ class Parser implements IParser<Packet> {
         }
     }
 
-    parse(data: Buffer): IResult<Packet> {
+    static parse(data: Buffer): IResult<Packet> {
         const stringData = data.toString("utf-8");
 
         const parsedData = this.jsonParse(stringData);
@@ -78,7 +74,7 @@ class Parser implements IParser<Packet> {
         };
     }
 
-    private typeCasting(type: string): PacketType | undefined {
+    private static typeCasting(type: string): PacketType | undefined {
         try {
             let currentType: PacketType = type as PacketType;
 
@@ -95,5 +91,3 @@ class Parser implements IParser<Packet> {
 
     
 }
-
-export default new Parser();
