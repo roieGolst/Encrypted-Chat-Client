@@ -2,7 +2,7 @@ import { LoginViewInput } from "./LoginView";
 
 export interface LoginViewContract {
     showLoginPrompt(): void;
-    showErrorMessage(conttent: string): void;
+    showErrorMessage(): void;
     showChatScreen(): void;
 }
 

@@ -1,21 +1,25 @@
+import UITread from "../../../modules/view/UITread";
 import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
+import BasePresnter from "../../common/mvp/BasePresnter";
 import BaseView from "../../common/mvp/BaseView";
-import { LoginViewContract } from "./LoginContract";
-import LoginPresenter from "./LoginPresenter";
+import AuthView from "../auth/AuthView";
+import { RegisterViewContract } from "./RegisterContract";
+import RegisterPresenter from "./RegisterPresenter";
 
 const USERNAME_INPUT = "usernameInput";
 const PASSWORD_INPUT =  "passwordInput";
 
-export type LoginViewInput = {
+export type RegisterViewInput = {
     username: string | undefined,
     password: string | undefined 
-} ;
-export default class LoginView extends BaseView implements LoginViewContract {
+}
 
-    private presenter: LoginPresenter;
+export default class RegisterView extends BaseView implements RegisterViewContract {
+    
+    private presenter: RegisterPresenter
 
-    override setPresenter(presenter: LoginPresenter): void {
-        this.presenter = presenter;
+    setPresenter(prester: RegisterPresenter): void {
+        this.presenter = prester;
     }
 
     override onStart(): void {
@@ -27,7 +31,7 @@ export default class LoginView extends BaseView implements LoginViewContract {
         this.presenter.unSubscribe();
     }
 
-    showLoginPrompt(): void {
+    showRegisterPrompt(): void {
         const userAttributs = this.prompt([
             {
                 type: PromptType.Input,
@@ -42,28 +46,26 @@ export default class LoginView extends BaseView implements LoginViewContract {
         ], false);
 
         userAttributs.then((input: PromptAnswer) => {
-            this.presenter.handelLoginInput({
+            this.presenter.handelRegisterInput({
                 username: input.get(USERNAME_INPUT),
                 password: input.get(PASSWORD_INPUT)
             });
         })
     }
 
-    showChatScreen(): void {
-        this.log("Chat screen");
-        // uiThread.startView(ChatView.factory());
+    showErrorMessage(): void {
+        this.error("Register faild");
     }
 
-    showErrorMessage(): void {
-        this.error("login faild");
+    showAuthScreen(): void {
+        this.startScreen(AuthView.factory());
+    }
 
-        //uiTrhead.startView(this.factory());
+    static factory(): BaseView {
+        const registerView = new RegisterView();
+        registerView.setPresenter(new RegisterPresenter(registerView));
+
+        return registerView;
     }
     
-    static factory(): BaseView {
-        const loginView = new LoginView();
-        loginView.setPresenter(new LoginPresenter(loginView));
-
-        return loginView;
-    }
 }
