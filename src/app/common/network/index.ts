@@ -1,8 +1,79 @@
-import NetworkLayer from "../../../modules/network";
-import { DataHandler } from "../../utils/data/DataHndler";
+import NetworkLayer, { INetworkLayer } from "../../../modules/network";
+import { IDateHandler } from "../../../modules/network/IDataHandlet";
+import Packet from "../../utils/encryptedChatProtocol/Packet";
+import Parser from "../../utils/encryptedChatProtocol/parser";
+import ResponsePacket from "../../utils/encryptedChatProtocol/responsePackets/ResponsePacket";
 
-export default new NetworkLayer({
-    port: 3000,
-    host: "127.0.0.1",
-    dataHandler: new DataHandler()
-})
+export type ResponsePacketObserver = (responsePacket: ResponsePacket) => void;
+
+export default new class NetworkLayerProxy implements INetworkLayer, IDateHandler {
+    private networkLayer: NetworkLayer = new NetworkLayer({
+        port: 3000,
+        host: "127.0.0.1",
+        dataHandler: this
+    });
+
+    private readonly responsePacketObserver: Map<string, ResponsePacketObserver> = new Map();
+
+    async start(): Promise<boolean> {
+        return await this.networkLayer.start();
+    }
+
+    async waitForResponse(packet: Packet): Promise<ResponsePacket> {
+        const responsePromise: Promise<ResponsePacket> = new Promise((resolve, reject) => {
+            this.responsePacketObserver.set(packet.packetId, (responsePacket: ResponsePacket) => {
+                resolve(responsePacket);
+            });
+
+            setTimeout(() => {
+                if(!this.responsePacketObserver.has(packet.packetId)) {
+                    return;
+                }
+                this.responsePacketObserver.delete(packet.packetId);
+
+                reject();
+            }, 15000);
+        })
+
+        this.sendMessage(packet.toString());
+
+        return responsePromise;
+    }
+
+    sendMessage(content: string): void {
+        this.networkLayer.sendMessage(content);
+    }
+
+    close(): void {
+        this.networkLayer.close();
+    }
+
+    handleOnData(data: Buffer): void {
+        const parserResult = Parser.parse(data);
+
+        if(!parserResult.isSuccess) {
+            return;
+        }
+
+        if(! (parserResult.value instanceof ResponsePacket)) {
+            return;
+        }
+
+        const packetId = parserResult.value.packetId;
+        const responsebserver = this.responsePacketObserver.get(packetId);
+
+        if(!responsebserver) {
+            return;
+        }
+
+        this.responsePacketObserver.delete(packetId);
+
+        responsebserver(parserResult.value);
+    }
+    handleOnError(error: Error): void {
+        throw new Error("Method not implemented.");
+    }
+    handleOnClose(hadError: boolean): void {
+        throw new Error("Method not implemented.");
+    }
+}

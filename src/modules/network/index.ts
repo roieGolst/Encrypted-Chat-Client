@@ -3,7 +3,7 @@ import { TcpSocket } from "./TcpSocket";
 import { IDateHandler } from "./IDataHandlet";
 
 export interface INetworkLayer {
-    start(args: NetWorkArgs): void;
+    start(): void;
     sendMessage(content: string): void;
     close(): void;
 };
