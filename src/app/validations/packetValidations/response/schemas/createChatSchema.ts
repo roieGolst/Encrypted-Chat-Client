@@ -13,7 +13,7 @@ export default Joi.object({
         .required(),
 
     status: Joi.string()
-        .valid(["succeeded", "failed"])
+        .valid("succeeded", "failed")
         .required(),
         
     roomId: Joi.string()
