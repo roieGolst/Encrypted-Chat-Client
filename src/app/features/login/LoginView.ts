@@ -57,7 +57,10 @@ export default class LoginView extends BaseView implements LoginViewContract {
     showErrorMessage(): void {
         this.error("login faild");
 
-        //uiTrhead.startView(this.factory());
+        setTimeout(() => {
+            this.startScreen(LoginView.factory());
+        }, 6000);
+        
     }
     
     static factory(): BaseView {
