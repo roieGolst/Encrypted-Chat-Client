@@ -1,7 +1,7 @@
 import { PacketType } from "../../../utils/encryptedChatProtocol/commonTypes";
 import { IResult } from "../../../common/IResult";
 import { SingleMember } from "../../../utils/encryptedChatProtocol/responsePackets/NewRoomMember";
-import { newRoomMemberPacketSchema } from "./schemas";
+import { newRoomMemberRequestPacketSchema } from "./schemas";
 
 type NewRoomMemberRequestPacket = {
     packetId: string
@@ -11,7 +11,7 @@ type NewRoomMemberRequestPacket = {
 
 export default {
     validate: (data: any): IResult<NewRoomMemberRequestPacket> => {
-        const result = newRoomMemberPacketSchema.validate(data);
+        const result = newRoomMemberRequestPacketSchema.validate(data);
 
         if(result.error) {
             return {
