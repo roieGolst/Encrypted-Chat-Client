@@ -1,6 +1,5 @@
 import Joi from "joi";
 import userConfigs from "../../../../config/userConfigs.json";
-import messageConfigs from "../../../../config/messageConfigs.json";
 
 export default Joi.object({
     packetId: Joi.string()

@@ -1,6 +1,5 @@
 import Joi from "joi";
 import userConfigs from "../../../../config/userConfigs.json";
-import userAttributsSchema from "../../schemas/userAttributsSchema";
 import tokenConfigs from "../../../../config/tokenConfigs.json";
 
 export default Joi.object({
@@ -17,8 +16,19 @@ export default Joi.object({
         .valid("succeeded", "failed")
         .required(),
         
-    userAttributs: userAttributsSchema
+    userAttributs: Joi.object({
+        userId: Joi.string()
+            .min(userConfigs.UUID_LENGTH)
+            .max(userConfigs.UUID_LENGTH)
+            .required(),
+
+        username: Joi.string()
+            .min(userConfigs.MIN_USER_NAME_LENGTH)
+            .max(userConfigs.MAX_USER_NAME_LENGTH)
+            .required()
+        })
         .optional(),
+
 
     tokens: Joi.object({
         token: Joi.string()
@@ -29,5 +39,4 @@ export default Joi.object({
             .required()
         })
         .optional()
-    
 });
