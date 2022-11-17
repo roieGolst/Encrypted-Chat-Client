@@ -1,12 +1,12 @@
-import { AuthAttributs, PacketType, Statuses, Tokens } from "../commonTypes";
+import { UserDetails, PacketType, Statuses, Tokens } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
 export default class LoginResponsePacket extends ResponsePacket {
-    readonly userAttributs: AuthAttributs;
+    readonly userAttributs: UserDetails;
     readonly tokens: Tokens;
 
-    constructor(packetId: string, status: Statuses, type: PacketType, userAttributs: AuthAttributs, tokens: Tokens) {
+    constructor(packetId: string, status: Statuses, type: PacketType, userAttributs: UserDetails, tokens: Tokens) {
         super(type, status, packetId)
         this.userAttributs = userAttributs;
         this.tokens = tokens;
@@ -16,7 +16,7 @@ export default class LoginResponsePacket extends ResponsePacket {
         private packetId: string;
         private status: Statuses;
         private type: PacketType;
-        private userAttributs: AuthAttributs;
+        private userAttributs: UserDetails;
         private tokens: Tokens;
 
         setPacketId(packetId: string): this {
@@ -34,7 +34,7 @@ export default class LoginResponsePacket extends ResponsePacket {
             return this;
         }
 
-        setUserAttributs(userAttributs: AuthAttributs): this {
+        setUserAttributs(userAttributs: UserDetails): this {
             this.userAttributs = userAttributs;
             return this;
         }
