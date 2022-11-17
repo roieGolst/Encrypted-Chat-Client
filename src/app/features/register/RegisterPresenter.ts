@@ -19,8 +19,6 @@ export default class RegisterPresenter extends BasePresnter implements RegisterP
     async handelRegisterInput(userAttributs: RegisterViewInput): Promise<void> {
         const result = await this.model.sendRegisterPacket(userAttributs);
 
-        console.log(result);
-
         if(result) {
             this.view.showAuthScreen()
         } else {
