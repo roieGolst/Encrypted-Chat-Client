@@ -101,7 +101,7 @@ export default class ResponseParser {
 
         const member: SingleMember = {
             socketId: payload["member"]["socketId"],
-            nickName: payload["member"]["nickName"]
+            username: payload["member"]["nickName"]
         };
 
         return new ResponsePackets.NewRoomMember.Builder()
