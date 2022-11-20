@@ -58,7 +58,7 @@ export default class LoginView extends BaseView implements LoginViewContract {
         this.error("login faild");
 
         setTimeout(() => {
-            this.startScreen(LoginView.factory());
+            this.onStart();
         }, 6000);
         
     }

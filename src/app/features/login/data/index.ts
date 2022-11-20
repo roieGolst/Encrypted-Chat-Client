@@ -2,10 +2,8 @@ import { IResult } from "../../../common/IResult";
 import NetworkLayer from "../../../common/network";
 import { Statuses } from "../../../utils/encryptedChatProtocol/commonTypes";
 import { LoginRequest } from "../../../utils/encryptedChatProtocol/requestPackets";
-import LoginRequestPacket from "../../../utils/encryptedChatProtocol/requestPackets/Login";
 import { LoginResponse } from "../../../utils/encryptedChatProtocol/responsePackets";
 import ResponsePacket from "../../../utils/encryptedChatProtocol/responsePackets/ResponsePacket";
-
 import { LoginViewInput } from "../LoginView";
 import { LoginResponseModel } from "./models/LoginResultModel";
 

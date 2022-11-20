@@ -6,6 +6,7 @@ export default abstract class BaseView extends View {
     abstract setPresenter(prester: BasePresnter): void;
 
     override onStart(): void {
+        this.clear();
         this.incudeView(HeaderView.factory())
     }
 };

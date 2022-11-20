@@ -9,6 +9,10 @@ export default abstract class View extends ViewEngineAbstract {
     abstract onStart(): void;
     abstract onDestroy(): void;
 
+    override clear(): void {
+        this.viewEngine.clear();
+    }
+
     override log(content: string): void {
         this.requireCurrentView();
         this.viewEngine.log(content);
