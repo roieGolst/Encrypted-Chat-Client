@@ -9,6 +9,10 @@ export default abstract class View extends ViewEngineAbstract {
     abstract onStart(): void;
     abstract onDestroy(): void;
 
+    override clear(): void {
+        this.viewEngine.clear();
+    }
+
     override log(content: string): void {
         this.requireCurrentView();
         this.viewEngine.log(content);
@@ -37,12 +41,12 @@ export default abstract class View extends ViewEngineAbstract {
         this.viewValidator.include(view);
     }
 
-    private requireCurrentView(): void {
-        if(this.viewValidator.isCurrentView(this)) {
-            return;
-        }
+    isActive() {
+        return this.viewValidator.isCurrentView(this);
+    }
 
-        else if(!this.viewValidator.isIncludedView(this)) {
+    private requireCurrentView(): void {
+        if(!this.isActive() && !this.viewValidator.isIncludedView(this)) {
             throw new Error("Only dispalyed view can perform ui actions");
         }
     }

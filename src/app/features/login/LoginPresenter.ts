@@ -3,7 +3,7 @@ import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginModel from "./data";
 import { LoginViewInput } from "./LoginView";
 
-export default class LoginPresenter extends BasePresnter implements LoginPresenterContract {
+export default class LoginPresenter extends LoginPresenterContract {
     private readonly model: LoginModel = new LoginModel();
     private readonly view: LoginViewContract;
 
@@ -16,7 +16,7 @@ export default class LoginPresenter extends BasePresnter implements LoginPresent
         this.view.showLoginPrompt();
     }
 
-    async handelLoginInput(userAttributs: LoginViewInput): Promise<void> {
+    override async handelLoginInput(userAttributs: LoginViewInput): Promise<void> {
         const result = await this.model.sendLoginPacket(userAttributs);
 
         if(result.isSuccess) {
@@ -26,6 +26,14 @@ export default class LoginPresenter extends BasePresnter implements LoginPresent
         }
     }
 
+    override onErrorMessageShown(clearInterval: number): void {
+        setTimeout(() => {
+            if(this.view.isActive()) {
+                this.view.initLoginFlow();
+            }
+            
+        }, clearInterval);
+    }
 
     
     override unSubscribe(): void {

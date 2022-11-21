@@ -1,37 +1,47 @@
+import { x } from "joi";
 import { IResult } from "../../../common/IResult";
 import NetworkLayer from "../../../common/network";
+import { Statuses } from "../../../utils/encryptedChatProtocol/commonTypes";
 import { LoginRequest } from "../../../utils/encryptedChatProtocol/requestPackets";
-import LoginRequestPacket from "../../../utils/encryptedChatProtocol/requestPackets/Login";
 import { LoginResponse } from "../../../utils/encryptedChatProtocol/responsePackets";
-
 import { LoginViewInput } from "../LoginView";
 import { LoginResponseModel } from "./models/LoginResultModel";
 
+
 export default class LoginModel {
     async sendLoginPacket(userAttributs: LoginViewInput): Promise<IResult<LoginResponseModel>> {
-
         if(!userAttributs.username || !userAttributs.password) {
             throw Error("Something worng");
         }
 
         const packet = new LoginRequest.Builder()
             .setAuthAttributs(userAttributs.username, userAttributs.password)
-            .build()
+            .build();
             
-        const responsePacket = await NetworkLayer.waitForResponse(packet);
+        try {
+            const responsePacket = await NetworkLayer.waitForResponse(packet) as LoginResponse;
 
-        if(! (responsePacket instanceof LoginResponse)) {
+            if(responsePacket.status == Statuses.Failed) {
+                return {
+                    isSuccess: false,
+                    error: "Request faild"
+                };
+            }
+    
+            return {
+                isSuccess: true,
+                value: {
+                    tokens: responsePacket.tokens
+                }
+            };
+        }
+        catch(err) {
             return {
                 isSuccess: false,
-                error: "Invalid response packet"
+                error: "Request failed"
             };
         }
 
-        return {
-            isSuccess: true,
-            value: {
-                tokens: responsePacket.tokens
-            }
-        };
+        
     }
 }

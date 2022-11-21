@@ -5,6 +5,7 @@ export abstract class ViewEngineAbstract {
     abstract prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer>;
     abstract log(content: string): void;
     abstract error(message: string): void;
+    abstract clear(): void;
 };
 
 class ViewEngine extends ViewEngineAbstract{
@@ -13,6 +14,10 @@ class ViewEngine extends ViewEngineAbstract{
     constructor(engine: ConsoleStrategy) {
         super();
         this.strategy = engine;
+    }
+
+    override clear(): void {
+        this.strategy.clearScreen();
     }
 
     override log(content: string): void {

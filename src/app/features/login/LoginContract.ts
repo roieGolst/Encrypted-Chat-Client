@@ -1,11 +1,15 @@
+import BasePresnter from "../../common/mvp/BasePresnter";
+import BaseView from "../../common/mvp/BaseView";
 import { LoginViewInput } from "./LoginView";
 
-export interface LoginViewContract {
-    showLoginPrompt(): void;
-    showErrorMessage(): void;
-    showChatScreen(): void;
+export abstract class LoginViewContract extends BaseView {
+    abstract initLoginFlow(): void;
+    abstract showLoginPrompt(): void;
+    abstract showErrorMessage(): void;
+    abstract showChatScreen(): void;
 }
 
-export interface LoginPresenterContract {
-    handelLoginInput(userAttributs: LoginViewInput): void
+export abstract class LoginPresenterContract extends BasePresnter {
+    abstract handelLoginInput(userAttributs: LoginViewInput): Promise<void>;
+    abstract onErrorMessageShown(clearInterval: number): void;
 }
