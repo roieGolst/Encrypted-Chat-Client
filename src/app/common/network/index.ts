@@ -33,7 +33,7 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
 
                 reject();
             }, 15000);
-        })
+        });
 
         this.sendMessage(packet.toString());
 
