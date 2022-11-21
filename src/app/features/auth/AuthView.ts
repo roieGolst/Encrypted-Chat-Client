@@ -1,5 +1,4 @@
 import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
-import BaseView from "../../common/mvp/BaseView";
 import LoginView from "../login/LoginView";
 import RegisterView from "../register/RegisterView";
 import { AuthViewContract } from "./AuthContract";
@@ -9,7 +8,7 @@ const LOGIN = "login";
 const REGISTER = "register";
 const HOME_QUESTION = "homeQuestion";
 
-export default class AuthView extends BaseView implements AuthViewContract {
+export default class AuthView extends AuthViewContract {
     private presenter: AuthPresenter;
 
     override setPresenter(prester: AuthPresenter): void {
@@ -21,7 +20,7 @@ export default class AuthView extends BaseView implements AuthViewContract {
         this.presenter.subscribe();
     }
 
-    showMenu(): void {
+    override showMenu(): void {
         const answerPromise = this.prompt([
             {
                 type: PromptType.List,
@@ -46,11 +45,11 @@ export default class AuthView extends BaseView implements AuthViewContract {
         });
     }
 
-    showLoginScreen(): void {
+    override showLoginScreen(): void {
         this.startScreen(LoginView.factory());
     }
 
-    showRegisterScreen(): void {
+    override showRegisterScreen(): void {
         this.startScreen(RegisterView.factory());
     }
 

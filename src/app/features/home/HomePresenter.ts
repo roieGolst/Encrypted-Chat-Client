@@ -1,7 +1,6 @@
-import BasePresnter from "../../common/mvp/BasePresnter";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 
-export default class HomePresenter extends BasePresnter implements HomePresenterContract {
+export default class HomePresenter extends HomePresenterContract {
     private readonly view: HomeViewContract;
 
     constructor(view: HomeViewContract) {

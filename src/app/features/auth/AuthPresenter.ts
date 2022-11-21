@@ -1,8 +1,6 @@
-import BasePresnter from "../../common/mvp/BasePresnter";
 import { AuthPresenterContract, AuthViewContract } from "./AuthContract";
 
-export default class AuthPresenter extends BasePresnter implements AuthPresenterContract {
-
+export default class AuthPresenter extends AuthPresenterContract {
     private readonly view: AuthViewContract;
 
     constructor(view: AuthViewContract) {
@@ -14,11 +12,11 @@ export default class AuthPresenter extends BasePresnter implements AuthPresenter
         this.view.showMenu();
     }
 
-    onUserSelectedLoginOption(): void {
+    override onUserSelectedLoginOption(): void {
         this.view.showLoginScreen();
     }
 
-    onUserSelectedRegisterOption(): void {
+    override onUserSelectedRegisterOption(): void {
         this.view.showRegisterScreen();
     }
 

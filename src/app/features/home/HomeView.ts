@@ -1,8 +1,7 @@
 import { HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
-import BaseView from "../../common/mvp/BaseView";
 
-export default class HomeView extends BaseView implements HomeViewContract {
+export default class HomeView extends HomeViewContract {
     private presenter: HomePresenter;
 
     override setPresenter(prester: HomePresenter): void {
@@ -14,7 +13,7 @@ export default class HomeView extends BaseView implements HomeViewContract {
         this.presenter.subscribe();
     }
 
-    showConnectingMessage(): void {
+    override showConnectingMessage(): void {
         this.log("Connecting to the server...");
     }
     
