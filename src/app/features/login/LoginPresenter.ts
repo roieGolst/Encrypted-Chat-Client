@@ -1,9 +1,9 @@
 import BasePresnter from "../../common/mvp/BasePresnter";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
-import LoginModel from "./LoginModel";
+import LoginModel from "./data";
 import { LoginViewInput } from "./LoginView";
 
-export default class LoginPresenter extends BasePresnter implements LoginPresenterContract {
+export default class LoginPresenter extends LoginPresenterContract {
     private readonly model: LoginModel = new LoginModel();
     private readonly view: LoginViewContract;
 
@@ -16,16 +16,28 @@ export default class LoginPresenter extends BasePresnter implements LoginPresent
         this.view.showLoginPrompt();
     }
 
-    handelLoginInput(userAttributs: LoginViewInput): void {
-        this.model.sendLoginPacket(userAttributs);
-        //Build packet and send
+    override async handelLoginInput(userAttributs: LoginViewInput): Promise<void> {
+        const result = await this.model.sendLoginPacket(userAttributs);
 
-        //by answer show chat page / Error;
-        //this.view.showChatPage / this.view.showErrors
+        if(result.isSuccess) {
+            this.view.showChatScreen();
+        } else {
+            this.view.showErrorMessage();
+        }
     }
+
+    override onErrorMessageShown(clearInterval: number): void {
+        setTimeout(() => {
+            if(this.view.isActive()) {
+                this.view.initLoginFlow();
+            }
+            
+        }, clearInterval);
+    }
+
     
     override unSubscribe(): void {
-        throw new Error("Method not implemented.");
+        return;
     }
     
 }

@@ -1,20 +1,20 @@
 import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
-import { LoginViewContract } from "./LoginContract";
+import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";
 
 const USERNAME_INPUT = "usernameInput";
 const PASSWORD_INPUT =  "passwordInput";
+const ERROR_MESSAGE_DURATION = 5000;
 
 export type LoginViewInput = {
     username: string | undefined,
     password: string | undefined 
 } ;
-export default class LoginView extends BaseView implements LoginViewContract {
+export default class LoginView extends LoginViewContract {
+    private presenter: LoginPresenterContract;
 
-    private presenter: LoginPresenter;
-
-    override setPresenter(presenter: LoginPresenter): void {
+    override setPresenter(presenter: LoginPresenterContract): void {
         this.presenter = presenter;
     }
 
@@ -22,12 +22,18 @@ export default class LoginView extends BaseView implements LoginViewContract {
         super.onStart();
         this.presenter.subscribe();
     }
-
+    
+    
     override onDestroy(): void {
         this.presenter.unSubscribe();
     }
 
-    showLoginPrompt(): void {
+    override initLoginFlow() {
+        this.clearAndLogo();
+        this.showLoginPrompt();
+    }
+    
+    override showLoginPrompt(): void {
         const userAttributs = this.prompt([
             {
                 type: PromptType.Input,
@@ -49,14 +55,14 @@ export default class LoginView extends BaseView implements LoginViewContract {
         })
     }
 
-    showChatScreen(): void {
-        //uiThread.startView(ChatView.factory());
+    override showChatScreen(): void {
+        this.log("Chat screen");
+        // uiThread.startView(ChatView.factory());
     }
 
-    showErrorMessage(conttent: string): void {
-        //console.error(conttent);
-
-        //uiTrhead.startView(this.factory());
+    override showErrorMessage(): void {
+        this.error("login faild");
+        this.presenter.onErrorMessageShown(ERROR_MESSAGE_DURATION);
     }
     
     static factory(): BaseView {

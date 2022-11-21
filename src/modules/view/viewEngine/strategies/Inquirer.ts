@@ -1,5 +1,6 @@
 import inquirer, { Answers } from "inquirer";
 import { Prompt, ConsoleStrategy, PromptAnswer } from "../types";
+import chalk from "chalk";
 
 export default class InquirerStrategy implements ConsoleStrategy {
 
@@ -8,7 +9,8 @@ export default class InquirerStrategy implements ConsoleStrategy {
     }
 
     error(message: string): void {
-        console.error(message);
+        const error = chalk.bgRedBright(message);
+        console.log(error);
     }
 
     async prompt(prompts: Prompt[]): Promise<PromptAnswer> {

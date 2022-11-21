@@ -1,6 +1,7 @@
 import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import LoginView from "../login/LoginView";
+import RegisterView from "../register/RegisterView";
 import { AuthViewContract } from "./AuthContract";
 import AuthPresenter from "./AuthPresenter";
 
@@ -50,7 +51,7 @@ export default class AuthView extends BaseView implements AuthViewContract {
     }
 
     showRegisterScreen(): void {
-        //
+        this.startScreen(RegisterView.factory());
     }
 
     

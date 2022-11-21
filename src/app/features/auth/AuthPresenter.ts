@@ -19,7 +19,7 @@ export default class AuthPresenter extends BasePresnter implements AuthPresenter
     }
 
     onUserSelectedRegisterOption(): void {
-        console.log("Now inmplemts yet");
+        this.view.showRegisterScreen();
     }
 
     override unSubscribe(): void {

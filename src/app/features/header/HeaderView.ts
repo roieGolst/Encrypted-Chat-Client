@@ -3,11 +3,11 @@ import logo from "../../utils/view/logoUtil";
 
 export default class HeaderView extends View {
 
-    onStart(): void {
+    override onStart(): void {
         this.log(logo);
     }
     
-    onDestroy(): void {
+    override onDestroy(): void {
     }
 
     static factory(): HeaderView {
