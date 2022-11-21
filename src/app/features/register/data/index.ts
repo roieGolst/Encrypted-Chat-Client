@@ -1,9 +1,7 @@
-import { IResult } from "../../../common/IResult";
 import NetworkLayer from "../../../common/network";
 import { Statuses } from "../../../utils/encryptedChatProtocol/commonTypes";
 import { RegisterRequest } from "../../../utils/encryptedChatProtocol/requestPackets";
 import { RegisterResponse } from "../../../utils/encryptedChatProtocol/responsePackets";
-import ResponsePacket from "../../../utils/encryptedChatProtocol/responsePackets/ResponsePacket";
 import { RegisterViewInput } from "../RegisterView";
 
 export default class RegisterModel {
@@ -17,22 +15,17 @@ export default class RegisterModel {
             .setAuthAttributs(userAttributs.username,userAttributs.password)
             .build()
             
-        let responsePacket: ResponsePacket;
         try {
-            responsePacket = await NetworkLayer.waitForResponse(packet);
+            const responsePacket = await NetworkLayer.waitForResponse(packet) as RegisterResponse;
+
+            if(responsePacket.status == Statuses.Failed) {
+                return false;
+            }
+
+            return true;
         }
         catch(err) {
-            return false
+            return false;
         }
-
-        if(! (responsePacket instanceof RegisterResponse)) {
-            return false
-        }
-
-        else if(responsePacket.status == Statuses.Failed) {
-            return false
-        }
-
-        return true;
     }
 }

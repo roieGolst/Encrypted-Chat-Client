@@ -8,13 +8,14 @@ import RegisterPresenter from "./RegisterPresenter";
 
 const USERNAME_INPUT = "usernameInput";
 const PASSWORD_INPUT =  "passwordInput";
+const ERROR_MESSAGE_DURATION = 5000;
 
 export type RegisterViewInput = {
     username: string | undefined,
     password: string | undefined 
 }
 
-export default class RegisterView extends BaseView implements RegisterViewContract {
+export default class RegisterView extends RegisterViewContract {
     
     private presenter: RegisterPresenter
 
@@ -31,7 +32,12 @@ export default class RegisterView extends BaseView implements RegisterViewContra
         this.presenter.unSubscribe();
     }
 
-    showRegisterPrompt(): void {
+    override initRegisterFlow(): void {
+        this.clearAndLogo()
+        this.showRegisterPrompt();
+    }
+
+    override showRegisterPrompt(): void {
         const userAttributs = this.prompt([
             {
                 type: PromptType.Input,
@@ -53,11 +59,13 @@ export default class RegisterView extends BaseView implements RegisterViewContra
         })
     }
 
-    showErrorMessage(): void {
+    override showErrorMessage(): void {
         this.error("Register faild");
+
+        this.presenter.onErrorMessageShown(ERROR_MESSAGE_DURATION);
     }
 
-    showAuthScreen(): void {
+    override showAuthScreen(): void {
         this.startScreen(AuthView.factory());
     }
 

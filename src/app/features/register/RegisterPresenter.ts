@@ -3,7 +3,7 @@ import RegisterModel from "./data";
 import { RegisterPresenterContract, RegisterViewContract } from "./RegisterContract";
 import { RegisterViewInput } from "./RegisterView";
 
-export default class RegisterPresenter extends BasePresnter implements RegisterPresenterContract {
+export default class RegisterPresenter extends RegisterPresenterContract {
     private readonly model: RegisterModel = new RegisterModel();
     private readonly view: RegisterViewContract;
 
@@ -16,7 +16,7 @@ export default class RegisterPresenter extends BasePresnter implements RegisterP
         this.view.showRegisterPrompt();
     }
 
-    async handelRegisterInput(userAttributs: RegisterViewInput): Promise<void> {
+    override async handelRegisterInput(userAttributs: RegisterViewInput): Promise<void> {
         const result = await this.model.sendRegisterPacket(userAttributs);
 
         if(result) {
@@ -24,6 +24,15 @@ export default class RegisterPresenter extends BasePresnter implements RegisterP
         } else {
             this.view.showErrorMessage();
         }
+    }
+
+    override onErrorMessageShown(clearInterval: number): void {
+        setTimeout(() => {
+            if(this.view.isActive()) {
+                this.view.initRegisterFlow();
+            }
+            
+        }, clearInterval)
     }
     
     override unSubscribe(): void {
