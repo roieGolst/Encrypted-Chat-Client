@@ -1,4 +1,4 @@
-import HomeView from "./features/home/HomeView";
+import SplashView from "./features/spalsh/SplashView";
 import NetworkLayer from "./common/network";
 import AuthView from "./features/auth/AuthView";
 import bootstarp from "./bootstarp";
@@ -8,7 +8,7 @@ const initialFunction = async () => {
 };
 
 bootstarp({
-    spalshScreen: HomeView.factory(),
+    splashScreen: SplashView.factory(),
     initialFunction: initialFunction,
     mainScreen: AuthView.factory()
 });
