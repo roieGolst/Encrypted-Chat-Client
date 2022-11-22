@@ -42,7 +42,15 @@ export default class HomeView extends HomeViewContract {
     }
 
     override showJoinChatPrompt(): void {
-        
+        const joinChatAnswer = this.prompt([{
+            type: PromptType.Input,
+            name: JOIN_CHAT,
+            message: "Room id:"
+        }], false);
+
+        joinChatAnswer.then((choice: PromptAnswer) => {
+            
+        })
     }
 
     override showRoomPage(): void {
