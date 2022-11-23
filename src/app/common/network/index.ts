@@ -52,7 +52,7 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
 
     handleOnData(data: Buffer): void {
         const parserResult = Parser.parse(data);
-
+        
         if(!parserResult.isSuccess) {
             const packetId = parserResult.error.packetId;
 

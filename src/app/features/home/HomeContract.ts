@@ -10,4 +10,5 @@ export abstract class HomeViewContract extends BaseView {
 export abstract class HomePresenterContract extends BasePresnter {
     abstract onUserSelectedCreateChatOption(): void;
     abstract onUserSelectedJoinChatOption(): void;
+    abstract handelJoinChatInput(roomId?: string): void;
 }

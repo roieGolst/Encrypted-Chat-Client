@@ -1,10 +1,13 @@
-import { extend } from "joi";
 import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
+import BaseView from "../../common/mvp/BaseView";
+import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
+import HomePresenter from "./HomePresenter";
 
 const HOME_QUESTION = "homeQuestion";
 const CREATE_CHAT = "createChat";
 const JOIN_CHAT = "joinChat";
+const ROOM_ID = "roomId";
 
 export default class HomeView extends HomeViewContract {
     private presenter: HomePresenterContract;
@@ -44,21 +47,30 @@ export default class HomeView extends HomeViewContract {
     override showJoinChatPrompt(): void {
         const joinChatAnswer = this.prompt([{
             type: PromptType.Input,
-            name: JOIN_CHAT,
+            name: ROOM_ID,
             message: "Room id:"
         }], false);
 
         joinChatAnswer.then((choice: PromptAnswer) => {
-            
+            const roomId = choice.get(ROOM_ID);
+            this.presenter.handelJoinChatInput(roomId)
         })
     }
 
     override showRoomPage(): void {
+        this.log("Roon page :)");
         //this.startScreen(RoomPage.factory());
     }
 
     override onDestroy(): void {
         this.presenter.unSubscribe();
+    }
+
+    static factory(tokens: Tokens): BaseView {
+        const homeView = new HomeView();
+        homeView.setPresenter(new HomePresenter(homeView, tokens));
+
+        return homeView;
     }
     
 }
