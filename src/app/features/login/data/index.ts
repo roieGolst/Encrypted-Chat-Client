@@ -1,4 +1,3 @@
-import { x } from "joi";
 import { IResult } from "../../../common/IResult";
 import NetworkLayer from "../../../common/network";
 import { Status } from "../../../utils/encryptedChatProtocol/commonTypes";

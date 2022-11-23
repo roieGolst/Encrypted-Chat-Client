@@ -20,7 +20,7 @@ export default class LoginPresenter extends LoginPresenterContract {
         const result = await this.model.sendLoginPacket(userAttributs);
 
         if(result.isSuccess) {
-            this.view.showChatScreen();
+            this.view.showHomeScreen(result.value.tokens);
         } else {
             this.view.showErrorMessage();
         }

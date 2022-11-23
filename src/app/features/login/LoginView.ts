@@ -1,5 +1,7 @@
 import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
+import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
+import HomeView from "../home/HomeView";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";
 
@@ -55,9 +57,8 @@ export default class LoginView extends LoginViewContract {
         })
     }
 
-    override showChatScreen(): void {
-        this.log("Chat screen");
-        // uiThread.startView(ChatView.factory());
+    override showHomeScreen(tokens: Tokens): void {
+        this.startScreen(HomeView.factory(tokens));
     }
 
     override showErrorMessage(): void {
