@@ -21,8 +21,6 @@ export default class LoginModel {
         try {
             const responsePacket = await NetworkLayer.waitForResponse(packet) as LoginResponse;
 
-            console.log(responsePacket);
-
             if(responsePacket.status != Status.Succeeded) {
                 return {
                     isSuccess: false,
