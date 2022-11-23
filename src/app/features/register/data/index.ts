@@ -1,5 +1,5 @@
 import NetworkLayer from "../../../common/network";
-import { Statuses } from "../../../utils/encryptedChatProtocol/commonTypes";
+import { Status } from "../../../utils/encryptedChatProtocol/commonTypes";
 import { RegisterRequest } from "../../../utils/encryptedChatProtocol/requestPackets";
 import { RegisterResponse } from "../../../utils/encryptedChatProtocol/responsePackets";
 import { RegisterViewInput } from "../RegisterView";
@@ -18,7 +18,7 @@ export default class RegisterModel {
         try {
             const responsePacket = await NetworkLayer.waitForResponse(packet) as RegisterResponse;
 
-            if(responsePacket.status == Statuses.Failed) {
+            if(responsePacket.status != Status.Succeeded) {
                 return false;
             }
 

@@ -1,7 +1,7 @@
 import { x } from "joi";
 import { IResult } from "../../../common/IResult";
 import NetworkLayer from "../../../common/network";
-import { Statuses } from "../../../utils/encryptedChatProtocol/commonTypes";
+import { Status } from "../../../utils/encryptedChatProtocol/commonTypes";
 import { LoginRequest } from "../../../utils/encryptedChatProtocol/requestPackets";
 import { LoginResponse } from "../../../utils/encryptedChatProtocol/responsePackets";
 import { LoginViewInput } from "../LoginView";
@@ -21,7 +21,9 @@ export default class LoginModel {
         try {
             const responsePacket = await NetworkLayer.waitForResponse(packet) as LoginResponse;
 
-            if(responsePacket.status == Statuses.Failed) {
+            console.log(responsePacket);
+
+            if(responsePacket.status != Status.Succeeded) {
                 return {
                     isSuccess: false,
                     error: "Request faild"

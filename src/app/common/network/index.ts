@@ -1,7 +1,9 @@
 import NetworkLayer, { INetworkLayer } from "../../../modules/network";
 import { IDateHandler } from "../../../modules/network/IDataHandlet";
+import { PacketType } from "../../utils/encryptedChatProtocol/commonTypes";
 import Packet from "../../utils/encryptedChatProtocol/Packet";
 import Parser from "../../utils/encryptedChatProtocol/parser";
+import { GeneralFailure } from "../../utils/encryptedChatProtocol/responsePackets";
 import ResponsePacket from "../../utils/encryptedChatProtocol/responsePackets/ResponsePacket";
 
 export type ResponsePacketObserver = (responsePacket: ResponsePacket) => void;
@@ -52,6 +54,37 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
         const parserResult = Parser.parse(data);
 
         if(!parserResult.isSuccess) {
+            const packetId = parserResult.error.packetId;
+
+            if(!packetId) {
+                return;
+            }
+
+            const responsebserver = this.responsePacketObserver.get(packetId);
+
+            if(!responsebserver) {
+                return;
+            }
+
+            const type = parserResult.error.type;
+
+            if(!type) {
+                responsebserver(new GeneralFailure.Builder()
+                .setPacketId(packetId)
+                .setType(PacketType.GeneralFailure)
+                .setStatus(parserResult.error.statuse)
+                .build()
+                )
+                return;
+            }
+            
+
+            responsebserver(new GeneralFailure.Builder()
+                .setPacketId(packetId)
+                .setType(type)
+                .setStatus(parserResult.error.statuse)
+                .build()
+            )
             return;
         }
 
