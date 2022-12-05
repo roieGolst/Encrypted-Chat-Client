@@ -34,7 +34,7 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
                 this.responsePacketObserver.delete(packet.packetId);
 
                 reject();
-            }, 15000);
+            }, 100000);
         });
 
         this.sendMessage(packet.toString());

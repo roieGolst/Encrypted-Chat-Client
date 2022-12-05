@@ -46,8 +46,6 @@ export default class HomeModel {
         try {
             const responsePacket = await NetworkLayer.waitForResponse(packet) as JoinChatPacket;
 
-            console.log(responsePacket);
-
             if(responsePacket.status != Status.Succeeded) {
                 return {
                     isSuccess: false,
