@@ -22,7 +22,17 @@ export class ParserErrorResult extends Error {
 export  default class Parser {
 
     static parse(data: Buffer): Packet {
-        const parsedData = this.jsonParse(data.toString("utf-8"));
+        let parsedData: any;
+
+        try {
+            parsedData = JSON.parse(data.toString("utf-8"));
+        }
+        catch(err: unknown) {
+            this.generalPacketGenerator(new ParserErrorResult({
+                type: PacketType.GeneralFailure,
+                status: Status.GeneralFailure
+            }));
+        }
 
         if(!parsedData.isSuccess) {
             return this.generalPacketGenerator(new ParserErrorResult({
@@ -87,24 +97,6 @@ export  default class Parser {
         }
 
         return result;
-    }
-
-    private static jsonParse(data: string): IResult<any> {
-        try {
-            let packet = JSON.parse(data);
-
-            return {
-                isSuccess: true,
-                value: packet
-            };
-
-        }
-        catch(err) {
-            return {
-                isSuccess: false,
-                error: `Parser error: Invalid JSON format`
-            };
-        }
     }
 
     private static isValidPacket(packet: any): boolean {
