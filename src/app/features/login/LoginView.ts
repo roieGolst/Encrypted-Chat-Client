@@ -10,8 +10,8 @@ const PASSWORD_INPUT =  "passwordInput";
 const ERROR_MESSAGE_DURATION = 5000;
 
 export type LoginViewInput = {
-    username: string | undefined,
-    password: string | undefined 
+    readonly username: string | undefined,
+    readonly password: string | undefined 
 } ;
 export default class LoginView extends LoginViewContract {
     private presenter: LoginPresenterContract;

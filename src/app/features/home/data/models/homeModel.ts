@@ -1,7 +1,7 @@
 export type CreateChatResultModel = {
-    roomId: string
+    readonly roomId: string
 }
 
 export type JoinChatResultModel = {
-    membres?: Map<string, string>
+    readonly membres?: Map<string, string>
 }

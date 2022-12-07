@@ -11,10 +11,10 @@ export enum PromptType {
 };
 
 export type Prompt = {
-    type: PromptType,
-    message: string,
-    name: string,
-    choices?: string[]
+    readonly type: PromptType,
+    readonly message: string,
+    readonly name: string,
+    readonly choices?: string[]
 };
 
 export type PromptAnswer = Map<string, string>;

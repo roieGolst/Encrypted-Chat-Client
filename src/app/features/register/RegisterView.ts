@@ -11,8 +11,8 @@ const PASSWORD_INPUT =  "passwordInput";
 const ERROR_MESSAGE_DURATION = 5000;
 
 export type RegisterViewInput = {
-    username: string | undefined,
-    password: string | undefined 
+    readonly username: string | undefined,
+    readonly password: string | undefined 
 }
 
 export default class RegisterView extends RegisterViewContract {

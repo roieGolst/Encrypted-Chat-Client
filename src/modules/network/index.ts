@@ -9,9 +9,9 @@ export interface INetworkLayer {
 };
 
 export type NetWorkArgs = {
-    port: number,
-    host: string,
-    dataHandler: IDateHandler
+    readonly port: number,
+    readonly host: string,
+    readonly dataHandler: IDateHandler
 };
 
 export default class NetworkLayer implements INetworkLayer {
