@@ -3,11 +3,11 @@ import { PacketType, Status, Tokens, UserDetails } from "../../../utils/encrypte
 import { loginResponsePacketSchema } from "./schemas";
 
 type LoginResponsePacket = {
-    packetId: string;
-    type: PacketType.Login;
-    status: Status,
-    userAttributs?: UserDetails;
-    tokens?: Tokens
+    readonly packetId: string;
+    readonly type: PacketType.Login;
+    readonly status: Status,
+    readonly userAttributs?: UserDetails;
+    readonly tokens?: Tokens
 };
 
 export default {
