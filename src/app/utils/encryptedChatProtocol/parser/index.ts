@@ -3,39 +3,42 @@ import { PacketType, Status } from "../commonTypes";
 import Packet from "../Packet";
 import ResponseParser from "./Response";
 import RequestParser from "./Request";
+import ResponsePacket from "../responsePackets/ResponsePacket";
+import * as ResponsePackets from "../responsePackets";
 
-export type ParserErrorResult = {
-    readonly packetId?: string,
-    readonly type: PacketType,
-    readonly statuse: Status
+export class ParserErrorResult extends Error {
+    readonly packetId?: string;
+    readonly type: PacketType;
+    readonly status: Status;
+
+    constructor(error: { packetId?: string, type: PacketType, status: Status }) {
+        super();
+        this.packetId = error.packetId;
+        this.type = error.type;
+        this.status = error.status;
+    }
 }
 
 export  default class Parser {
 
-    static parse(data: Buffer): IResult<Packet, ParserErrorResult> {
+    static parse(data: Buffer): Packet {
         const parsedData = this.jsonParse(data.toString("utf-8"));
 
         if(!parsedData.isSuccess) {
-            return {
-                isSuccess: false,
-                error: {
-                    type: PacketType.GeneralFailure,
-                    statuse: Status.InvalidPacket
-                }
-            };
+            return this.generalPacketGenerator(new ParserErrorResult({
+                type: PacketType.GeneralFailure,
+                status: Status.InvalidPacket
+            }));
         }
         
 
         const isValidPacket = this.isValidPacket(parsedData.value);
 
         if(!isValidPacket) {
-            return {
-                isSuccess: false,
-                error: {
-                    type: PacketType.GeneralFailure,
-                    statuse: Status.InvalidPacket
-                }
-            }
+            return this.generalPacketGenerator(new ParserErrorResult({
+                type: PacketType.GeneralFailure,
+                status: Status.InvalidPacket
+            }));
         }
 
         const packet = parsedData.value;
@@ -44,36 +47,46 @@ export  default class Parser {
         const packetStatus = this.statusCasting(packet.status);
 
         if(!packetType) {
-            return {
-                isSuccess: false,
-                error:  {
-                    packetId,
-                    type: PacketType.GeneralFailure,
-                    statuse: Status.InvalidPacket
-                }
-            };
+            return this.generalPacketGenerator(new ParserErrorResult({
+                type: PacketType.GeneralFailure,
+                status: Status.InvalidPacket
+            }));
         }
 
-        let result: Packet | ParserErrorResult;
+        let result: Packet;
 
 
         if(packetStatus) {
-            result = ResponseParser.parse(packetType, packetId, packetStatus, packet);
+            try {
+                result = ResponseParser.parse(packetType, packetId, packetStatus, packet);
+            }
+            catch(err: unknown) {
+                throw new ParserErrorResult({
+                    packetId,
+                    type: packetType,
+                    status: Status.GeneralFailure
+                })
+            }
+
         } else {
-            result = RequestParser.parse(packetType, packetId, packet);
+            try {
+                result = RequestParser.parse(packetType, packetId, packet);
+            }
+            catch(err: unknown) {
+                if(err instanceof ParserErrorResult) {
+                    return this.generalPacketGenerator(err);
+                }
+                else {
+                    throw new ParserErrorResult({
+                        packetId,
+                        type: packetType,
+                        status: Status.GeneralFailure
+                    })
+                }
+            }
         }
 
-        if(! (result instanceof Packet)) {
-            return {
-                isSuccess: false,
-                error: result
-            };
-        }
-
-        return {
-            isSuccess: true,
-            value: result
-        };
+        return result;
     }
 
     private static jsonParse(data: string): IResult<any> {
@@ -126,5 +139,13 @@ export  default class Parser {
         catch(e) {
             return undefined;
         }
+    }
+
+    private static generalPacketGenerator(error: ParserErrorResult): ResponsePacket {
+        return new ResponsePackets.GeneralFailure.Builder()
+            .setPacketId(error.packetId)
+            .setType(error.type)
+            .setStatus(error.status)
+            .build()
     }
 }
