@@ -34,7 +34,7 @@ export  default class Parser {
             }));
         }
 
-        if(!parsedData.isSuccess) {
+        if(!parsedData) {
             return this.generalPacketGenerator(new ParserErrorResult({
                 type: PacketType.GeneralFailure,
                 status: Status.InvalidPacket
@@ -42,7 +42,7 @@ export  default class Parser {
         }
         
 
-        const isValidPacket = this.isValidPacket(parsedData.value);
+        const isValidPacket = this.isValidPacket(parsedData);
 
         if(!isValidPacket) {
             return this.generalPacketGenerator(new ParserErrorResult({
@@ -51,7 +51,7 @@ export  default class Parser {
             }));
         }
 
-        const packet = parsedData.value;
+        const packet = parsedData;
         const packetId = packet.packetId;
         const packetType = this.typeCasting(packet.type);
         const packetStatus = this.statusCasting(packet.status);
