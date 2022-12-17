@@ -9,10 +9,6 @@ import { LoginResponseModel } from "./models/LoginResultModel";
 
 export default class LoginModel {
     async sendLoginPacket(userAttributs: LoginViewInput): Promise<IResult<LoginResponseModel>> {
-        if(!userAttributs.username || !userAttributs.password) {
-            throw Error("Something worng");
-        }
-
         const packet = new LoginRequest.Builder()
             .setAuthAttributs(userAttributs.username, userAttributs.password)
             .build();

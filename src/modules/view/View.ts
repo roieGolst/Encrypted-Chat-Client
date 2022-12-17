@@ -1,7 +1,7 @@
 import { Answers } from "inquirer";
 import uiTread, { ViewValidator } from "./UITread";
 import viewEngine, { ViewEngineAbstract } from "./viewEngine";
-import { ConsoleOptions, Prompt, PromptAnswer } from "./viewEngine/types";
+import { ConsoleOptions, Prompt } from "./viewEngine/types";
 
 export default abstract class View extends ViewEngineAbstract {
     private readonly viewEngine: ViewEngineAbstract = viewEngine;
@@ -24,7 +24,7 @@ export default abstract class View extends ViewEngineAbstract {
         this.viewEngine.error(message);
     }
     
-    override async prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {
+    override async prompt<T extends Answers = Answers>(prompts: Prompt[], clear: boolean): Promise<T> {
         this.requireCurrentView();
 
         return this.viewEngine.prompt(prompts, clear);

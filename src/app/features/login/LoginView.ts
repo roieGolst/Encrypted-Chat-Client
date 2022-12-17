@@ -1,18 +1,20 @@
-import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
+import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
 import HomeView from "../home/HomeView";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";
 
+type LoginQuestion = { usernameInput: string, passwordInput: string };
+
 const USERNAME_INPUT = "usernameInput";
 const PASSWORD_INPUT =  "passwordInput";
 const ERROR_MESSAGE_DURATION = 5000;
 
 export type LoginViewInput = {
-    readonly username: string | undefined,
-    readonly password: string | undefined 
-} ;
+    readonly username: string,
+    readonly password: string 
+};
 export default class LoginView extends LoginViewContract {
     private presenter: LoginPresenterContract;
 
@@ -36,23 +38,24 @@ export default class LoginView extends LoginViewContract {
     }
     
     override showLoginPrompt(): void {
-        const userAttributs = this.prompt([
+        const userAttributs = this.prompt<LoginQuestion>([
             {
                 type: PromptType.Input,
                 name: USERNAME_INPUT,
                 message: "User name: "
             },
             {
-                type: PromptType.Input,
+                type: PromptType.Password,
                 name: PASSWORD_INPUT,
-                message: "Password: "
+                message: "Password: ",
+                mask: "*"
             }
         ], false);
 
-        userAttributs.then((input: PromptAnswer) => {
+        userAttributs.then((input: LoginQuestion) => {
             this.presenter.handelLoginInput({
-                username: input.get(USERNAME_INPUT),
-                password: input.get(PASSWORD_INPUT)
+                username: input.usernameInput,
+                password: input.passwordInput
             });
         })
     }

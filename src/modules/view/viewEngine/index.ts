@@ -1,9 +1,9 @@
-import { Prompt, PromptAnswer, ConsoleStrategy, ConsoleOptions } from "./types";
+import { Prompt, ConsoleStrategy, ConsoleOptions } from "./types";
 import Inquirer from "./strategies/Inquirer";
 import { Answers } from "inquirer";
 
 export abstract class ViewEngineAbstract {
-    abstract prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer>;
+    abstract prompt<T extends Answers = Answers>(prompts: Prompt[], clear: boolean): Promise<T>;
     abstract log(content: string, consoleOptions?: ConsoleOptions): void;
     abstract error(message: string): void;
     abstract clear(): void;
@@ -29,7 +29,7 @@ class ViewEngine extends ViewEngineAbstract{
         this.strategy.error(message);
     }
     
-    override prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {
+    override prompt<T extends Answers = Answers>(prompts: Prompt[], clear: boolean): Promise<T> {
         if(clear) {
             this.strategy.clearScreen();
         }

@@ -1,5 +1,5 @@
 import inquirer, { Answers } from "inquirer";
-import { Prompt, ConsoleStrategy, PromptAnswer, ConsoleOptions, TextColor, BackgraundColor, TextStyle } from "../types";
+import { Prompt, ConsoleStrategy, ConsoleOptions, TextColor, BackgraundColor, TextStyle } from "../types";
 import ansi from "ansi-colors";
 
 type StringFunction = (text: string) => string;
@@ -19,28 +19,9 @@ export default class InquirerStrategy implements ConsoleStrategy {
         console.log(error);
     }
 
-    async prompt(prompts: Prompt[]): Promise<PromptAnswer> {
+    async prompt<T extends Answers = Answers>(prompts: Prompt[]): Promise<T> {
 
-        const answers = await inquirer.prompt(prompts.map((item: Prompt) => {
-            return {
-                type: item.type,
-                name: item.name,
-                message: item.message,
-                choices: item.choices
-            }
-        }));
-
-        return this.mapToPromptAnswer(answers);
-    }
-
-    private mapToPromptAnswer(answer: Answers): PromptAnswer {
-        const promptAnswer: Map<string, string> = new Map();
-
-        for(const [key, value] of Object.entries(answer)) {
-            promptAnswer.set(key, value);
-        }
-
-        return promptAnswer;
+        return await inquirer.prompt(prompts);
     }
 
     private getColorString(color: TextColor | undefined): ansi.StyleFunction {

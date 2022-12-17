@@ -1,8 +1,11 @@
-import { BackgraundColor, PromptAnswer, PromptType, TextColor, TextStyle } from "../../../modules/view/viewEngine/types";
+import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
+
+type HomeQuesttion = { homeQuestion: string };
+type RoomIdQuestion = { roomId: string };
 
 const HOME_QUESTION = "homeQuestion";
 const CREATE_CHAT = "createChat";
@@ -22,15 +25,15 @@ export default class HomeView extends HomeViewContract {
     }
 
     override showMenu(): void {
-        const menuAnswer = this.prompt([{
+        const menuAnswer = this.prompt<HomeQuesttion>([{
             type: PromptType.List,
             message: "Choose opstion",
             name: HOME_QUESTION,
             choices: [CREATE_CHAT, JOIN_CHAT]
         }], false);
 
-        menuAnswer.then((choice: PromptAnswer) => {
-            switch(choice.get(HOME_QUESTION)) {
+        menuAnswer.then((choice: HomeQuesttion) => {
+            switch(choice.homeQuestion) {
                 case CREATE_CHAT: {
                     this.presenter.onUserSelectedCreateChatOption();
                     break;
@@ -45,14 +48,14 @@ export default class HomeView extends HomeViewContract {
     }
 
     override showJoinChatPrompt(): void {
-        const joinChatAnswer = this.prompt([{
+        const joinChatAnswer = this.prompt<RoomIdQuestion>([{
             type: PromptType.Input,
             name: ROOM_ID,
             message: "Room id:"
         }], false);
 
-        joinChatAnswer.then((choice: PromptAnswer) => {
-            const roomId = choice.get(ROOM_ID);
+        joinChatAnswer.then((choice: RoomIdQuestion) => {
+            const roomId = choice.roomId;
             this.presenter.handelJoinChatInput(roomId)
         })
     }

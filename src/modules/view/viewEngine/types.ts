@@ -20,8 +20,6 @@ export type Prompt = {
     readonly choices?: string[],
 };
 
-export type PromptAnswer = Map<string, string>;
-
 export type ConsoleOptions = {
     color?: TextColor,
     bgColor?: BackgraundColor,
@@ -75,7 +73,7 @@ export enum TextColor  {
 }
 
 export interface ConsoleStrategy {
-    prompt(prompts: Prompt[]): Promise<PromptAnswer>;
+    prompt<T extends Answers = Answers>(prompts: Prompt[]): Promise<T>;
     log(content: string, consoleOptions?: ConsoleOptions): void;
     error(message: string): void;
     clearScreen(): void;
