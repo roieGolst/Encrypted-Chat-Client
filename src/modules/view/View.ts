@@ -1,6 +1,7 @@
+import { Answers } from "inquirer";
 import uiTread, { ViewValidator } from "./UITread";
 import viewEngine, { ViewEngineAbstract } from "./viewEngine";
-import { Prompt, PromptAnswer } from "./viewEngine/types";
+import { ConsoleOptions, Prompt, PromptAnswer } from "./viewEngine/types";
 
 export default abstract class View extends ViewEngineAbstract {
     private readonly viewEngine: ViewEngineAbstract = viewEngine;
@@ -13,9 +14,9 @@ export default abstract class View extends ViewEngineAbstract {
         this.viewEngine.clear();
     }
 
-    override log(content: string): void {
+    override log(content: string, consoleOptions?: ConsoleOptions): void {
         this.requireCurrentView();
-        this.viewEngine.log(content);
+        this.viewEngine.log(content, consoleOptions);
     }
 
     override error(message: string): void {

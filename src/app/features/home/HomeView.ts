@@ -1,4 +1,4 @@
-import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
+import { BackgraundColor, PromptAnswer, PromptType, TextColor, TextStyle } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";

@@ -1,9 +1,10 @@
 import { Prompt, PromptAnswer, ConsoleStrategy, ConsoleOptions } from "./types";
 import Inquirer from "./strategies/Inquirer";
+import { Answers } from "inquirer";
 
 export abstract class ViewEngineAbstract {
     abstract prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer>;
-    abstract log(content: string, consoleOptions: ConsoleOptions): void;
+    abstract log(content: string, consoleOptions?: ConsoleOptions): void;
     abstract error(message: string): void;
     abstract clear(): void;
 };
