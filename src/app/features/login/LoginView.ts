@@ -9,7 +9,7 @@ type LoginQuestion = { usernameInput: string, passwordInput: string };
 
 const USERNAME_INPUT = "usernameInput";
 const PASSWORD_INPUT =  "passwordInput";
-const ERROR_MESSAGE_DURATION = 5000;
+const ERROR_MESSAGE_DURATION = 10000;
 
 export type LoginViewInput = {
     readonly username: string,
@@ -18,15 +18,12 @@ export type LoginViewInput = {
 export default class LoginView extends LoginViewContract {
     private presenter: LoginPresenterContract;
 
-    override setPresenter(presenter: LoginPresenterContract): void {
-        this.presenter = presenter;
-    }
-
     override onStart(): void {
         super.onStart();
+
+        this.presenter = new LoginPresenter(this);
         this.presenter.subscribe();
     }
-    
     
     override onDestroy(): void {
         this.presenter.unSubscribe();
@@ -60,8 +57,8 @@ export default class LoginView extends LoginViewContract {
         })
     }
 
-    override showHomeScreen(tokens: Tokens): void {
-        this.startScreen(HomeView.factory(tokens));
+    override showHomeScreen(): void {
+        this.startScreen(HomeView.factory());
     }
 
     override showErrorMessage(): void {
@@ -70,9 +67,6 @@ export default class LoginView extends LoginViewContract {
     }
     
     static factory(): BaseView {
-        const loginView = new LoginView();
-        loginView.setPresenter(new LoginPresenter(loginView));
-
-        return loginView;
+        return new LoginView();
     }
 }

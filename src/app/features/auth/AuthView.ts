@@ -13,12 +13,10 @@ const AUTH_QUESTION = "authQuestion";
 export default class AuthView extends AuthViewContract {
     private presenter: AuthPresenter;
 
-    override setPresenter(prester: AuthPresenter): void {
-        this.presenter = prester;
-    }
-
     override onStart(): void {
         super.onStart();
+
+        this.presenter = new AuthPresenter(this);
         this.presenter.subscribe();
     }
 
@@ -61,9 +59,6 @@ export default class AuthView extends AuthViewContract {
     }
     
     static factory() {
-        const authView = new AuthView();
-        authView.setPresenter(new AuthPresenter(authView));
-
-        return authView;
+        return new AuthView();
     }
 };

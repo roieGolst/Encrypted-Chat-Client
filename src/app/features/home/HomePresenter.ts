@@ -1,3 +1,4 @@
+import AuthRepository from "../../utils/authentication/AuthRepository";
 import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
 import HomeModel from "./data";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
@@ -5,12 +6,10 @@ import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 export default class HomePresenter extends HomePresenterContract {
     private readonly view: HomeViewContract;
     private readonly model: HomeModel = new HomeModel();
-    private readonly tokens: Tokens;
 
-    constructor(view: HomeViewContract, tokens: Tokens) {
+    constructor(view: HomeViewContract) {
         super();
         this.view = view;
-        this.tokens = tokens;
     }
 
     override subscribe(): void {
@@ -18,7 +17,13 @@ export default class HomePresenter extends HomePresenterContract {
     }
 
     override async onUserSelectedCreateChatOption(): Promise<void> {
-        const result = await this.model.sendCreateChatPacket(this.tokens);
+        const tokens = AuthRepository.getUserTokens();
+
+        if(!tokens) {
+            //do something
+            return;
+        }
+        const result = await this.model.sendCreateChatPacket(tokens);
 
         if(!result.isSuccess) {
             console.error(result.error);
@@ -33,11 +38,18 @@ export default class HomePresenter extends HomePresenterContract {
     }
     
     override async handelJoinChatInput(roomId?: string): Promise<void> {
+        const tokens = AuthRepository.getUserTokens();
+
+        if(!tokens) {
+            //do something
+            return;
+        }
+
         if(!roomId) {
             throw new Error("Something worng");
         }
 
-        const result = await this.model.sendJoinChatPacket(roomId, this.tokens);
+        const result = await this.model.sendJoinChatPacket(roomId, tokens);
 
         if(!result.isSuccess) {
             console.error(result.error);

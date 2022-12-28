@@ -15,12 +15,10 @@ const ROOM_ID = "roomId";
 export default class HomeView extends HomeViewContract {
     private presenter: HomePresenterContract;
 
-    override setPresenter(presenter: HomePresenterContract): void {
-        this.presenter = presenter
-    }
-
     override onStart(): void {
         super.onStart();
+
+        this.presenter = new HomePresenter(this);
         this.presenter.subscribe();
     }
 
@@ -69,11 +67,8 @@ export default class HomeView extends HomeViewContract {
         this.presenter.unSubscribe();
     }
 
-    static factory(tokens: Tokens): BaseView {
-        const homeView = new HomeView();
-        homeView.setPresenter(new HomePresenter(homeView, tokens));
-
-        return homeView;
+    static factory(): BaseView {
+        return new HomeView();
     }
     
 }

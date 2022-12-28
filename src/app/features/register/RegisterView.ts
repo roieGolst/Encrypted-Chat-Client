@@ -17,14 +17,12 @@ export type RegisterViewInput = {
 
 export default class RegisterView extends RegisterViewContract {
     
-    private presenter: RegisterPresenter
-
-    setPresenter(prester: RegisterPresenter): void {
-        this.presenter = prester;
-    }
+    private presenter: RegisterPresenter;
 
     override onStart(): void {
         super.onStart();
+
+        this.presenter = new RegisterPresenter(this);
         this.presenter.subscribe();
     }
 
@@ -71,10 +69,7 @@ export default class RegisterView extends RegisterViewContract {
     }
 
     static factory(): BaseView {
-        const registerView = new RegisterView();
-        registerView.setPresenter(new RegisterPresenter(registerView));
-
-        return registerView;
+        return new RegisterView();
     }
     
 }

@@ -1,5 +1,5 @@
 import { Answers } from "inquirer";
-import uiTread, { ViewValidator } from "./UITread";
+import uiTread, { ViewConfigsBundle, ViewValidator } from "./UITread";
 import viewEngine, { ViewEngineAbstract } from "./viewEngine";
 import { ConsoleOptions, Prompt } from "./viewEngine/types";
 
@@ -7,7 +7,7 @@ export default abstract class View extends ViewEngineAbstract {
     private readonly viewEngine: ViewEngineAbstract = viewEngine;
     private readonly viewValidator: ViewValidator = uiTread;
 
-    abstract onStart(): void;
+    abstract onStart(viewConfigs?: ViewConfigsBundle): void;
     abstract onDestroy(): void;
 
     override clear(): void {

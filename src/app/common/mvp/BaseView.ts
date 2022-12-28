@@ -1,11 +1,10 @@
 import BasePresnter from "./BasePresnter";
 import View from "../../../modules/view/View";
 import HeaderView from "../../features/header/HeaderView";
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 
 export default abstract class BaseView extends View {
-    abstract setPresenter(prester: BasePresnter): void;
-
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void {
         this.clearAndLogo();
     }
 
