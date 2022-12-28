@@ -1,10 +1,11 @@
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { SplashViewContract } from "./SplashContract";
 import SplashPresenter from "./SplashPresenter";
 
 export default class SplashView extends SplashViewContract {
     private presenter: SplashPresenter;
 
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void {
         super.onStart();
 
         this.presenter = new SplashPresenter(this);

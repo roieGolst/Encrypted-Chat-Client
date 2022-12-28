@@ -1,3 +1,4 @@
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import LoginView from "../login/LoginView";
 import RegisterView from "../register/RegisterView";
@@ -13,7 +14,7 @@ const AUTH_QUESTION = "authQuestion";
 export default class AuthView extends AuthViewContract {
     private presenter: AuthPresenter;
 
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void {
         super.onStart();
 
         this.presenter = new AuthPresenter(this);

@@ -25,11 +25,11 @@ export class UIThread implements ViewValidator {
         this.currentView.onStart(viewConfigs); 
     }
 
-    include(view: View): void {
+    include(view: View, viewConfigs?: ViewConfigsBundle): void {
         
         this.includedViews.set(this.toHash(view), view);
 
-        view.onStart();
+        view.onStart(viewConfigs);
     }
 
     isCurrentView(view: View): boolean {

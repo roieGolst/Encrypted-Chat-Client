@@ -1,3 +1,4 @@
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import AuthView from "../auth/AuthView";
@@ -19,7 +20,7 @@ export default class RegisterView extends RegisterViewContract {
     
     private presenter: RegisterPresenter;
 
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void  {
         super.onStart();
 
         this.presenter = new RegisterPresenter(this);

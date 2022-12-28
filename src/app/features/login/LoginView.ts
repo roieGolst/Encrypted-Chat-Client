@@ -1,3 +1,4 @@
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
@@ -18,7 +19,7 @@ export type LoginViewInput = {
 export default class LoginView extends LoginViewContract {
     private presenter: LoginPresenterContract;
 
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void  {
         super.onStart();
 
         this.presenter = new LoginPresenter(this);

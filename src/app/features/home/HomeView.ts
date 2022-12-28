@@ -1,3 +1,4 @@
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
@@ -15,7 +16,7 @@ const ROOM_ID = "roomId";
 export default class HomeView extends HomeViewContract {
     private presenter: HomePresenterContract;
 
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void  {
         super.onStart();
 
         this.presenter = new HomePresenter(this);
