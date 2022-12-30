@@ -2,6 +2,7 @@ import NetworkLayer, { INetworkLayer } from "../../../modules/network";
 import { IDateHandler } from "../../../modules/network/IDataHandlet";
 import Packet from "../../utils/encryptedChatProtocol/Packet";
 import Parser, { ParserErrorResult } from "../../utils/encryptedChatProtocol/parser";
+import RequestPacket from "../../utils/encryptedChatProtocol/requestPackets/RequsetPacket";
 import { GeneralFailure } from "../../utils/encryptedChatProtocol/responsePackets";
 import ResponsePacket from "../../utils/encryptedChatProtocol/responsePackets/ResponsePacket";
 
@@ -20,10 +21,10 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
         return await this.networkLayer.start();
     }
 
-    async waitForResponse(packet: Packet): Promise<ResponsePacket> {
-        const responsePromise: Promise<ResponsePacket> = new Promise((resolve, reject) => {
+    async waitForResponse<T extends ResponsePacket>(packet: RequestPacket): Promise<T> {
+        const responsePromise: Promise<T> = new Promise((resolve, reject) => {
             this.responsePacketObserver.set(packet.packetId, (responsePacket: ResponsePacket) => {
-                resolve(responsePacket);
+                resolve(responsePacket as T);
             });
 
             setTimeout(() => {
@@ -33,7 +34,7 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
                 this.responsePacketObserver.delete(packet.packetId);
 
                 reject();
-            }, 100000);
+            }, 100000/*TODO: extract to external config*/);
         });
 
         this.sendMessage(packet.toString());

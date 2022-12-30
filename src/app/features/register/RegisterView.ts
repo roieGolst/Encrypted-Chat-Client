@@ -1,3 +1,4 @@
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import AuthView from "../auth/AuthView";
@@ -17,14 +18,12 @@ export type RegisterViewInput = {
 
 export default class RegisterView extends RegisterViewContract {
     
-    private presenter: RegisterPresenter
+    private presenter: RegisterPresenter;
 
-    setPresenter(prester: RegisterPresenter): void {
-        this.presenter = prester;
-    }
-
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void  {
         super.onStart();
+
+        this.presenter = new RegisterPresenter(this);
         this.presenter.subscribe();
     }
 
@@ -71,10 +70,7 @@ export default class RegisterView extends RegisterViewContract {
     }
 
     static factory(): BaseView {
-        const registerView = new RegisterView();
-        registerView.setPresenter(new RegisterPresenter(registerView));
-
-        return registerView;
+        return new RegisterView();
     }
     
 }

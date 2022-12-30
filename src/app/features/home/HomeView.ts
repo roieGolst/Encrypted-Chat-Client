@@ -1,6 +1,7 @@
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
-import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
+import LoginView from "../login/LoginView";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
 
@@ -15,12 +16,10 @@ const ROOM_ID = "roomId";
 export default class HomeView extends HomeViewContract {
     private presenter: HomePresenterContract;
 
-    override setPresenter(presenter: HomePresenterContract): void {
-        this.presenter = presenter
-    }
-
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void  {
         super.onStart();
+
+        this.presenter = new HomePresenter(this);
         this.presenter.subscribe();
     }
 
@@ -65,15 +64,16 @@ export default class HomeView extends HomeViewContract {
         //this.startScreen(RoomPage.factory());
     }
 
+    override showLoginPage(): void {
+        this.startScreen(LoginView.factory());
+    }
+
     override onDestroy(): void {
         this.presenter.unSubscribe();
     }
 
-    static factory(tokens: Tokens): BaseView {
-        const homeView = new HomeView();
-        homeView.setPresenter(new HomePresenter(homeView, tokens));
-
-        return homeView;
+    static factory(): BaseView {
+        return new HomeView();
     }
     
 }

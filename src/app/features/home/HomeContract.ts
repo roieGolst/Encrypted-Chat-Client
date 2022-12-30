@@ -5,6 +5,7 @@ export abstract class HomeViewContract extends BaseView {
     abstract showMenu(): void;
     abstract showJoinChatPrompt(): void;
     abstract showRoomPage(): void;
+    abstract showLoginPage(): void;
 }
 
 export abstract class HomePresenterContract extends BasePresnter {

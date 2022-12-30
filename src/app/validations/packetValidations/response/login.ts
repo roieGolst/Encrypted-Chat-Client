@@ -6,8 +6,7 @@ type LoginResponsePacket = {
     readonly packetId: string;
     readonly type: PacketType.Login;
     readonly status: Status,
-    readonly userAttributs?: UserDetails;
-    readonly tokens?: Tokens
+    readonly userDetails?: UserDetails;
 };
 
 export default {
@@ -27,8 +26,7 @@ export default {
                 packetId: data.packetId,
                 type: PacketType.Login,
                 status: data.status,
-                userAttributs: data.userAttributs,
-                tokens: data.tokens
+                userDetails: data.userDetails,
             }
         };
     }

@@ -24,7 +24,7 @@ export default class InquirerStrategy implements ConsoleStrategy {
         return await inquirer.prompt(prompts);
     }
 
-    private getColorString(color: TextColor | undefined): ansi.StyleFunction {
+    private getColorString(color: TextColor | undefined): ansi.StyleFunction | StringFunction{
         
         switch(color) {
             case TextColor.Black:
@@ -82,7 +82,9 @@ export default class InquirerStrategy implements ConsoleStrategy {
                 return ansi.yellowBright;
             
             default: {
-                return ansi.black;
+                return (text) => {
+                    return text;
+                };
             }
         }
     }

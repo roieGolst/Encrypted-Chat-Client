@@ -13,7 +13,7 @@ export default class HomeModel {
             .build();
 
         try {
-            const responsePacket = await NetworkLayer.waitForResponse(packet) as CreateChatResponse;
+            const responsePacket: CreateChatResponse = await NetworkLayer.waitForResponse(packet);
 
             if(responsePacket.status != Status.Succeeded) {
                 return {
@@ -44,7 +44,7 @@ export default class HomeModel {
             .build();
 
         try {
-            const responsePacket = await NetworkLayer.waitForResponse(packet) as JoinChatPacket;
+            const responsePacket: JoinChatPacket = await NetworkLayer.waitForResponse(packet);
 
             if(responsePacket.status != Status.Succeeded) {
                 return {

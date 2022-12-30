@@ -2,14 +2,17 @@ import View from "./View";
 export interface ViewValidator {
     isCurrentView(view: View): boolean;
     isIncludedView(view: View): boolean
-    startView(view: View): void;
-    include(view: View): void
+    startView(view: View, viewConfigs?: ViewConfigsBundle): void;
+    include(view: View, viewConfigs?: ViewConfigsBundle): void
 }
+
+export type ViewConfigsBundle = Map<string, any>;
+
 export class UIThread implements ViewValidator {
     private currentView: View;
     private includedViews: Map<number, View> = new Map();
 
-    startView(view: View): void {
+    startView(view: View, viewConfigs?: ViewConfigsBundle): void {
         if(this.currentView) {
             this.currentView.onDestroy();
             this.destroyView();
@@ -19,14 +22,14 @@ export class UIThread implements ViewValidator {
         }
 
         this.currentView = view;
-        this.currentView.onStart(); 
+        this.currentView.onStart(viewConfigs); 
     }
 
-    include(view: View): void {
+    include(view: View, viewConfigs?: ViewConfigsBundle): void {
         
         this.includedViews.set(this.toHash(view), view);
 
-        view.onStart();
+        view.onStart(viewConfigs);
     }
 
     isCurrentView(view: View): boolean {
