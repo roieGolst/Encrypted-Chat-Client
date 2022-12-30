@@ -3,7 +3,7 @@ export interface ViewValidator {
     isCurrentView(view: View): boolean;
     isIncludedView(view: View): boolean
     startView(view: View, viewConfigs?: ViewConfigsBundle): void;
-    include(view: View): void
+    include(view: View, viewConfigs?: ViewConfigsBundle): void
 }
 
 export type ViewConfigsBundle = Map<string, any>;
