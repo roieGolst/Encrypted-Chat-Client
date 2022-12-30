@@ -13,6 +13,10 @@ export default class HomePresenter extends HomePresenterContract {
     }
 
     override subscribe(): void {
+        if(!AuthRepository.isLoggedIn()) {
+            return this.view.showLoginPage();
+        }
+
         this.view.showMenu();
     }
 

@@ -1,7 +1,7 @@
 import { ViewConfigsBundle } from "../../../modules/view/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
-import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
+import LoginView from "../login/LoginView";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 import HomePresenter from "./HomePresenter";
 
@@ -62,6 +62,10 @@ export default class HomeView extends HomeViewContract {
     override showRoomPage(): void {
         this.log("Roon page :)");
         //this.startScreen(RoomPage.factory());
+    }
+
+    override showLoginPage(): void {
+        this.startScreen(LoginView.factory());
     }
 
     override onDestroy(): void {
