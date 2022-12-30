@@ -1,13 +1,13 @@
 import { IResult } from "../../../common/IResult";
-import { PacketType, Statuses } from "../../../utils/encryptedChatProtocol/commonTypes";
+import { PacketType, Status } from "../../../utils/encryptedChatProtocol/commonTypes";
 import { newTokenResponsePacketSchema } from "../response/schemas";
 
 
 type newTokenResponsePacket = {
-    packetId: string;
-    type: PacketType.NewToken;
-    status: Statuses,
-    token?: string;
+    readonly packetId: string;
+    readonly type: PacketType.NewToken;
+    readonly status: Status,
+    readonly token?: string;
 }
 
 export default {

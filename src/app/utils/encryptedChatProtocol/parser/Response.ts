@@ -1,118 +1,129 @@
-import { PacketType, Statuses } from "../commonTypes";
+import { PacketType, Status } from "../commonTypes";
 import ResponsePacket from "../responsePackets/ResponsePacket";
 import * as ResponsePackets from "../responsePackets";
 import * as validations from "../../../validations";
+import { ParserErrorResult } from ".";
 
 export default class ResponseParser {
-    static parse(type: PacketType, packetId: string, status: Statuses, payload: any): ResponsePacket | undefined {
+    static parse(type: PacketType, packetId: string, status: Status, payload: any): ResponsePacket {
         switch(type) {
             case PacketType.Register : {
-                return this.parseRegisterResponse(type, packetId, status);
+                return this.parseRegisterResponse(packetId, status);
             }
 
             case PacketType.Login : {
-                return this.parseLoginResponse(type, packetId, status, payload);
+                return this.parseLoginResponse(packetId, status, payload);
             }
 
             case PacketType.CreateChat : {
-                return this.parseCreateChatResponse(type, packetId, status, payload)
+                return this.parseCreateChatResponse(packetId, status, payload)
             }
 
             case PacketType.JoinChat : {
-                return this.parseJoinChatResponse(type, packetId, status, payload);
-            }
-
-            case PacketType.NewRoomMember : {
-                // return this.parseNewRoomMemberResponse(type, packetId, status, payload);
-                return;
+                return this.parseJoinChatResponse(packetId, status, payload);
             }
 
             case PacketType.NewToken : {
-                return this.parseNewTokenResponse(type, packetId, status, payload);
+                return this.parseNewTokenResponse(packetId, status, payload);
             }
 
             case PacketType.ChatMessage : {
-                return this.parseChatMessageResponse(type, packetId, status);
+                return this.parseChatMessageResponse(packetId, status);
+            }
+
+            case PacketType.GeneralFailure: {
+                return this.generalPacketGenerator(new ParserErrorResult({packetId, type, status}));
             }
 
             default : {
-                return undefined;
+                return this.generalPacketGenerator(new ParserErrorResult({
+                    packetId,
+                    type,
+                    status: Status.InvalidPacket
+                }));
             }
         }
     }
 
-    private static parseRegisterResponse(type: PacketType, packetId: string, status: Statuses): ResponsePackets.RegisterResponse {
+    private static parseRegisterResponse(packetId: string, status: Status): ResponsePacket {
         return new ResponsePackets.RegisterResponse.Builder()
             .setPacketId(packetId)
-            .setType(type)
             .setStatus(status)
             .build()
     }
 
-    private static parseLoginResponse(type: PacketType, packetId: string, status: Statuses, payload: any): ResponsePackets.LoginResponse | undefined {
+    private static parseLoginResponse(packetId: string, status: Status, payload: any): ResponsePacket {
         const validationResult = validations.packetValidation.response.loginPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
-            return undefined
+            return this.generalPacketGenerator(new ParserErrorResult({
+                packetId,
+                type: PacketType.Login,
+                status: Status.VlidationError
+            }));
         }
 
-        const userAttributs = validationResult.value.userAttributs;
-        const tokens = validationResult.value.tokens;
+        const userDetails= validationResult.value.userDetails;
 
-        if(!userAttributs || !tokens) {
+        //TODO: Make all response packet fileds to be required! 
+        if(!userDetails) {
             return new ResponsePackets.LoginResponse.Builder()
             .setPacketId(packetId)
-            .setType(type)
             .setStatus(status)
             .build()
         }
 
         return new ResponsePackets.LoginResponse.Builder()
             .setPacketId(packetId)
-            .setType(type)
             .setStatus(status)
-            .setUserAttributs(userAttributs)
-            .setTokens(payload.tokens)
+            .setUserDetails(userDetails)
             .build()
     }
 
-    private static parseCreateChatResponse(type: PacketType, packetId: string, status: Statuses, payload: any): ResponsePackets.CreateChatResponse | undefined {
+    private static parseCreateChatResponse(packetId: string, status: Status, payload: any): ResponsePacket {
         const validationResult = validations.packetValidation.response.createChatPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
-            return undefined
+            return this.generalPacketGenerator(new ParserErrorResult({
+                packetId,
+                type: PacketType.CreateChat,
+                status: Status.VlidationError
+            }));
         }
 
         const roomId = validationResult.value.roomId;
 
+        //TODO: Make all response packet fileds to be required! 
         if(!roomId) {
             return new ResponsePackets.CreateChatResponse.Builder()
-            .setType(type)
             .setPacketId(packetId)
             .setStatus(status)
             .build();
         }
 
         return new ResponsePackets.CreateChatResponse.Builder()
-            .setType(type)
             .setPacketId(packetId)
             .setStatus(status)
             .setRoomId(payload["roomId"])
             .build()
     }
 
-    private static parseJoinChatResponse(type: PacketType, packetId: string, status: Statuses, payload: any): ResponsePackets.JoinChatResponse | undefined {
+    private static parseJoinChatResponse(packetId: string, status: Status, payload: any): ResponsePacket {
         const validationResult = validations.packetValidation.response.joinChatPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
-            return undefined
+            return this.generalPacketGenerator(new ParserErrorResult({
+                packetId,
+                type: PacketType.JoinChat,
+                status: Status.VlidationError
+            }));
         }
 
         const members = validationResult.value.members;
 
+        //TODO: Make all response packet fileds to be required! 
         if(!members) {
             return new ResponsePackets.JoinChatResponse.Builder()
-            .setType(type)
             .setPacketId(packetId)
             .setStatus(status)
             .build();
@@ -125,60 +136,52 @@ export default class ResponseParser {
         }
 
         return new ResponsePackets.JoinChatResponse.Builder()
-            .setType(type)
             .setPacketId(packetId)
             .setStatus(status)
             .setMembers(membersMap)
             .build()
     }
 
-    // private static parseNewRoomMemberResponse(type: PacketType, packetId: string, status: Statuses, payload: any): ResponsePackets.NewRoomMember | undefined {
-    //     const validationResult = validations.packetValidation.response.N.validate(payload);
-
-    //     if(!validationResult.isSuccess) {
-    //         return undefined
-    //     }
-
-    //     const member = validationResult.value.members
-
-    //     return new ResponsePackets.NewRoomMember.Builder()
-    //         .setType(type)
-    //         .setPacketId(packetId)
-    //         .setStatus(status)
-    //         .setMembers(member)
-    //         .build()
-    // }
-
-    private static parseNewTokenResponse(type: PacketType, packetId: string, status: Statuses, payload: any): ResponsePackets.NewToken | undefined {
+    private static parseNewTokenResponse(packetId: string, status: Status, payload: any): ResponsePacket {
         const validationResult = validations.packetValidation.response.newTokenPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
-            return undefined
+            return this.generalPacketGenerator(new ParserErrorResult({
+                packetId,
+                type: PacketType.NewRoomMember,
+                status: Status.VlidationError
+            }));
         }
 
         const token = validationResult.value.token;
 
+        //TODO: Make all response packet fileds to be required! 
         if(!token) {
             return new ResponsePackets.NewToken.Builder()
-            .setType(type)
             .setPacketId(packetId)
             .setStatus(status)
             .build();
         }
 
         return new ResponsePackets.NewToken.Builder()
-            .setType(type)
             .setPacketId(packetId)
             .setStatus(status)
-            .setToken({token})
+            .setToken(token)
             .build()
     }
 
-    private static parseChatMessageResponse(type: PacketType, packetId: string, status: Statuses): ResponsePackets.ChatMessage {
+    private static parseChatMessageResponse(packetId: string, status: Status): ResponsePacket {
         return new ResponsePackets.ChatMessage.Builder()
-            .setType(type)
             .setPacketId(packetId)
             .setStatus(status)
+            .build()
+    }
+
+    private static generalPacketGenerator(error: ParserErrorResult): ResponsePacket {
+        return new ResponsePackets.GeneralFailure.Builder()
+            .setPacketId(error.packetId)
+            .setType(error.type)
+            .setStatus(error.status)
             .build()
     }
 }

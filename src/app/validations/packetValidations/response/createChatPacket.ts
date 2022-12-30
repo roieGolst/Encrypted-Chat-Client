@@ -1,17 +1,17 @@
 import { IResult } from "../../../common/IResult";
-import { PacketType, Statuses } from "../../../utils/encryptedChatProtocol/commonTypes";
-import { chatMessaegResponsePacketSchema } from "./schemas";
+import { PacketType, Status } from "../../../utils/encryptedChatProtocol/commonTypes";
+import { createChatResponsePacketSchema } from "./schemas";
 
 type CreateChatResponsePacket = {
-    packetId: string;
-    type: PacketType.CreateChat;
-    status: Statuses;
-    roomId?: string;
+    readonly packetId: string;
+    readonly type: PacketType.CreateChat;
+    readonly status: Status;
+    readonly roomId?: string;
 }
 
 export default {
     validate: (data: any): IResult<CreateChatResponsePacket> => {
-        const result = chatMessaegResponsePacketSchema.validate(data);
+        const result = createChatResponsePacketSchema.validate(data);
 
         if(result.error) {
             return {

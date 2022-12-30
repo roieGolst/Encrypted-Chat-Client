@@ -1,21 +1,22 @@
-import uiTread, { ViewValidator } from "./UITread";
+import { Answers } from "inquirer";
+import uiTread, { ViewConfigsBundle, ViewValidator } from "./UITread";
 import viewEngine, { ViewEngineAbstract } from "./viewEngine";
-import { Prompt, PromptAnswer } from "./viewEngine/types";
+import { ConsoleOptions, Prompt } from "./viewEngine/types";
 
 export default abstract class View extends ViewEngineAbstract {
     private readonly viewEngine: ViewEngineAbstract = viewEngine;
     private readonly viewValidator: ViewValidator = uiTread;
 
-    abstract onStart(): void;
+    abstract onStart(viewConfigs?: ViewConfigsBundle): void;
     abstract onDestroy(): void;
 
     override clear(): void {
         this.viewEngine.clear();
     }
 
-    override log(content: string): void {
+    override log(content: string, consoleOptions?: ConsoleOptions): void {
         this.requireCurrentView();
-        this.viewEngine.log(content);
+        this.viewEngine.log(content, consoleOptions);
     }
 
     override error(message: string): void {
@@ -23,22 +24,22 @@ export default abstract class View extends ViewEngineAbstract {
         this.viewEngine.error(message);
     }
     
-    override async prompt(prompts: Prompt[], clear: boolean): Promise<PromptAnswer> {
+    override async prompt<T extends Answers = Answers>(prompts: Prompt[], clear: boolean): Promise<T> {
         this.requireCurrentView();
 
         return this.viewEngine.prompt(prompts, clear);
     }
 
-    startScreen(view: View): void {
+    startScreen(view: View, viewConfigs?: ViewConfigsBundle): void {
         this.requireCurrentView();
 
-        this.viewValidator.startView(view);
+        this.viewValidator.startView(view, viewConfigs);
     }
 
-    incudeView(view: View): void {
+    incudeView(view: View, viewConfigs?: ViewConfigsBundle): void {
         this.requireCurrentView();
 
-        this.viewValidator.include(view);
+        this.viewValidator.include(view, viewConfigs);
     }
 
     isActive() {

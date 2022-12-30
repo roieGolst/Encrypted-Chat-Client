@@ -1,30 +1,24 @@
-import { PacketType, Statuses } from "../commonTypes";
+import { PacketType, Status } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
 export default class RegisterResponsePacket extends ResponsePacket {
 
-    constructor(packetId: string, status: Statuses, type: PacketType) {
-        super(type, status, packetId);
+    constructor(packetId: string, status: Status) {
+        super(PacketType.Register, status, packetId);
     }
 
     static Builder = class implements IBuilder<RegisterResponsePacket> {
         packetId: string;
-        status: Statuses;
-        type: PacketType;
+        status: Status;
 
         setPacketId(packetId: string): this {
             this.packetId = packetId;
             return this;
         }
 
-        setStatus(status: Statuses): this {
+        setStatus(status: Status): this {
             this.status = status;
-            return this;
-        }
-
-        setType(type: PacketType): this {
-            this.type = type;
             return this;
         }
 
@@ -37,11 +31,7 @@ export default class RegisterResponsePacket extends ResponsePacket {
                 throw new Error("'Status' is required");
             }
 
-            else if(!this.type) {
-                throw new Error("'Type' is required");
-            }
-
-            return new RegisterResponsePacket(this.packetId, this.status, this.type);
+            return new RegisterResponsePacket(this.packetId, this.status);
         }
     }
 }

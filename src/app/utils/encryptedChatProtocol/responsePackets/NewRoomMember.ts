@@ -1,24 +1,24 @@
-import { PacketType, Statuses } from "../commonTypes";
+import { PacketType, Status } from "../commonTypes";
 import { IBuilder } from "../../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
 export type SingleMember = {
-    socketId: string,
-    username: string
+    readonly socketId: string,
+    readonly username: string
 };
 
 export default class NewRoomMember extends ResponsePacket {
     readonly members: SingleMember;
 
-    constructor(status: Statuses, members: SingleMember, packetId?: string) {
+    constructor(status: Status, members: SingleMember, packetId: string) {
         super(PacketType.NewRoomMember, status, packetId);
         this.members = members;
     }
 
     static Builder = class implements IBuilder<NewRoomMember> {
-        packetId?: string;
+        packetId: string;
         type: PacketType;
-        status: Statuses;
+        status: Status;
         member: SingleMember;
 
         setPacketId(packetId: string): this {
@@ -31,7 +31,7 @@ export default class NewRoomMember extends ResponsePacket {
             return this;
         }
 
-        setStatus(status: Statuses): this {
+        setStatus(status: Status): this {
             this.status = status;
             return this;
         }

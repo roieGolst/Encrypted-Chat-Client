@@ -1,28 +1,30 @@
-import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
+import { PromptType } from "../../../modules/view/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
+import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
+import HomeView from "../home/HomeView";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";
 
+type LoginQuestion = { usernameInput: string, passwordInput: string };
+
 const USERNAME_INPUT = "usernameInput";
 const PASSWORD_INPUT =  "passwordInput";
-const ERROR_MESSAGE_DURATION = 5000;
+const ERROR_MESSAGE_DURATION = 10000;
 
 export type LoginViewInput = {
-    username: string | undefined,
-    password: string | undefined 
-} ;
+    readonly username: string,
+    readonly password: string 
+};
 export default class LoginView extends LoginViewContract {
     private presenter: LoginPresenterContract;
 
-    override setPresenter(presenter: LoginPresenterContract): void {
-        this.presenter = presenter;
-    }
-
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void  {
         super.onStart();
+
+        this.presenter = new LoginPresenter(this);
         this.presenter.subscribe();
     }
-    
     
     override onDestroy(): void {
         this.presenter.unSubscribe();
@@ -34,30 +36,30 @@ export default class LoginView extends LoginViewContract {
     }
     
     override showLoginPrompt(): void {
-        const userAttributs = this.prompt([
+        const userAttributs = this.prompt<LoginQuestion>([
             {
                 type: PromptType.Input,
                 name: USERNAME_INPUT,
                 message: "User name: "
             },
             {
-                type: PromptType.Input,
+                type: PromptType.Password,
                 name: PASSWORD_INPUT,
-                message: "Password: "
+                message: "Password: ",
+                mask: "*"
             }
         ], false);
 
-        userAttributs.then((input: PromptAnswer) => {
+        userAttributs.then((input: LoginQuestion) => {
             this.presenter.handelLoginInput({
-                username: input.get(USERNAME_INPUT),
-                password: input.get(PASSWORD_INPUT)
+                username: input.usernameInput,
+                password: input.passwordInput
             });
         })
     }
 
-    override showChatScreen(): void {
-        this.log("Chat screen");
-        // uiThread.startView(ChatView.factory());
+    override showHomeScreen(): void {
+        this.startScreen(HomeView.factory());
     }
 
     override showErrorMessage(): void {
@@ -66,9 +68,6 @@ export default class LoginView extends LoginViewContract {
     }
     
     static factory(): BaseView {
-        const loginView = new LoginView();
-        loginView.setPresenter(new LoginPresenter(loginView));
-
-        return loginView;
+        return new LoginView();
     }
 }

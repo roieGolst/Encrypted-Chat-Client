@@ -1,7 +1,9 @@
 import NetworkLayer, { INetworkLayer } from "../../../modules/network";
 import { IDateHandler } from "../../../modules/network/IDataHandlet";
 import Packet from "../../utils/encryptedChatProtocol/Packet";
-import Parser from "../../utils/encryptedChatProtocol/parser";
+import Parser, { ParserErrorResult } from "../../utils/encryptedChatProtocol/parser";
+import RequestPacket from "../../utils/encryptedChatProtocol/requestPackets/RequsetPacket";
+import { GeneralFailure } from "../../utils/encryptedChatProtocol/responsePackets";
 import ResponsePacket from "../../utils/encryptedChatProtocol/responsePackets/ResponsePacket";
 
 export type ResponsePacketObserver = (responsePacket: ResponsePacket) => void;
@@ -19,10 +21,10 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
         return await this.networkLayer.start();
     }
 
-    async waitForResponse(packet: Packet): Promise<ResponsePacket> {
-        const responsePromise: Promise<ResponsePacket> = new Promise((resolve, reject) => {
+    async waitForResponse<T extends ResponsePacket>(packet: RequestPacket): Promise<T> {
+        const responsePromise: Promise<T> = new Promise((resolve, reject) => {
             this.responsePacketObserver.set(packet.packetId, (responsePacket: ResponsePacket) => {
-                resolve(responsePacket);
+                resolve(responsePacket as T);
             });
 
             setTimeout(() => {
@@ -32,7 +34,7 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
                 this.responsePacketObserver.delete(packet.packetId);
 
                 reject();
-            }, 15000);
+            }, 100000/*TODO: extract to external config*/);
         });
 
         this.sendMessage(packet.toString());
@@ -49,17 +51,35 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
     }
 
     handleOnData(data: Buffer): void {
-        const parserResult = Parser.parse(data);
+        let parserResult: Packet;
+        try{
+            parserResult = Parser.parse(data);
+        }
+        catch(err: unknown) {
+            if(err instanceof ParserErrorResult) {
+                const packetId = err.packetId;
 
-        if(!parserResult.isSuccess) {
+                if(!packetId) {
+                    return;
+                }
+
+                const responsebserver = this.responsePacketObserver.get(packetId);
+
+                if(!responsebserver) {
+                    return;
+                }
+
+                responsebserver(new GeneralFailure(err.status, err.type, packetId));
+            }
+
             return;
         }
 
-        if(! (parserResult.value instanceof ResponsePacket)) {
+        if(! (parserResult instanceof ResponsePacket)) {
             return;
         }
 
-        const packetId = parserResult.value.packetId;
+        const packetId = parserResult.packetId;
         const responsebserver = this.responsePacketObserver.get(packetId);
 
         if(!responsebserver) {
@@ -68,7 +88,7 @@ export default new class NetworkLayerProxy implements INetworkLayer, IDateHandle
 
         this.responsePacketObserver.delete(packetId);
 
-        responsebserver(parserResult.value);
+        responsebserver(parserResult);
     }
     handleOnError(error: Error): void {
         throw new Error("Method not implemented.");

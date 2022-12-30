@@ -6,7 +6,7 @@ export abstract class LoginViewContract extends BaseView {
     abstract initLoginFlow(): void;
     abstract showLoginPrompt(): void;
     abstract showErrorMessage(): void;
-    abstract showChatScreen(): void;
+    abstract showHomeScreen(): void;
 }
 
 export abstract class LoginPresenterContract extends BasePresnter {

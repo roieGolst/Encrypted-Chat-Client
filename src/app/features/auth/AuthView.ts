@@ -1,37 +1,38 @@
-import { PromptAnswer, PromptType } from "../../../modules/view/viewEngine/types";
+import { ViewConfigsBundle } from "../../../modules/view/UITread";
+import { PromptType } from "../../../modules/view/viewEngine/types";
 import LoginView from "../login/LoginView";
 import RegisterView from "../register/RegisterView";
 import { AuthViewContract } from "./AuthContract";
 import AuthPresenter from "./AuthPresenter";
 
+type AuthQuestion = { authQuestion: string };
+
 const LOGIN = "login";
 const REGISTER = "register";
-const HOME_QUESTION = "homeQuestion";
+const AUTH_QUESTION = "authQuestion";
 
 export default class AuthView extends AuthViewContract {
     private presenter: AuthPresenter;
 
-    override setPresenter(prester: AuthPresenter): void {
-        this.presenter = prester;
-    }
-
-    override onStart(): void {
+    override onStart(viewConfigs?: ViewConfigsBundle): void {
         super.onStart();
+
+        this.presenter = new AuthPresenter(this);
         this.presenter.subscribe();
     }
 
     override showMenu(): void {
-        const answerPromise = this.prompt([
+        const answerPromise = this.prompt<AuthQuestion>([
             {
                 type: PromptType.List,
                 message: "Hello welcome to Encrypt-chat choose opstion",
-                name: HOME_QUESTION,
+                name: AUTH_QUESTION,
                 choices: [LOGIN, REGISTER]
             }
         ], false);
 
-        answerPromise.then((choice: PromptAnswer) => {
-            switch(choice.get(HOME_QUESTION)) {
+        answerPromise.then((choice: AuthQuestion) => {
+            switch(choice.authQuestion) {
                 case LOGIN : {
                     this.presenter.onUserSelectedLoginOption();
                     break;
@@ -59,9 +60,6 @@ export default class AuthView extends AuthViewContract {
     }
     
     static factory() {
-        const authView = new AuthView();
-        authView.setPresenter(new AuthPresenter(authView));
-
-        return authView;
+        return new AuthView();
     }
 };

@@ -1,16 +1,16 @@
 import { IResult } from "../../../common/IResult";
 import { PacketType } from "../../../utils/encryptedChatProtocol/commonTypes";
-import { chatMessaegRequestPacketSchema } from "./schemas";
+import { chatMessaegRequestPacketSchema, createChatRequestPacketSchema } from "./schemas";
 
 type CreateChatRequestPacket = {
-    packetId: string;
-    type: PacketType.CreateChat;
-    token: string;
+    readonly packetId: string;
+    readonly type: PacketType.CreateChat;
+    readonly token: string;
 }
 
 export default {
     validate: (data: any): IResult<CreateChatRequestPacket> => {
-        const result = chatMessaegRequestPacketSchema.validate(data);
+        const result = createChatRequestPacketSchema.validate(data);
 
         if(result.error) {
             return {

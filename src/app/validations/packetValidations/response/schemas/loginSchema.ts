@@ -12,11 +12,10 @@ export default Joi.object({
         .valid("login")
         .required(),
 
-    status: Joi.string()
-        .valid("succeeded", "failed")
+    status: Joi.number()
         .required(),
         
-    userAttributs: Joi.object({
+    userDetails: Joi.object({
         userId: Joi.string()
             .min(userConfigs.UUID_LENGTH)
             .max(userConfigs.UUID_LENGTH)
@@ -25,18 +24,16 @@ export default Joi.object({
         username: Joi.string()
             .min(userConfigs.MIN_USER_NAME_LENGTH)
             .max(userConfigs.MAX_USER_NAME_LENGTH)
-            .required()
-        })
-        .optional(),
-
-
-    tokens: Joi.object({
-        token: Joi.string()
-            .min(tokenConfigs.MIN_TOKEN_LENGTH)
             .required(),
 
-        refreshToken: Joi.string()
-            .required()
+        tokens: Joi.object({
+            token: Joi.string()
+                .min(tokenConfigs.MIN_TOKEN_LENGTH)
+                .required(),
+    
+            refreshToken: Joi.string()
+                .required()
+            })
         })
         .optional()
 });
