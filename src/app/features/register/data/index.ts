@@ -11,7 +11,7 @@ export default class RegisterModel {
             .build()
             
         try {
-            const responsePacket = await NetworkLayer.waitForResponse(packet) as RegisterResponse;
+            const responsePacket: RegisterResponse = await NetworkLayer.waitForResponse(packet);
 
             if(responsePacket.status != Status.Succeeded) {
                 return false;
