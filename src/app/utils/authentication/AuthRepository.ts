@@ -14,7 +14,7 @@ class AuthRepository implements IAuthRepository {
             .build();
         
         try {
-            const responsePacket = await NetworkLayer.waitForResponse(packet) as LoginResponse;
+            const responsePacket: LoginResponse = await NetworkLayer.waitForResponse(packet);
             
             if(responsePacket.status != Status.Succeeded) {
                 return false;
@@ -28,6 +28,11 @@ class AuthRepository implements IAuthRepository {
             return false;
         }
     }
+
+    isLoggedIn(): boolean {
+        return this.userDetails != undefined;
+    }
+    
     getUserId(): string | undefined {
         if(!this.userDetails) {
             return undefined;
