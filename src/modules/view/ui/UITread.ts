@@ -1,4 +1,4 @@
-import View from "./View";
+import View from "../View";
 export interface ViewValidator {
     isCurrentView(view: View): boolean;
     isIncludedView(view: View): boolean

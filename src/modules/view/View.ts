@@ -1,55 +1,41 @@
 import { Answers } from "inquirer";
-import uiTread, { ViewConfigsBundle, ViewValidator } from "./UITread";
-import viewEngine, { ViewEngineAbstract } from "./viewEngine";
+import screenManagerRepository from "./ScreenManagerRepository";
+import { ScreenManagerRepositoryAbstract } from "./IScreenManagerRepository";
+import { ViewConfigsBundle } from "./ui/UITread";
 import { ConsoleOptions, Prompt } from "./viewEngine/types";
 
-export default abstract class View extends ViewEngineAbstract {
-    private readonly viewEngine: ViewEngineAbstract = viewEngine;
-    private readonly viewValidator: ViewValidator = uiTread;
+export default abstract class View {
+    protected screenManager: ScreenManagerRepositoryAbstract = screenManagerRepository;
 
     abstract onStart(viewConfigs?: ViewConfigsBundle): void;
     abstract onDestroy(): void;
 
-    override clear(): void {
-        this.viewEngine.clear();
+    clear(): void {
+        this.screenManager.clear(this);
     }
 
-    override log(content: string, consoleOptions?: ConsoleOptions): void {
-        this.requireCurrentView();
-        this.viewEngine.log(content, consoleOptions);
+    log(content: string, consoleOptions?: ConsoleOptions): void {
+        this.screenManager.log(this, content, consoleOptions);
     }
 
-    override error(message: string): void {
-        this.requireCurrentView();
-        this.viewEngine.error(message);
+    error(message: string): void {
+        this.screenManager.error(this, message);
     }
     
-    override async prompt<T extends Answers = Answers>(prompts: Prompt[], clear: boolean): Promise<T> {
-        this.requireCurrentView();
-
-        return this.viewEngine.prompt(prompts, clear);
+    async prompt<T extends Answers = Answers>(prompts: Prompt[], clear: boolean): Promise<T> {
+        return this.screenManager.prompt(this, prompts, clear);
     }
 
     startScreen(view: View, viewConfigs?: ViewConfigsBundle): void {
-        this.requireCurrentView();
-
-        this.viewValidator.startView(view, viewConfigs);
+        this.screenManager.startView(this, view, viewConfigs);
     }
 
     incudeView(view: View, viewConfigs?: ViewConfigsBundle): void {
-        this.requireCurrentView();
-
-        this.viewValidator.include(view, viewConfigs);
+        this.screenManager.include(this, view, viewConfigs);
     }
 
     isActive() {
-        return this.viewValidator.isCurrentView(this);
-    }
-
-    private requireCurrentView(): void {
-        if(!this.isActive() && !this.viewValidator.isIncludedView(this)) {
-            throw new Error("Only dispalyed view can perform ui actions");
-        }
+        return this.screenManager.isActive(this);
     }
 }
 
