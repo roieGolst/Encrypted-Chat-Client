@@ -1,4 +1,4 @@
-import { ViewConfigsBundle } from "../../../modules/view/UITread";
+import { ViewConfigsBundle } from "../../../modules/view/ui/UITread";
 import { PromptType } from "../../../modules/view/viewEngine/types";
 import LoginView from "../login/LoginView";
 import RegisterView from "../register/RegisterView";

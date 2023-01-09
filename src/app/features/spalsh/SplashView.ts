@@ -1,4 +1,4 @@
-import { ViewConfigsBundle } from "../../../modules/view/UITread";
+import { ViewConfigsBundle } from "../../../modules/view/ui/UITread";
 import { SplashViewContract } from "./SplashContract";
 import SplashPresenter from "./SplashPresenter";
 

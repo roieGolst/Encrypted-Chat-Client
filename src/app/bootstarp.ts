@@ -1,4 +1,4 @@
-import uiTread from "../modules/view/UITread"
+import uiTread from "../modules/view/ui/UITread"
 import View from "../modules/view/View"
 
 type BootstarpArgs = {
