@@ -1,5 +1,5 @@
-import { ViewConfigsBundle } from "../../../modules/view/ui/UITread";
-import { PromptType } from "../../../modules/view/viewEngine/types";
+import { ViewConfigsBundle } from "../../../modules/view/modules/screenManager/common/ViewConfigsBundle";
+import { PromptType } from "../../../modules/view/modules/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import AuthView from "../auth/AuthView";
 import { RegisterViewContract } from "./RegisterContract";

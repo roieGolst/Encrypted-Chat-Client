@@ -1,7 +1,7 @@
 import BasePresnter from "./BasePresnter";
 import View from "../../../modules/view/View";
 import HeaderView from "../../features/header/HeaderView";
-import { ViewConfigsBundle } from "../../../modules/view/ui/UITread";
+import { ViewConfigsBundle } from "../../../modules/view/modules/screenManager/common/ViewConfigsBundle";
 
 export default abstract class BaseView extends View {
     override onStart(viewConfigs?: ViewConfigsBundle): void {

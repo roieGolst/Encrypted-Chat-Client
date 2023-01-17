@@ -1,7 +1,6 @@
-import { ViewConfigsBundle } from "../../../modules/view/ui/UITread";
-import { PromptType } from "../../../modules/view/viewEngine/types";
+import { ViewConfigsBundle } from "../../../modules/view/modules/screenManager/common/ViewConfigsBundle";
+import { PromptType } from "../../../modules/view/modules/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
-import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
 import HomeView from "../home/HomeView";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";

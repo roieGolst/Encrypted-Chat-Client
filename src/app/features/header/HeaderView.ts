@@ -1,4 +1,4 @@
-import { ViewConfigsBundle } from "../../../modules/view/ui/UITread";
+import { ViewConfigsBundle } from "../../../modules/view/modules/screenManager/common/ViewConfigsBundle";
 import View from "../../../modules/view/View";
 import logo from "../../utils/view/logoUtil";
 
