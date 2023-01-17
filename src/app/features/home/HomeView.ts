@@ -1,5 +1,5 @@
-import { ViewConfigsBundle } from "../../../modules/view/modules/screenManager/common/ViewConfigsBundle";
-import { PromptType } from "../../../modules/view/modules/viewEngine/types";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
+import { PromptType } from "../../../modules/cli/modules/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import LoginView from "../login/LoginView";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";

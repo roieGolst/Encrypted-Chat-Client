@@ -1,4 +1,4 @@
-import { ViewConfigsBundle } from "../../../modules/view/modules/screenManager/common/ViewConfigsBundle";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
 import { SplashViewContract } from "./SplashContract";
 import SplashPresenter from "./SplashPresenter";
 

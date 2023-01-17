@@ -1,5 +1,5 @@
-import { ViewConfigsBundle } from "../../../modules/view/modules/screenManager/common/ViewConfigsBundle";
-import View from "../../../modules/view/View";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
+import View from "../../../modules/cli/View";
 import logo from "../../utils/view/logoUtil";
 
 export default class HeaderView extends View {

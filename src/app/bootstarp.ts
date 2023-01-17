@@ -1,5 +1,5 @@
-import uiTread from "../modules/view/modules/screenManager/ScreenManager"
-import View from "../modules/view/View"
+import uiTread from "../modules/cli/modules/screenManager/ScreenManager"
+import View from "../modules/cli/View"
 
 type BootstarpArgs = {
     splashScreen: View,
