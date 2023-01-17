@@ -1,14 +1,8 @@
-import View from "../View";
-export interface ViewValidator {
-    isCurrentView(view: View): boolean;
-    isIncludedView(view: View): boolean
-    startView(view: View, viewConfigs?: ViewConfigsBundle): void;
-    include(view: View, viewConfigs?: ViewConfigsBundle): void
-}
+import View from "../../View";
+import { ViewConfigsBundle } from "./common/ViewConfigsBundle";
+import { IScreenManager } from "./IScreenManager";
 
-export type ViewConfigsBundle = Map<string, any>;
-
-export class UIThread implements ViewValidator {
+export class ScreenManager implements IScreenManager {
     private currentView: View;
     private includedViews: Map<number, View> = new Map();
 
@@ -38,6 +32,14 @@ export class UIThread implements ViewValidator {
 
     isIncludedView(view: View): boolean {
         return this.includedViews.has(this.toHash(view));
+    }
+
+    hasPerformPermission(view: View): boolean {
+        if(!this.isCurrentView(view) && !this.isIncludedView(view)) {
+            return false;
+        }
+
+        return true;
     }
 
     private toHash(object: Object): number {
@@ -70,4 +72,4 @@ export class UIThread implements ViewValidator {
     }
 }
 
-export default new UIThread();
+export default new ScreenManager();

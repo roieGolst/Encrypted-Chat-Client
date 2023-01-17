@@ -1,41 +1,61 @@
 import { Answers } from "inquirer";
-import screenManagerRepository from "./ScreenManagerRepository";
-import { ScreenManagerRepositoryAbstract } from "./IScreenManagerRepository";
-import { ViewConfigsBundle } from "./ui/UITread";
-import { ConsoleOptions, Prompt } from "./viewEngine/types";
+import screenManager from "./modules/screenManager/ScreenManager";
+import { ConsoleOptions, Prompt } from "./modules/viewEngine/types";
+import viewEngine, { IViewEngine } from "./modules/viewEngine";
+import { IScreenManager } from "./modules/screenManager/IScreenManager";
+import { ViewConfigsBundle } from "./modules/screenManager/common/ViewConfigsBundle";
 
 export default abstract class View {
-    protected screenManager: ScreenManagerRepositoryAbstract = screenManagerRepository;
+    private readonly screen: IScreenManager = screenManager;
+    private readonly ui: IViewEngine = viewEngine;
 
     abstract onStart(viewConfigs?: ViewConfigsBundle): void;
     abstract onDestroy(): void;
 
     clear(): void {
-        this.screenManager.clear(this);
+        this.checkScreenPermission();
+
+        this.ui.clear();
     }
 
     log(content: string, consoleOptions?: ConsoleOptions): void {
-        this.screenManager.log(this, content, consoleOptions);
+        this.checkScreenPermission();
+
+        this.ui.log(content, consoleOptions);
     }
 
     error(message: string): void {
-        this.screenManager.error(this, message);
+        this.checkScreenPermission();
+
+        this.ui.error(message);
     }
     
     async prompt<T extends Answers = Answers>(prompts: Prompt[], clear: boolean): Promise<T> {
-        return this.screenManager.prompt(this, prompts, clear);
+        this.checkScreenPermission();
+
+        return this.ui.prompt(prompts, clear);
     }
 
     startScreen(view: View, viewConfigs?: ViewConfigsBundle): void {
-        this.screenManager.startView(this, view, viewConfigs);
+        this.checkScreenPermission();
+
+        this.screen.startView(view, viewConfigs);
     }
 
     incudeView(view: View, viewConfigs?: ViewConfigsBundle): void {
-        this.screenManager.include(this, view, viewConfigs);
+
+
+        this.screen.include(view, viewConfigs);
     }
 
     isActive() {
-        return this.screenManager.isActive(this);
+        return this.screen.isCurrentView(this);
+    }
+
+    private checkScreenPermission(): void {
+        if(! this.screen.hasPerformPermission(this)) {
+            throw new Error("Only displayed view can perform ui actions");
+        }
     }
 }
 
