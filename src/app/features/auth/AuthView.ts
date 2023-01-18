@@ -47,19 +47,15 @@ export default class AuthView extends AuthViewContract {
     }
 
     override showLoginScreen(): void {
-        this.startScreen(LoginView.factory());
+        this.startScreen(LoginView);
     }
 
     override showRegisterScreen(): void {
-        this.startScreen(RegisterView.factory());
+        this.startScreen(RegisterView);
     }
 
     
     override onDestroy(): void {
         this.presenter.unSubscribe();
-    }
-    
-    static factory() {
-        return new AuthView();
     }
 };

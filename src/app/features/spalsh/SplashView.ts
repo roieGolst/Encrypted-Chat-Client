@@ -19,8 +19,4 @@ export default class SplashView extends SplashViewContract {
     override onDestroy(): void {
         this.presenter.unSubscribe();
     }
-    
-    static factory(): SplashView {
-       return new SplashView();
-    }
 };

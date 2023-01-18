@@ -9,7 +9,7 @@ export interface IViewEngine {
     clear(): void;
 };
 
-class ViewEngine implements IViewEngine{
+class ViewEngine implements IViewEngine {
     private readonly strategy: ConsoleStrategy;
 
     constructor(engine: ConsoleStrategy) {

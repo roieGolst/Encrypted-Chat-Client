@@ -8,7 +8,7 @@ const initialFunction = async () => {
 };
 
 bootstarp({
-    splashScreen: SplashView.factory(),
+    splashScreen: SplashView,
     initialFunction: initialFunction,
-    mainScreen: AuthView.factory()
+    mainScreen: AuthView
 });

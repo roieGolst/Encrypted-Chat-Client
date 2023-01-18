@@ -9,6 +9,6 @@ export default abstract class BaseView extends View {
 
     protected clearAndLogo() {
         this.clear();
-        this.incudeView(HeaderView.factory());
+        this.incudeView(HeaderView);
     }
 };

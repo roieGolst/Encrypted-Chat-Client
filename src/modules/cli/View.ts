@@ -4,6 +4,7 @@ import { ConsoleOptions, Prompt } from "./modules/viewEngine/types";
 import viewEngine, { IViewEngine } from "./modules/viewEngine";
 import { IScreenManager } from "./modules/screenManager/IScreenManager";
 import { ViewConfigsBundle } from "./modules/screenManager/common/ViewConfigsBundle";
+import { ViewClass } from "./modules/screenManager/common/ViewClass";
 
 export default abstract class View {
     private readonly screen: IScreenManager = screenManager;
@@ -19,7 +20,7 @@ export default abstract class View {
     }
 
     log(content: string, consoleOptions?: ConsoleOptions): void {
-        this.checkScreenPermission();
+        // this.checkScreenPermission();
 
         this.ui.log(content, consoleOptions);
     }
@@ -36,14 +37,14 @@ export default abstract class View {
         return this.ui.prompt(prompts, clear);
     }
 
-    startScreen(view: View, viewConfigs?: ViewConfigsBundle): void {
+    startScreen(view: ViewClass, viewConfigs?: ViewConfigsBundle): void {
         this.checkScreenPermission();
 
         this.screen.startView(view, viewConfigs);
     }
 
-    incudeView(view: View, viewConfigs?: ViewConfigsBundle): void {
-
+    incudeView(view: ViewClass, viewConfigs?: ViewConfigsBundle): void {
+        this.checkScreenPermission();
 
         this.screen.include(view, viewConfigs);
     }

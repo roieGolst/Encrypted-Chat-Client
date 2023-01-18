@@ -58,15 +58,11 @@ export default class LoginView extends LoginViewContract {
     }
 
     override showHomeScreen(): void {
-        this.startScreen(HomeView.factory());
+        this.startScreen(HomeView);
     }
 
     override showErrorMessage(): void {
         this.error("login faild");
         this.presenter.onErrorMessageShown(ERROR_MESSAGE_DURATION);
-    }
-    
-    static factory(): BaseView {
-        return new LoginView();
     }
 }

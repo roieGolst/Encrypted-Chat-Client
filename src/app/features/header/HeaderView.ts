@@ -10,9 +10,5 @@ export default class HeaderView extends View {
     
     override onDestroy(): void {
     }
-
-    static factory(): HeaderView {
-        return new HeaderView();
-    }
     
 };

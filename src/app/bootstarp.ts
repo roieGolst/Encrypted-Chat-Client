@@ -1,10 +1,10 @@
-import uiTread from "../modules/cli/modules/screenManager/ScreenManager"
-import View from "../modules/cli/View"
+import { ViewClass } from "../modules/cli/modules/screenManager/common/ViewClass";
+import uiTread from "../modules/cli/modules/screenManager/ScreenManager";
 
 type BootstarpArgs = {
-    splashScreen: View,
+    splashScreen: ViewClass,
     initialFunction: () => Promise<void>,
-    mainScreen: View
+    mainScreen: ViewClass
 }
 
 export default async function bootstarp(args: BootstarpArgs) {

@@ -65,15 +65,11 @@ export default class HomeView extends HomeViewContract {
     }
 
     override showLoginPage(): void {
-        this.startScreen(LoginView.factory());
+        this.startScreen(LoginView);
     }
 
     override onDestroy(): void {
         this.presenter.unSubscribe();
-    }
-
-    static factory(): BaseView {
-        return new HomeView();
     }
     
 }
