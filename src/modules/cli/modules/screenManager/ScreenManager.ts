@@ -1,4 +1,5 @@
 import View from "../../View";
+import { ViewClass } from "./common/ViewClass";
 import { ViewConfigsBundle } from "./common/ViewConfigsBundle";
 import { IScreenManager } from "./IScreenManager";
 
@@ -6,7 +7,7 @@ export class ScreenManager implements IScreenManager {
     private currentView: View;
     private includedViews: Map<number, View> = new Map();
 
-    startView(view: View, viewConfigs?: ViewConfigsBundle): void {
+    startView(clazz: ViewClass, viewConfigs?: ViewConfigsBundle): void {
         if(this.currentView) {
             this.currentView.onDestroy();
             this.destroyView();
@@ -15,15 +16,24 @@ export class ScreenManager implements IScreenManager {
             this.clearScreen();
         }
 
-        this.currentView = view;
+        const viewClass = this.bindNew(clazz);
+
+        this.currentView = new viewClass();
         this.currentView.onStart(viewConfigs); 
     }
 
-    include(view: View, viewConfigs?: ViewConfigsBundle): void {
-        
+    include(clazz: ViewClass, viewConfigs?: ViewConfigsBundle): void {
+        const viewClass = this.bindNew(clazz);
+        const view = new viewClass();
+
         this.includedViews.set(this.toHash(view), view);
 
         view.onStart(viewConfigs);
+    }
+
+    private bindNew(viewClass: ViewClass): any {
+        //TODO: lern more about that!!!;
+        return Function.prototype.bind.apply(viewClass, [""]);
     }
 
     isCurrentView(view: View): boolean {
@@ -35,11 +45,7 @@ export class ScreenManager implements IScreenManager {
     }
 
     hasPerformPermission(view: View): boolean {
-        if(!this.isCurrentView(view) && !this.isIncludedView(view)) {
-            return false;
-        }
-
-        return true;
+        return this.isCurrentView(view) || this.isIncludedView(view);
     }
 
     private toHash(object: Object): number {
