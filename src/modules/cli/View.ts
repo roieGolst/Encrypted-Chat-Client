@@ -6,6 +6,8 @@ import { IScreenManager } from "./modules/screenManager/IScreenManager";
 import { ViewConfigsBundle } from "./modules/screenManager/common/ViewConfigsBundle";
 import { ViewClass } from "./modules/screenManager/common/ViewClass";
 
+//TODO: add a intent concept
+
 export default abstract class View {
     private readonly screen: IScreenManager = screenManager;
     private readonly ui: IViewEngine = viewEngine;
