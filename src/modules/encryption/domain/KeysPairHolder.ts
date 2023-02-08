@@ -1,13 +1,13 @@
 import { IEncrypter } from "./IEncrypter";
-import { Message, Sign } from "./IEncryptionRepository";
-import { IKeyHolder } from "./KeyHoldler";
+import { Message, Sign } from "../common/types";
+import { KeyHolder } from "./KeyHoldler";
 
 export abstract class KeysPairHolder implements IEncrypter  {
-    protected readonly private: IKeyHolder;
-    protected readonly public: IKeyHolder;
+    protected readonly private: KeyHolder;
+    protected readonly public: KeyHolder;
 
-    abstract encrypt(message: Message): TBD;
-    abstract decrypt(message: Message): TBD; 
-    abstract sign(message: Message): TBD;
+    abstract encrypt(message: Message): string;
+    abstract decrypt(message: Message): string; 
+    abstract sign(message: Message): string;
     abstract verify(message: Message, sign: Sign): boolean;
 };
