@@ -1,38 +1,31 @@
 import NodeRSA from "node-rsa";
 import { Message } from "../../common/types";
 import { IEncrypter } from "../../domain/IEncrypter";
+import { AsymetricEncriptionConfig } from "./common/AsymetricEncriptionConfig";
 
 type Key = string | Buffer;
 type Format = NodeRSA.Format;
 
+type Keys = {
+    publicKey?: Key,
+    privateKey?: Key
+}
+
 export class RsaKeyHolder implements IEncrypter {
-    private readonly key: NodeRSA;
+    private readonly rsaInstance: NodeRSA;
 
-    constructor(size: number = 2048, key?: string | Buffer, format?: Format) {
-        if(key) {
-            this.importKey(key, format);
-        }
-
-        this.key = new NodeRSA();
-    }
-
-    private importKey(key: Key, format?: Format): void {
-        try {
-            this.key.importKey(key, format);
-        }
-        catch(err) {
-            throw new Error(`${err}`);
-        }
+    constructor(rsaKeys: NodeRSA) {
+        this.rsaInstance = rsaKeys;
     }
 
     encrypt(message: Message): string {
-        const encryptedData = this.key.encrypt(message.content, "base64");
+        const encryptedData = this.rsaInstance.encrypt(message.content, "base64");
 
         return encryptedData
     }
 
     decrypt(message: Message): string {
-        throw new Error("Method not implemented.");
+        return this.rsaInstance.decrypt(message.content, "utf8");
     }
     sign(message: Message): string {
         throw new Error("Method not implemented.");
