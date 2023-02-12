@@ -1,3 +1,5 @@
+import { AsymetricEncriptionConfig } from "./data/asymetric/common/AsymetricEncriptionConfig";
+import { RsaDataSource } from "./data/asymetric/RsaDataSource";
 import { DefaultEncryptionRepository } from "./data/DefaultEncryptionRepository";
 import { IEncryptionDataSource } from "./data/IEncryptionDataSource";
 import { AesDataSource } from "./data/symetric/AesDataSource";
@@ -8,7 +10,7 @@ export default class Encryption {
 
     static factory (
         symetericDataSource: IEncryptionDataSource<SymetricConfig> = new AesDataSource(),
-        asynetericDataSource: IEncryptionDataSource<SymetricConfig> = new AesDataSource() //TODO: replace it with an asymetric implemetion;
+        asynetericDataSource: IEncryptionDataSource<AsymetricEncriptionConfig> = new RsaDataSource() //TODO: replace it with an asymetric implemetion;
     ): IEncryptionRepository {
       return new DefaultEncryptionRepository(symetericDataSource, asynetericDataSource);  
     }
