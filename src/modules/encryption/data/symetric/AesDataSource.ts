@@ -1,5 +1,4 @@
 import { IEncrypter } from "../../domain/IEncrypter";
-import { KeyHolder } from "../../domain/KeyHoldler";
 import { IEncryptionDataSource } from "../IEncryptionDataSource";
 import * as crypto from "crypto";
 import { Message, Sign } from "../../common/types";
@@ -9,10 +8,13 @@ const ALGORITHM = "aes-128-cbc";
 const DEFAULT_INPUT_ENCODING = "utf-8";
 const DEFAULT_OUTPUT_ENCODING = "base64";
  
-class AesKeyHolder extends KeyHolder {
+class AesKeyHolder {
+    protected readonly key: Buffer;
+    protected readonly iv: Buffer;
 
-    constructor(key: Buffer, iv: Buffer) {
-        super(key, iv);
+    constructor(key: Buffer, initialVector: Buffer) {
+        this.key = key;
+        this.iv = initialVector;
     }
 
     encrypt(message: Message): string {

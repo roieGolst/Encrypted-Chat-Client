@@ -3,9 +3,7 @@ import { IEncryptionRepository } from "../domain/IEncryptionRepository";
 import { IEncryptionDataSource } from "./IEncryptionDataSource";
 import { SymetricConfig } from "./symetric/common/SymetricEncryptionConfig";
 import * as crypto from "crypto";
-import { AsymetricEncriptionConfig } from "./asymetric/common/AsymetricEncriptionConfig";
-import { AsymetricEncrypter } from "./asymetric/common/RsaEncrypted";
-import { RsaKeyHolder } from "./asymetric/RsaKeyHolder";
+import { AsymetricEncriptionConfig, AsymetricKeyInstance } from "./asymetric/common/AsymetricEncriptionConfig";
 import NodeRSA from "node-rsa";
 
 const DEFAULT_RANDOM_BYTES_LENGHT = 16; 
@@ -16,15 +14,16 @@ const randomBytes = (size: number = DEFAULT_RANDOM_BYTES_LENGHT): Buffer => {
 
 export class DefaultEncryptionRepository implements IEncryptionRepository {
     private readonly symetericDataSource: IEncryptionDataSource<SymetricConfig>;
-    private readonly asynetericDataSource: IEncryptionDataSource<NodeRSA>;
+    private readonly asynetericDataSource: IEncryptionDataSource<AsymetricKeyInstance>;
 
-    constructor(symetericDataSource: IEncryptionDataSource<SymetricConfig>, asynetericDataSource: IEncryptionDataSource<NodeRSA>) {
+    constructor(symetericDataSource: IEncryptionDataSource<SymetricConfig>, asynetericDataSource: IEncryptionDataSource<AsymetricKeyInstance>) {
         this.symetericDataSource = symetericDataSource;
         this.asynetericDataSource = asynetericDataSource;
     }
 
     getKeysPair(config?: AsymetricEncriptionConfig, size: number = 2048): IEncrypter {
         let rsa: NodeRSA;
+
         if(config) { 
             rsa = this.importKey(config);
             return this.asynetericDataSource.factory(rsa);

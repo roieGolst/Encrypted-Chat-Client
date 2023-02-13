@@ -1,5 +1,4 @@
 import NodeRSA from "node-rsa";
-import { AsymetricEncriptionConfig } from "./data/asymetric/common/AsymetricEncriptionConfig";
 import { RsaDataSource } from "./data/asymetric/RsaDataSource";
 import { DefaultEncryptionRepository } from "./data/DefaultEncryptionRepository";
 import { IEncryptionDataSource } from "./data/IEncryptionDataSource";

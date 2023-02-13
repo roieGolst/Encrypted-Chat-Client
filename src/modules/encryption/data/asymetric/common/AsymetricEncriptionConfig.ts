@@ -1,7 +1,9 @@
-import NodeRSA, { Format } from "node-rsa";
-import { RsaKeyHolder } from "../RsaKeyHolder";
+import NodeRSA from "node-rsa";
+
+export type Format = NodeRSA.Format; 
+export type AsymetricKeyInstance = NodeRSA;
 
 export type AsymetricEncriptionConfig = {
     key: string | Buffer,
-    format?: Format,
+    format?: Format
 };
