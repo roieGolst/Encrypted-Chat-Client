@@ -28,9 +28,9 @@ export class RsaKeyHolder implements IEncrypter {
         return this.rsaInstance.decrypt(message.content, "utf8");
     }
     sign(message: Message): string {
-        throw new Error("Method not implemented.");
+        return this.rsaInstance.sign(message.content, "base64");
     }
     verify(message: Message, sign: string): boolean {
-        throw new Error("Method not implemented.");
+        return this.rsaInstance.verify(message.content, Buffer.from(sign));
     }
 }

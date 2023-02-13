@@ -1,3 +1,4 @@
+import NodeRSA from "node-rsa";
 import { AsymetricEncriptionConfig } from "./data/asymetric/common/AsymetricEncriptionConfig";
 import { RsaDataSource } from "./data/asymetric/RsaDataSource";
 import { DefaultEncryptionRepository } from "./data/DefaultEncryptionRepository";
@@ -10,7 +11,7 @@ export default class Encryption {
 
     static factory (
         symetericDataSource: IEncryptionDataSource<SymetricConfig> = new AesDataSource(),
-        asynetericDataSource: IEncryptionDataSource<AsymetricEncriptionConfig> = new RsaDataSource() //TODO: replace it with an asymetric implemetion;
+        asynetericDataSource: IEncryptionDataSource<NodeRSA> = new RsaDataSource() //TODO: replace it with an asymetric implemetion;
     ): IEncryptionRepository {
       return new DefaultEncryptionRepository(symetericDataSource, asynetericDataSource);  
     }

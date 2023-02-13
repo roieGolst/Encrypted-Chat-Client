@@ -6,6 +6,7 @@ import * as crypto from "crypto";
 import { AsymetricEncriptionConfig } from "./asymetric/common/AsymetricEncriptionConfig";
 import { AsymetricEncrypter } from "./asymetric/common/RsaEncrypted";
 import { RsaKeyHolder } from "./asymetric/RsaKeyHolder";
+import NodeRSA from "node-rsa";
 
 const DEFAULT_RANDOM_BYTES_LENGHT = 16; 
 
@@ -15,21 +16,39 @@ const randomBytes = (size: number = DEFAULT_RANDOM_BYTES_LENGHT): Buffer => {
 
 export class DefaultEncryptionRepository implements IEncryptionRepository {
     private readonly symetericDataSource: IEncryptionDataSource<SymetricConfig>;
-    private readonly asynetericDataSource: IEncryptionDataSource<AsymetricEncriptionConfig>;
+    private readonly asynetericDataSource: IEncryptionDataSource<NodeRSA>;
 
-    constructor(symetericDataSource: IEncryptionDataSource<SymetricConfig>, asynetericDataSource: IEncryptionDataSource<AsymetricEncriptionConfig>) {
+    constructor(symetericDataSource: IEncryptionDataSource<SymetricConfig>, asynetericDataSource: IEncryptionDataSource<NodeRSA>) {
         this.symetericDataSource = symetericDataSource;
         this.asynetericDataSource = asynetericDataSource;
     }
 
-    getKeysPair(config?: AsymetricEncriptionConfig): IEncrypter {
-        config = config || {privateKey: new RsaKeyHolder(), publicKey: new RsaKeyHolder()};
+    getKeysPair(config?: AsymetricEncriptionConfig, size: number = 2048): IEncrypter {
+        let rsa: NodeRSA;
+        if(config) { 
+            rsa = this.importKey(config);
+            return this.asynetericDataSource.factory(rsa);
+        }
 
-        return this.asynetericDataSource.factory(config);
+        rsa = new NodeRSA({b: size});
+
+        return this.asynetericDataSource.factory(rsa);
     }
 
     getKey(config?: SymetricConfig): IEncrypter {
         config = config || { key:  randomBytes(), iv: randomBytes()};
         return this.symetericDataSource.factory(config);
+    }
+
+    private importKey(config: AsymetricEncriptionConfig): NodeRSA {
+        try {
+            const rsaInstance: NodeRSA = new NodeRSA();
+
+            rsaInstance.importKey(config.key, config.format);
+
+            return rsaInstance;
+        } catch(error) {
+            throw new Error(`${error}`);
+        }
     }
 }

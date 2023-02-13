@@ -1,3 +1,4 @@
+import NodeRSA from "node-rsa";
 import { Message } from "../../common/types";
 import { IEncrypter } from "../../domain/IEncrypter";
 import { IEncryptionDataSource } from "../IEncryptionDataSource";
@@ -39,11 +40,9 @@ import { RsaKeyHolder } from "./RsaKeyHolder";
     
 // }
 
-export class RsaDataSource implements IEncryptionDataSource<AsymetricEncriptionConfig> {
-    factory(config: AsymetricEncriptionConfig): IEncrypter {
-        if(!)
-        const rsaInstance = new Node()
-        return new RsaKeyHolder(2048, config);
+export class RsaDataSource implements IEncryptionDataSource<NodeRSA> {
+    factory(key: NodeRSA): IEncrypter {
+        return new RsaKeyHolder(key);
     }
 
 }
