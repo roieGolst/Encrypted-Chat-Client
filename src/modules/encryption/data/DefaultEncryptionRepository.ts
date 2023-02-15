@@ -22,14 +22,13 @@ export class DefaultEncryptionRepository implements IEncryptionRepository {
     }
 
     getKeysPair(config?: AsymetricEncriptionConfig, size: number = 2048): IEncrypter {
-        let rsa: NodeRSA;
+        let rsa: AsymetricKeyInstance;
 
-        if(config) { 
+        if(!config) {
+            rsa = new NodeRSA({b: size});
+        } else {
             rsa = this.importKey(config);
-            return this.asynetericDataSource.factory(rsa);
         }
-
-        rsa = new NodeRSA({b: size});
 
         return this.asynetericDataSource.factory(rsa);
     }

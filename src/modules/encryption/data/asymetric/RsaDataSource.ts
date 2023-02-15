@@ -4,7 +4,6 @@ import { IEncrypter } from "../../domain/IEncrypter";
 import { IEncryptionDataSource } from "../IEncryptionDataSource";
 import { AsymetricKeyInstance } from "./common/AsymetricEncriptionConfig";
 
-
  class RsaKeyHolder implements IEncrypter {
     private readonly rsaInstance: NodeRSA;
 
