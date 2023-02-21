@@ -1,7 +1,6 @@
-import { ViewConfigsBundle } from "../../../modules/view/UITread";
-import { PromptType } from "../../../modules/view/viewEngine/types";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
+import { PromptType } from "../../../modules/cli/modules/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
-import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
 import HomeView from "../home/HomeView";
 import { LoginPresenterContract, LoginViewContract } from "./LoginContract";
 import LoginPresenter from "./LoginPresenter";
@@ -59,15 +58,11 @@ export default class LoginView extends LoginViewContract {
     }
 
     override showHomeScreen(): void {
-        this.startScreen(HomeView.factory());
+        this.startScreen(HomeView);
     }
 
     override showErrorMessage(): void {
         this.error("login faild");
         this.presenter.onErrorMessageShown(ERROR_MESSAGE_DURATION);
-    }
-    
-    static factory(): BaseView {
-        return new LoginView();
     }
 }

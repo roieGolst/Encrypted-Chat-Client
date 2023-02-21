@@ -1,4 +1,3 @@
-import { IResult } from "../../../common/IResult";
 import { PacketType, Status } from "../commonTypes";
 import Packet from "../Packet";
 import ResponseParser from "./Response";
@@ -43,7 +42,7 @@ export  default class Parser {
         
 
         const isValidPacket = this.isValidPacket(parsedData);
-
+        
         if(!isValidPacket) {
             return this.generalPacketGenerator(new ParserErrorResult({
                 type: PacketType.GeneralFailure,

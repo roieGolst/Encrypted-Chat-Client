@@ -1,5 +1,5 @@
-import { ViewConfigsBundle } from "../../../modules/view/UITread";
-import View from "../../../modules/view/View";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
+import View from "../../../modules/cli/View";
 import logo from "../../utils/view/logoUtil";
 
 export default class HeaderView extends View {
@@ -9,10 +9,6 @@ export default class HeaderView extends View {
     }
     
     override onDestroy(): void {
-    }
-
-    static factory(): HeaderView {
-        return new HeaderView();
     }
     
 };

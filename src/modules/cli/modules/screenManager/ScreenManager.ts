@@ -1,18 +1,13 @@
-import View from "./View";
-export interface ViewValidator {
-    isCurrentView(view: View): boolean;
-    isIncludedView(view: View): boolean
-    startView(view: View, viewConfigs?: ViewConfigsBundle): void;
-    include(view: View, viewConfigs?: ViewConfigsBundle): void
-}
+import View from "../../View";
+import { ViewClass } from "./common/ViewClass";
+import { ViewConfigsBundle } from "./common/ViewConfigsBundle";
+import { IScreenManager } from "./IScreenManager";
 
-export type ViewConfigsBundle = Map<string, any>;
-
-export class UIThread implements ViewValidator {
+export class ScreenManager implements IScreenManager {
     private currentView: View;
     private includedViews: Map<number, View> = new Map();
 
-    startView(view: View, viewConfigs?: ViewConfigsBundle): void {
+    startView(clazz: ViewClass, viewConfigs?: ViewConfigsBundle): void {
         if(this.currentView) {
             this.currentView.onDestroy();
             this.destroyView();
@@ -21,15 +16,24 @@ export class UIThread implements ViewValidator {
             this.clearScreen();
         }
 
-        this.currentView = view;
+        const viewClass = this.bindNew(clazz);
+
+        this.currentView = new viewClass();
         this.currentView.onStart(viewConfigs); 
     }
 
-    include(view: View, viewConfigs?: ViewConfigsBundle): void {
-        
+    include(clazz: ViewClass, viewConfigs?: ViewConfigsBundle): void {
+        const viewClass = this.bindNew(clazz);
+        const view = new viewClass();
+
         this.includedViews.set(this.toHash(view), view);
 
         view.onStart(viewConfigs);
+    }
+
+    private bindNew(viewClass: ViewClass): any {
+        //TODO: lern more about that!!!;
+        return Function.prototype.bind.apply(viewClass, [""]);
     }
 
     isCurrentView(view: View): boolean {
@@ -38,6 +42,10 @@ export class UIThread implements ViewValidator {
 
     isIncludedView(view: View): boolean {
         return this.includedViews.has(this.toHash(view));
+    }
+
+    hasPerformPermission(view: View): boolean {
+        return this.isCurrentView(view) || this.isIncludedView(view);
     }
 
     private toHash(object: Object): number {
@@ -70,4 +78,4 @@ export class UIThread implements ViewValidator {
     }
 }
 
-export default new UIThread();
+export default new ScreenManager();
