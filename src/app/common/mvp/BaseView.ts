@@ -1,7 +1,6 @@
-import BasePresnter from "./BasePresnter";
-import View from "../../../modules/view/View";
+import View from "../../../modules/cli/View";
 import HeaderView from "../../features/header/HeaderView";
-import { ViewConfigsBundle } from "../../../modules/view/UITread";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
 
 export default abstract class BaseView extends View {
     override onStart(viewConfigs?: ViewConfigsBundle): void {
@@ -10,6 +9,6 @@ export default abstract class BaseView extends View {
 
     protected clearAndLogo() {
         this.clear();
-        this.incudeView(HeaderView.factory());
+        this.incudeView(HeaderView);
     }
 };

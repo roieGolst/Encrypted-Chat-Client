@@ -1,6 +1,5 @@
-import { ViewConfigsBundle } from "../../../modules/view/UITread";
-import { PromptType } from "../../../modules/view/viewEngine/types";
-import BaseView from "../../common/mvp/BaseView";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
+import { PromptType } from "../../../modules/cli/modules/viewEngine/types";
 import AuthView from "../auth/AuthView";
 import { RegisterViewContract } from "./RegisterContract";
 import RegisterPresenter from "./RegisterPresenter";
@@ -66,11 +65,7 @@ export default class RegisterView extends RegisterViewContract {
     }
 
     override showAuthScreen(): void {
-        this.startScreen(AuthView.factory());
-    }
-
-    static factory(): BaseView {
-        return new RegisterView();
+        this.startScreen(AuthView);
     }
     
 }

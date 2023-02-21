@@ -1,5 +1,5 @@
-import { ViewConfigsBundle } from "../../../modules/view/UITread";
-import { PromptType } from "../../../modules/view/viewEngine/types";
+import { ViewConfigsBundle } from "../../../modules/cli/modules/screenManager/common/ViewConfigsBundle";
+import { PromptType } from "../../../modules/cli/modules/viewEngine/types";
 import BaseView from "../../common/mvp/BaseView";
 import LoginView from "../login/LoginView";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
@@ -65,15 +65,11 @@ export default class HomeView extends HomeViewContract {
     }
 
     override showLoginPage(): void {
-        this.startScreen(LoginView.factory());
+        this.startScreen(LoginView);
     }
 
     override onDestroy(): void {
         this.presenter.unSubscribe();
-    }
-
-    static factory(): BaseView {
-        return new HomeView();
     }
     
 }
