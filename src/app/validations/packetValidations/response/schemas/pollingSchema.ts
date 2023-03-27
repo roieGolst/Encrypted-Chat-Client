@@ -1,6 +1,5 @@
 import Joi from "joi";
 import userConfigs from "../../../../config/userConfigs.json";
-import tokenConfigs from "../../../../config/tokenConfigs.json";
 
 export default Joi.object({
     packetId: Joi.string()
@@ -9,13 +8,12 @@ export default Joi.object({
         .required(),
 
     type: Joi.string()
-        .valid("newToken")
+        .valid("Polling")
         .required(),
             
     status: Joi.number()
         .required(),
         
-    refreshToken: Joi.string()
-        .min(tokenConfigs.MIN_TOKEN_LENGTH)
-        .required(),     
+    body: Joi.array().items(Joi.string())
+        .optional(),     
 });

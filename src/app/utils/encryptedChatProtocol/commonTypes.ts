@@ -1,4 +1,5 @@
 export enum PacketType {
+    Polling = "Polling",
     Register = "register",
     Login = "login",
     CreateChat = "createChat",
