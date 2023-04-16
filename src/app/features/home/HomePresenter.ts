@@ -1,5 +1,5 @@
 import AuthRepository from "../../utils/authentication/AuthRepository";
-import { Tokens } from "../../utils/encryptedChatProtocol/commonTypes";
+import { Tokens } from "../../encryptedChatProtocol/common/commonTypes";
 import HomeModel from "./data";
 import { HomePresenterContract, HomeViewContract } from "./HomeContract";
 

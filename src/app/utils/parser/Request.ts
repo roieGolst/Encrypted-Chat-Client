@@ -1,17 +1,12 @@
-import { PacketType, Status } from "../commonTypes";
-import RequestPacket from "../requestPackets/RequsetPacket";
-import * as RequestPackets from "../requestPackets";
-import * as vlidation from "../../../validations";
+import { PacketType, Status } from "../../encryptedChatProtocol/common/commonTypes";
+import RequestPacket from "../../encryptedChatProtocol/requestPackets/RequsetPacket";
+import * as RequestPackets from "../../encryptedChatProtocol/requestPackets";
+import * as validations from "../../validations";
 import { ParserErrorResult } from ".";
 
 export default class RequestParser {
     static parse(type: PacketType, packetId: string, payload: any): RequestPacket {
         switch(type) {
-
-            case PacketType.Polling : {
-                return this.parsePollingRequest(packetId, payload);
-            }
-
             case PacketType.Register : {
                 return this.parseRegisterRequest(packetId, payload);
             }
@@ -26,6 +21,10 @@ export default class RequestParser {
 
             case PacketType.JoinChat : {
                 return this.parseJoinChatRequest(packetId, payload);
+            }
+
+            case PacketType.Polling : {
+                return this.parsePollingRequest(packetId, payload);
             }
 
             case PacketType.NewToken : {
@@ -46,27 +45,8 @@ export default class RequestParser {
         }
     }
 
-    private static parsePollingRequest(packetId: string, payload: any): RequestPacket {
-        const validationResult = vlidation.packetValidation.request.pollingPacket.validate(payload);
-
-        if(!validationResult.isSuccess) {
-            throw new ParserErrorResult({
-                packetId,
-                type: PacketType.Register,
-                status: Status.VlidationError
-            });
-        }
-
-        const token = validationResult.value.token;
-
-        return new RequestPackets.PollingPacket.Builder()
-            .setPacketId(packetId)
-            .setToken(token)
-            .build();
-    }
-
     private static parseRegisterRequest(packetId: string, payload: any): RequestPacket {
-        const validationResult = vlidation.packetValidation.request.registerPacket.validate(payload);
+        const validationResult = validations.packetValidation.request.registerPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
             throw new ParserErrorResult({
@@ -86,7 +66,7 @@ export default class RequestParser {
     }
 
     private static parseLoginRequest(packetId: string, payload: any): RequestPacket {
-        const validationResult = vlidation.packetValidation.request.loginPacket.validate(payload);
+        const validationResult = validations.packetValidation.request.loginPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
             throw new ParserErrorResult({
@@ -106,7 +86,7 @@ export default class RequestParser {
     }
 
     private static parseCreateChatRequest(packetId: string, payload: any): RequestPacket {
-        const validationResult = vlidation.packetValidation.request.createChatPacket.validate(payload);
+        const validationResult = validations.packetValidation.request.createChatPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
             throw new ParserErrorResult({
@@ -125,7 +105,7 @@ export default class RequestParser {
     }
 
     private static parseJoinChatRequest(packetId: string, payload: any): RequestPacket {
-        const validationResult = vlidation.packetValidation.request.joinChatPacket.validate(payload);
+        const validationResult = validations.packetValidation.request.joinChatPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
             throw new ParserErrorResult({
@@ -145,8 +125,27 @@ export default class RequestParser {
             .build()
     }
 
+    private static parsePollingRequest(packetId: string, payload: any): RequestPacket {
+        const validationResult = validations.packetValidation.request.pollingPacket.validate(payload);
+
+        if(!validationResult.isSuccess) {
+            throw new ParserErrorResult({
+                packetId,
+                type: PacketType.Register,
+                status: Status.VlidationError
+            });
+        }
+
+        const token = validationResult.value.token;
+
+        return new RequestPackets.PollingPacket.Builder()
+            .setPacketId(packetId)
+            .setToken(token)
+            .build();
+    }
+
     private static parseNewTokenRequest(packetId: string, payload: any): RequestPacket {
-        const validationResult = vlidation.packetValidation.request.newTokenPacket.validate(payload);
+        const validationResult = validations.packetValidation.request.newTokenPacket.validate(payload);
 
         if(!validationResult.isSuccess) {
             throw new ParserErrorResult({
@@ -165,7 +164,7 @@ export default class RequestParser {
     }
 
     private static parseChatMessageRequest(packetId: string, payload: any): RequestPacket {
-        const validationResult = vlidation.packetValidation.request.chatMessagePacket.validate(payload);
+        const validationResult = validations.packetValidation.request.chatMessagePacket.validate(payload);
 
         if(!validationResult.isSuccess) {
             throw new ParserErrorResult({

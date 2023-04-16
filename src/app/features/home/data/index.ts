@@ -1,9 +1,9 @@
 import { IResult } from "../../../common/IResult";
 import NetworkLayer from "../../../common/network";
-import { Status, Tokens } from "../../../utils/encryptedChatProtocol/commonTypes";
-import { CreateChatRequest, JoinChatRequest } from "../../../utils/encryptedChatProtocol/requestPackets";
-import { CreateChatResponse } from "../../../utils/encryptedChatProtocol/responsePackets";
-import JoinChatPacket from "../../../utils/encryptedChatProtocol/responsePackets/JoinChat";
+import { Status, Tokens } from "../../../encryptedChatProtocol/common/commonTypes";
+import { CreateChatRequest, JoinChatRequest } from "../../../encryptedChatProtocol/requestPackets";
+import { CreateChatResponse } from "../../../encryptedChatProtocol/responsePackets";
+import JoinChatPacket from "../../../encryptedChatProtocol/responsePackets/JoinChat";
 import { CreateChatResultModel, JoinChatResultModel } from "./models/homeModel";
 
 export default class HomeModel {
@@ -41,6 +41,7 @@ export default class HomeModel {
         const packet = new JoinChatRequest.Builder()
             .setRoomId(roomId)
             .setToken(tokens.token)
+
             .build();
 
         try {

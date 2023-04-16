@@ -11,9 +11,6 @@ export default Joi.object({
     type: Joi.string()
         .valid("newToken")
         .required(),
-            
-    status: Joi.number()
-        .required(),
         
     refreshToken: Joi.string()
         .min(tokenConfigs.MIN_TOKEN_LENGTH)

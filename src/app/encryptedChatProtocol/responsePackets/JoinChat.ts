@@ -1,11 +1,16 @@
-import { PacketType, Status } from "../commonTypes";
-import { IBuilder } from "../../../common/IBuilder";
+import { PacketType, Status } from "../common/commonTypes";
+import { IBuilder } from "../../common/IBuilder";
 import ResponsePacket from "./ResponsePacket";
 
-export default class JoinChatPacket extends ResponsePacket {
-    readonly members?: Map<string, string> | undefined;
+type RoomUser = {
+    userId: string,
+    publicKey: string
+};
 
-    constructor(packetId: string, status: Status,members: Map<string, string> | undefined = undefined) {
+export default class JoinChatPacket extends ResponsePacket {
+    readonly members?: RoomUser[] | undefined; // TODO: Object {userId: string, publicKey: string};
+
+    constructor(packetId: string, status: Status, members: RoomUser[] | undefined = undefined) {
         super(PacketType.JoinChat, status, packetId);
         this.members = members;
     }
@@ -13,7 +18,7 @@ export default class JoinChatPacket extends ResponsePacket {
     static Builder = class implements IBuilder<JoinChatPacket> {
         packetId: string;
         status: Status;
-        members?: Map<string, string>;
+        members?: RoomUser[];
 
         setPacketId(packetId: string): this {
             this.packetId = packetId;
@@ -25,7 +30,7 @@ export default class JoinChatPacket extends ResponsePacket {
             return this;
         }
 
-        setMembers(members: Map<string, string>): this {
+        setMembers(members: RoomUser[]): this {
             this.members = members;
             return this;
         }

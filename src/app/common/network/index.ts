@@ -1,10 +1,10 @@
 import NetworkLayer, { INetworkLayer } from "../../../modules/network";
 import { IDateHandler } from "../../../modules/network/IDataHandlet";
-import Packet from "../../utils/encryptedChatProtocol/Packet";
-import Parser, { ParserErrorResult } from "../../utils/encryptedChatProtocol/parser";
-import RequestPacket from "../../utils/encryptedChatProtocol/requestPackets/RequsetPacket";
-import { GeneralFailure } from "../../utils/encryptedChatProtocol/responsePackets";
-import ResponsePacket from "../../utils/encryptedChatProtocol/responsePackets/ResponsePacket";
+import Packet from "../../encryptedChatProtocol/Packet";
+import Parser, { ParserErrorResult } from "../../utils/parser";
+import RequestPacket from "../../encryptedChatProtocol/requestPackets/RequsetPacket";
+import { GeneralFailure } from "../../encryptedChatProtocol/responsePackets";
+import ResponsePacket from "../../encryptedChatProtocol/responsePackets/ResponsePacket";
 
 export type ResponsePacketObserver = (responsePacket: ResponsePacket) => void;
 

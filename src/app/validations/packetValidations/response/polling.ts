@@ -1,12 +1,13 @@
 import { IResult } from "../../../common/IResult";
-import { PacketType, Status } from "../../../utils/encryptedChatProtocol/commonTypes";
+import { RoomNotify } from "../../../encryptedChatProtocol/roomNotifications/RoomNotify";
+import { PacketType, Status } from "../../../encryptedChatProtocol/common/commonTypes";
 import { pollingSchema } from "./schemas";
 
 type PollingResponsePacket = {
     readonly packetId: string;
-    readonly type: PacketType.CreateChat;
+    readonly type: PacketType.Polling;
     readonly status: Status;
-    readonly body?: string[];
+    readonly body: RoomNotify[];
 }
 
 export default {
@@ -24,9 +25,9 @@ export default {
             isSuccess: true,
             value: {
                 packetId: data.packetId,
-                type: PacketType.CreateChat,
+                type: PacketType.Polling,
                 status: data.status,
-                body: data.body
+                body: data.body as RoomNotify[]
             }
         };
     }

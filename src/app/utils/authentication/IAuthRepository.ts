@@ -1,4 +1,4 @@
-import { AuthAttributs, Tokens } from "../encryptedChatProtocol/commonTypes"
+import { AuthAttributs, Tokens } from "../../encryptedChatProtocol/common/commonTypes"
 
 export interface IAuthRepository {
     login(userAuthAttributs: AuthAttributs): Promise<boolean>;

@@ -1,7 +1,7 @@
 import NetworkLayer from "../../../common/network";
-import { Status } from "../../../utils/encryptedChatProtocol/commonTypes";
-import { RegisterRequest } from "../../../utils/encryptedChatProtocol/requestPackets";
-import { RegisterResponse } from "../../../utils/encryptedChatProtocol/responsePackets";
+import { Status } from "../../../encryptedChatProtocol/common/commonTypes";
+import { RegisterRequest } from "../../../encryptedChatProtocol/requestPackets";
+import { RegisterResponse } from "../../../encryptedChatProtocol/responsePackets";
 import { RegisterViewInput } from "../RegisterView";
 
 export default class RegisterModel {

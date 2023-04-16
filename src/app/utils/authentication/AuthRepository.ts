@@ -1,9 +1,8 @@
 import NetworkLayer from "../../common/network";
-import { AuthAttributs, Status, UserDetails } from "../encryptedChatProtocol/commonTypes";
-import { LoginRequest } from "../encryptedChatProtocol/requestPackets";
-import { LoginResponse } from "../encryptedChatProtocol/responsePackets";
+import { AuthAttributs, Status, UserDetails, Tokens } from "../../encryptedChatProtocol/common/commonTypes";
+import { LoginRequest } from "../../encryptedChatProtocol/requestPackets";
+import { LoginResponse } from "../../encryptedChatProtocol/responsePackets";
 import { IAuthRepository } from "./IAuthRepository";
-import { Tokens } from "../encryptedChatProtocol/commonTypes";
 
 class AuthRepository implements IAuthRepository {
     private userDetails: UserDetails;

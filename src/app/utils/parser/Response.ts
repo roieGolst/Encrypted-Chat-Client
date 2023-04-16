@@ -1,7 +1,7 @@
-import { PacketType, Status } from "../commonTypes";
-import ResponsePacket from "../responsePackets/ResponsePacket";
-import * as ResponsePackets from "../responsePackets";
-import * as validations from "../../../validations";
+import { PacketType, Status } from "../../encryptedChatProtocol/common/commonTypes";
+import ResponsePacket from "../../encryptedChatProtocol/responsePackets/ResponsePacket";
+import * as ResponsePackets from "../../encryptedChatProtocol/responsePackets";
+import * as validations from "../../validations";
 import { ParserErrorResult } from ".";
 
 export default class ResponseParser {
@@ -21,6 +21,10 @@ export default class ResponseParser {
 
             case PacketType.JoinChat : {
                 return this.parseJoinChatResponse(packetId, status, payload);
+            }
+
+            case PacketType.Polling : {
+                return this.parseroomPollingResponse(packetId, status, payload);
             }
 
             case PacketType.NewToken : {
@@ -129,16 +133,30 @@ export default class ResponseParser {
             .build();
         }
 
-        const membersMap = new Map<string, string>;
-
-        for(let memberId in members) {
-            membersMap.set(memberId, payload["members"][memberId]);
-        }
-
         return new ResponsePackets.JoinChatResponse.Builder()
             .setPacketId(packetId)
             .setStatus(status)
-            .setMembers(membersMap)
+            .setMembers(members)
+            .build()
+    }
+
+    private static parseroomPollingResponse(packetId: string, status: Status, payload: any): ResponsePacket {
+        const validationResult = validations.packetValidation.response.pollingPacket.validate(payload);
+
+        if(!validationResult.isSuccess) {
+            return this.generalPacketGenerator(new ParserErrorResult({
+                packetId,
+                type: PacketType.Polling,
+                status: Status.VlidationError
+            }));
+        }
+
+        const body = validationResult.value.body;
+
+        return new ResponsePackets.Polling.Builder()
+            .setPacketId(packetId)
+            .setStatus(status)
+            .setBody(body)
             .build()
     }
 
