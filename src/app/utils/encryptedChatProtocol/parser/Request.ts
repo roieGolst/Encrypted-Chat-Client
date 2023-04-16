@@ -7,6 +7,11 @@ import { ParserErrorResult } from ".";
 export default class RequestParser {
     static parse(type: PacketType, packetId: string, payload: any): RequestPacket {
         switch(type) {
+
+            case PacketType.Polling : {
+                return this.parsePollingRequest(packetId, payload);
+            }
+
             case PacketType.Register : {
                 return this.parseRegisterRequest(packetId, payload);
             }
@@ -39,6 +44,25 @@ export default class RequestParser {
                 });
             }
         }
+    }
+
+    private static parsePollingRequest(packetId: string, payload: any): RequestPacket {
+        const validationResult = vlidation.packetValidation.request.pollingPacket.validate(payload);
+
+        if(!validationResult.isSuccess) {
+            throw new ParserErrorResult({
+                packetId,
+                type: PacketType.Register,
+                status: Status.VlidationError
+            });
+        }
+
+        const token = validationResult.value.token;
+
+        return new RequestPackets.PollingPacket.Builder()
+            .setPacketId(packetId)
+            .setToken(token)
+            .build();
     }
 
     private static parseRegisterRequest(packetId: string, payload: any): RequestPacket {
