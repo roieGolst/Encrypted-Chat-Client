@@ -15,6 +15,7 @@ export class ScreenManager implements IScreenManager {
         else {
             this.clearScreen();
         }
+        
         //TODO: cast as View in try/catch
         const viewClass = this.bindNew(clazz);
 
